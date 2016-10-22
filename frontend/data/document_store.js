@@ -1,10 +1,17 @@
+import TreeNode from './tree_node.js';
+
 let _listeners = [];
-let _root = {};
-let _folders = {};
+let _root;
 let _user;
 
 
 const DocumentStore = {
+
+  setRoot(mainRepo) {
+    _root = new TreeNode(mainRepo);
+    console.log(_root);
+  },
+
   setUser(user) {
     _user = user;
   },

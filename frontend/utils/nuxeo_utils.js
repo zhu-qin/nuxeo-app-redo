@@ -1,7 +1,11 @@
 const Nuxeo = require('nuxeo');
+const merge = require('merge');
+
+
 import DocumentStore from '../data/document_store';
 
 let _nuxeo;
+let _user;
 
 const NuxeoUtils = {
 
@@ -24,6 +28,7 @@ const NuxeoUtils = {
     _nuxeo.login()
       .then(function(res) {
         DocumentStore.setUser(res);
+        _user = res;
         directToDashboard();
       })
       .catch(function(error) {
@@ -32,7 +37,52 @@ const NuxeoUtils = {
   },
 
   fetchRepo() {
-    _nuxeo.repository('default').fetch(`/default-domain`)
+    _nuxeo.repository()
+
+     .fetch(`/default-domain/UserWorkspaces/${_user.id}`)
+     .then(function(doc) {
+       DocumentStore.setRoot(doc);
+     })
+     .catch(function(error) {
+       throw error;
+     });
+  },
+
+  fetchChildren(){
+    _nuxeo.repository().schemas(['*'])    // specify the schemas you want to retrieve (could be ['*'])
+    .fetch('/default-domain/UserWorkspaces/qzhu/@children') // use the adapter to get the children
+    .then((docs) => {
+       docs.entries.forEach((doc) => {
+          console.log( doc.uid + ':' + doc.path + ' - ' + doc.title + ' (' + doc.type + ')');
+          console.log(doc.get('dc:created'));
+          console.log(doc.get('dc:contributors'));
+          //console.log(doc.properties);
+       });
+     })
+   .catch(function(error) {
+    console.log(error);
+    throw error;
+  });
+  },
+
+  createDocument(doc) {
+    if (!doc) {
+      doc = {};
+    }
+    doc.name = "hello";
+
+    let defaultDoc = {
+      "entity-type": "directory",
+      "name":"Hello",
+      "type": "Collection",
+      "properties": {
+          "dc:title": "Hello",
+          "dc:description": "Created via the REST API"
+      }
+    };
+
+    _nuxeo.repository()
+     .create("/default-domain/UserWorkspaces/qzhu", defaultDoc)
      .then(function(doc) {
        console.log(doc);
      })
@@ -41,65 +91,6 @@ const NuxeoUtils = {
      });
   },
 
-  fetchChild(){
-    _nuxeo.operation('Document.GetChild')
-    .input('/default-domain')
-    .params({
-      name: 'workspaces',
-    })
-    .execute()
-    .then(function(res) {
-      console.log(res);
-    })
-    .catch(function(error) {
-      throw new Error(error);
-    });
-  },
-
-  getFiles(){
-    _nuxeo.directory('workspaces')
-   .fetchAll()
-   .then(function(entries) {
-     console.log(entries);
-   });
- },
-
-  createDocument(){
-    _nuxeo.operation('Document.Create')
-    .params({
-      type: 'Folder',
-      name: 'My Folder',
-      properties: 'dc:title=My Folder \ndc:description=A Simple Folder'
-    })
-    .input('/default-domain')
-    .execute()
-    .then(function(doc) {
-        console.log(doc);
-    })
-    .catch(function(error) {
-      throw error;
-    });
-  },
-
-  getDocuments() {
-    _nuxeo.operation('Document.GetChildren')
-      .params({
-        name: 'default-domain'
-      })
-      // .input('/default-domain')
-      .execute()
-      .then(function(res) {
-        console.log(res);
-        DocumentStore.populateFolders(res);
-      })
-      .catch(function(error) {
-        throw new Error(error);
-      });
-  },
-
-  getNuxeo() {
-    return _nuxeo;
-  }
 
 };
 

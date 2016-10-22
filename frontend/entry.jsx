@@ -15,9 +15,6 @@ let redirectConditions = function (nextState, replace) {
   }
 };
 
-
-
-
 const AppRouter = (
     <Router history={hashHistory}>
       <Route path="/" component={LogIn} />

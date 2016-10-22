@@ -22,7 +22,7 @@ class MainView extends React.Component {
 
   componentDidMount() {
     DocumentStore.addListener(this.storeListener.bind(this));
-    NuxeoUtils.getDocuments();
+    NuxeoUtils.fetchRepo();
   }
 
   _setWorkingFile(file) {

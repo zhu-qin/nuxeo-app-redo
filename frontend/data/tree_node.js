@@ -2,6 +2,7 @@ class TreeNode {
   constructor(item){
     this.item = item;
     this.id = item.id;
+    this.uid = item.uid;
     this.parent = undefined;
     this.children = {};
   }
