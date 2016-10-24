@@ -17,14 +17,21 @@ class FileView extends React.Component {
     NuxeoUtils.deleteDocument(node);
   }
 
+  _setWorkingFile(node, e){
+    e.preventDefault();
+    this.props.mainView._setWorkingFile(node);
+  }
+
   render() {
     let file = this.props.mainView.state.workingFile;
     let childNodes = this.props.mainView.state.workingFile.children;
     let list = Object.keys(childNodes).map((id) => {
       return (
         <li key={id} className="file-view-list-item">
-          <button onClick={this._deleteFile.bind(null, childNodes[id])}>Delete</button>
-          {childNodes[id].item.title}
+          <button onClick={this._deleteFile.bind(null, childNodes[id])} className="submit-button delete-button">Delete</button>
+          <div onClick={this._setWorkingFile.bind(this, childNodes[id])}>
+            {childNodes[id].item.title}
+          </div>
         </li>
       );
     });

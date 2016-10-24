@@ -53875,6 +53875,12 @@
 	      _nuxeo_utils2.default.deleteDocument(node);
 	    }
 	  }, {
+	    key: '_setWorkingFile',
+	    value: function _setWorkingFile(node, e) {
+	      e.preventDefault();
+	      this.props.mainView._setWorkingFile(node);
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var _this2 = this;
@@ -53887,10 +53893,14 @@
 	          { key: id, className: 'file-view-list-item' },
 	          _react2.default.createElement(
 	            'button',
-	            { onClick: _this2._deleteFile.bind(null, childNodes[id]) },
+	            { onClick: _this2._deleteFile.bind(null, childNodes[id]), className: 'submit-button delete-button' },
 	            'Delete'
 	          ),
-	          childNodes[id].item.title
+	          _react2.default.createElement(
+	            'div',
+	            { onClick: _this2._setWorkingFile.bind(_this2, childNodes[id]) },
+	            childNodes[id].item.title
+	          )
 	        );
 	      });
 	      var createDocs = void 0;
@@ -54084,9 +54094,11 @@
 	          _react2.default.createElement('input', { type: 'text', onChange: this._handleChange("title"), value: this.state.title }),
 	          'Description:',
 	          _react2.default.createElement('input', { type: 'text', onChange: this._handleChange("description"), value: this.state.description }),
+	          _react2.default.createElement('br', null),
 	          'File:',
-	          _react2.default.createElement('input', { type: 'file', onChange: this._previewFile.bind(this) }),
-	          _react2.default.createElement('input', { type: 'submit', value: 'Create Document' }),
+	          _react2.default.createElement('input', { className: 'submit-button submit-button-upload', type: 'file', onChange: this._previewFile.bind(this) }),
+	          _react2.default.createElement('br', null),
+	          _react2.default.createElement('input', { className: 'submit-button', type: 'submit', value: 'Create Document' }),
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'upload-preview' },
@@ -54184,7 +54196,8 @@
 	          _react2.default.createElement('input', { type: 'text', onChange: this._handleChange("title"), value: this.state.title }),
 	          'Description:',
 	          _react2.default.createElement('input', { type: 'text', onChange: this._handleChange("description"), value: this.state.description }),
-	          _react2.default.createElement('input', { type: 'submit', value: 'Create Folder' })
+	          _react2.default.createElement('br', null),
+	          _react2.default.createElement('input', { className: 'submit-button', type: 'submit', value: 'Create Folder' })
 	        )
 	      );
 	    }
@@ -54252,7 +54265,9 @@
 	        this.setState({ showSubFiles: false });
 	      } else {
 	        this.setState({ showSubFiles: true });
-	        this._getChildren();
+	        if (Object.keys(this.state.currentFile.children).length === 0) {
+	          this._getChildren();
+	        }
 	        this.props.mainView._setWorkingFile(this.state.currentFile);
 	      }
 	    }

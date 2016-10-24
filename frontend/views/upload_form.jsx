@@ -62,9 +62,11 @@ _handleSubmit(e) {
           <input type="text" onChange={this._handleChange("title")} value={this.state.title} />
           Description:
           <input type="text" onChange={this._handleChange("description")} value={this.state.description} />
+          <br></br>
           File:
-          <input type="file" onChange={this._previewFile.bind(this)}/>
-          <input type="submit" value="Create Document" />
+          <input className="submit-button submit-button-upload" type="file" onChange={this._previewFile.bind(this)}/>
+          <br></br>
+          <input className="submit-button" type="submit" value="Create Document" />
           <div className="upload-preview">{embedded}</div>
         </form>
       </div>

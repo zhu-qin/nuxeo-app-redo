@@ -34,7 +34,8 @@ class CreateFolder extends React.Component {
           <input type="text" onChange={this._handleChange("title")} value={this.state.title} />
           Description:
           <input type="text" onChange={this._handleChange("description")} value={this.state.description} />
-          <input type="submit" value="Create Folder" />
+          <br></br>
+          <input className="submit-button" type="submit" value="Create Folder" />
         </form>
       </div>
     );

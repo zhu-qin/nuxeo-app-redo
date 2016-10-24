@@ -23,7 +23,9 @@ class FileTree extends React.Component {
       this.setState({showSubFiles: false});
     } else {
       this.setState({showSubFiles: true});
-      this._getChildren();
+      if (Object.keys(this.state.currentFile.children).length === 0){
+        this._getChildren();
+      }
       this.props.mainView._setWorkingFile(this.state.currentFile);
     }
   }
