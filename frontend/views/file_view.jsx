@@ -5,11 +5,20 @@ import CreateFolder from './create_folder.jsx';
 import UploadForm from './upload_form.jsx';
 
 import NuxeoUtils from '../utils/nuxeo_utils';
+import DocumentStore from '../data/document_store';
 
 
 class FileView extends React.Component {
   constructor(props) {
     super(props);
+  }
+
+  componentDidMount(){
+    DocumentStore.addListener(this._storeListener.bind(this));
+  }
+
+  _storeListener(){
+    this.forceUpdate();
   }
 
   _deleteFile(node, e){
@@ -20,6 +29,7 @@ class FileView extends React.Component {
   _setWorkingFile(node, e){
     e.preventDefault();
     this.props.mainView._setWorkingFile(node);
+    NuxeoUtils.fetchChildren(node);
   }
 
   render() {

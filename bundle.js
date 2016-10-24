@@ -53851,6 +53851,10 @@
 
 	var _nuxeo_utils2 = _interopRequireDefault(_nuxeo_utils);
 
+	var _document_store = __webpack_require__(218);
+
+	var _document_store2 = _interopRequireDefault(_document_store);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -53869,6 +53873,16 @@
 	  }
 
 	  _createClass(FileView, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      _document_store2.default.addListener(this._storeListener.bind(this));
+	    }
+	  }, {
+	    key: '_storeListener',
+	    value: function _storeListener() {
+	      this.forceUpdate();
+	    }
+	  }, {
 	    key: '_deleteFile',
 	    value: function _deleteFile(node, e) {
 	      e.preventDefault();
@@ -53879,6 +53893,7 @@
 	    value: function _setWorkingFile(node, e) {
 	      e.preventDefault();
 	      this.props.mainView._setWorkingFile(node);
+	      _nuxeo_utils2.default.fetchChildren(node);
 	    }
 	  }, {
 	    key: 'render',
