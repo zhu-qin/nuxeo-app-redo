@@ -12,11 +12,11 @@ class TreeNode {
       this.parent.removeChild(this);
     }
     this.parent = node;
-    node.children[this.id] = this;
+    node.children[this.uid] = this;
   }
 
   removeChild(node) {
-    delete this.children[node.id];
+    delete this.children[node.uid];
   }
 
   addChild(node) {

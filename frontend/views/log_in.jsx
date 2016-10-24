@@ -31,18 +31,21 @@ class LogIn extends React.Component {
 
   render() {
     return (
-      <div className="login-wrapper">
-        <form className="login-form" onSubmit={this._submitForm.bind(this)}>
-          <div className="login-input">
-            Username:
-            <input type="text" value={this.state.username} onChange={this._handleChange("username")}/>
-          </div>
-          <div>
-            Password:
-            <input type="password" value={this.state.password} onChange={this._handleChange("password")}/>
-          </div>
-          <input type="submit" value="Sign In" />
-        </form>
+      <div className="login-background">
+        <div className="login-buffer-box"></div>
+        <div className="login-wrapper">
+          <form className="login-form" onSubmit={this._submitForm.bind(this)}>
+            <div>
+              Username:
+              <input type="text" value={this.state.username} onChange={this._handleChange("username")}/>
+            </div>
+            <div>
+              Password:
+              <input type="password" value={this.state.password} onChange={this._handleChange("password")}/>
+            </div>
+            <input type="submit" value="Sign In" className="login-button"/>
+          </form>
+        </div>
       </div>
     );
   }

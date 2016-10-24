@@ -24953,23 +24953,28 @@
 	    value: function render() {
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'login-wrapper' },
+	        { className: 'login-background' },
+	        _react2.default.createElement('div', { className: 'login-buffer-box' }),
 	        _react2.default.createElement(
-	          'form',
-	          { className: 'login-form', onSubmit: this._submitForm.bind(this) },
+	          'div',
+	          { className: 'login-wrapper' },
 	          _react2.default.createElement(
-	            'div',
-	            { className: 'login-input' },
-	            'Username:',
-	            _react2.default.createElement('input', { type: 'text', value: this.state.username, onChange: this._handleChange("username") })
-	          ),
-	          _react2.default.createElement(
-	            'div',
-	            null,
-	            'Password:',
-	            _react2.default.createElement('input', { type: 'password', value: this.state.password, onChange: this._handleChange("password") })
-	          ),
-	          _react2.default.createElement('input', { type: 'submit', value: 'Sign In' })
+	            'form',
+	            { className: 'login-form', onSubmit: this._submitForm.bind(this) },
+	            _react2.default.createElement(
+	              'div',
+	              null,
+	              'Username:',
+	              _react2.default.createElement('input', { type: 'text', value: this.state.username, onChange: this._handleChange("username") })
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              null,
+	              'Password:',
+	              _react2.default.createElement('input', { type: 'password', value: this.state.password, onChange: this._handleChange("password") })
+	            ),
+	            _react2.default.createElement('input', { type: 'submit', value: 'Sign In', className: 'login-button' })
+	          )
 	        )
 	      );
 	    }
@@ -25001,12 +25006,6 @@
 	var NuxeoUtils = {
 	  signIn: function signIn(logIn, directToDashboard) {
 	    var nuxeo = new Nuxeo({
-	      // baseURL:  `http://demo.nuxeo.com/nuxeo`,
-	      // auth: {
-	      //   method: 'basic',
-	      //   username: `Administrator`,
-	      //   password: `Administrator`
-	      // },
 	      baseURL: "http://ec2-54-84-245-21.compute-1.amazonaws.com:8080/nuxeo",
 	      auth: {
 	        method: 'basic',
@@ -25025,53 +25024,62 @@
 	  },
 	  fetchRepo: function fetchRepo() {
 	    _nuxeo.repository().fetch('/default-domain/UserWorkspaces/' + _user.id).then(function (doc) {
-	      _document_store2.default.setRoot(doc);
+	      var root = _document_store2.default.setRoot(doc);
+	      NuxeoUtils.fetchChildren(root);
 	    }).catch(function (error) {
 	      throw error;
 	    });
 	  },
-	  fetchChildren: function fetchChildren() {
-	    _nuxeo.repository().schemas(['*']) // specify the schemas you want to retrieve (could be ['*'])
-	    .fetch('/default-domain/UserWorkspaces/qzhu/@children') // use the adapter to get the children
-	    .then(function (docs) {
-	      docs.entries.forEach(function (doc) {
-	        console.log(doc.uid + ':' + doc.path + ' - ' + doc.title + ' (' + doc.type + ')');
-	        console.log(doc.get('dc:created'));
-	        console.log(doc.get('dc:contributors'));
-	        //console.log(doc.properties);
+	  fetchChildren: function fetchChildren(parentNode) {
+	    var path = parentNode.item.path.split(".")[0];
+	    _nuxeo.repository().schemas(['*']).fetch('/' + path + '/@children').then(function (docs) {
+	      docs.entries.forEach(function (entry) {
+	        _document_store2.default.addChild(parentNode, entry);
 	      });
 	    }).catch(function (error) {
-	      console.log(error);
 	      throw error;
 	    });
 	  },
-	  createDocument: function createDocument(doc) {
-	    if (!doc) {
-	      doc = {};
+	  createDocument: function createDocument(parentNode, doc) {
+	    var content = void 0;
+	    if (doc.type != 'Workspace') {
+	      doc.type = 'Picture';
+	      content = {
+	        "name": '' + doc.title,
+	        "mime-type": '' + doc.file["type"],
+	        "encoding": null,
+	        "length": '' + doc.file["size"],
+	        "digestAlgorithm": "MD5",
+	        "data": '' + doc.fileUrl.split(',')[1]
+	      };
 	    }
-	    doc.name = "hello";
 
-	    var defaultDoc = {
-	      "entity-type": "directory",
-	      "name": "Hello",
-	      "type": "Collection",
+	    var finalDoc = {
+	      "entity-type": "document",
+	      "name": '' + doc.title,
+	      "type": '' + doc.type,
 	      "properties": {
-	        "dc:title": "Hello",
-	        "dc:description": "Created via the REST API"
+	        "dc:title": '' + doc.title,
+	        "dc:description": '' + doc.description,
+	        "file:content": content
 	      }
 	    };
-
-	    _nuxeo.repository().create("/default-domain/UserWorkspaces/qzhu", defaultDoc).then(function (doc) {
-	      console.log(doc);
+	    var path = parentNode.item.uid;
+	    _nuxeo.repository().create('' + path, finalDoc).then(function (doc) {
+	      _document_store2.default.addChild(parentNode, doc);
+	    }).catch(function (error) {
+	      throw error;
+	    });
+	  },
+	  deleteDocument: function deleteDocument(node) {
+	    var uid = node.item.uid;
+	    _nuxeo.repository().delete('' + uid).then(function (doc) {
+	      _document_store2.default.deleteChild(node.parent, node);
 	    }).catch(function (error) {
 	      throw error;
 	    });
 	  }
 	};
-
-	Object.keys(NuxeoUtils).forEach(function (fn) {
-	  window[fn] = NuxeoUtils[fn];
-	});
 
 	module.exports = NuxeoUtils;
 
@@ -25092,9 +25100,21 @@
 	var _user = void 0;
 
 	var DocumentStore = {
+	  getRoot: function getRoot() {
+	    return _root;
+	  },
 	  setRoot: function setRoot(mainRepo) {
 	    _root = new _tree_node2.default(mainRepo);
-	    console.log(_root);
+	    DocumentStore.invokeListeners();
+	    return _root;
+	  },
+	  addChild: function addChild(parentNode, childEl) {
+	    parentNode.addChild(new _tree_node2.default(childEl));
+	    DocumentStore.invokeListeners();
+	  },
+	  deleteChild: function deleteChild(parentNode, childNode) {
+	    parentNode.removeChild(childNode);
+	    DocumentStore.invokeListeners();
 	  },
 	  setUser: function setUser(user) {
 	    _user = user;
@@ -25109,13 +25129,6 @@
 	    _listeners.forEach(function (listener) {
 	      listener();
 	    });
-	  },
-	  populateFolders: function populateFolders(folders) {
-	    _folders = folders;
-	    DocumentStore.invokeListeners();
-	  },
-	  all: function all() {
-	    return Object.assign({}, _folders);
 	  }
 	};
 
@@ -25149,12 +25162,12 @@
 	        this.parent.removeChild(this);
 	      }
 	      this.parent = node;
-	      node.children[this.id] = this;
+	      node.children[this.uid] = this;
 	    }
 	  }, {
 	    key: "removeChild",
 	    value: function removeChild(node) {
-	      delete this.children[node.id];
+	      delete this.children[node.uid];
 	    }
 	  }, {
 	    key: "addChild",
@@ -37604,7 +37617,7 @@
 	      target[i + targetStart] = this[i + start]
 	    }
 	  } else {
-	    target._set(this.subarray(start, start + len), targetStart)
+	    target.set(this.subarray(start, start + len), targetStart)
 	  }
 
 	  return len
@@ -53716,9 +53729,9 @@
 
 	var _file_view2 = _interopRequireDefault(_file_view);
 
-	var _folder = __webpack_require__(351);
+	var _file_tree = __webpack_require__(356);
 
-	var _folder2 = _interopRequireDefault(_folder);
+	var _file_tree2 = _interopRequireDefault(_file_tree);
 
 	var _dummy_data = __webpack_require__(352);
 
@@ -53749,7 +53762,7 @@
 
 	    _this.state = {
 	      user: _document_store2.default.getUser(),
-	      root: _dummy_data2.default,
+	      root: undefined,
 	      workingFile: undefined
 	    };
 	    return _this;
@@ -53767,18 +53780,26 @@
 	      this.setState({ workingFile: file });
 	    }
 	  }, {
-	    key: '_addFile',
-	    value: function _addFile() {
-	      this.setState({ createFile: true });
-	    }
-	  }, {
 	    key: 'storeListener',
 	    value: function storeListener() {
-	      this.setState({ documents: _document_store2.default.all() });
+	      this.setState({ root: _document_store2.default.getRoot() });
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
+	      var folder = void 0;
+	      var workingFile = void 0;
+	      if (this.state.root) {
+	        folder = _react2.default.createElement(_file_tree2.default, {
+	          child: this.state.root,
+	          mainView: this
+	        });
+	      }
+
+	      if (this.state.workingFile) {
+	        workingFile = _react2.default.createElement(_file_view2.default, { mainView: this });
+	      }
+
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'main-wrapper' },
@@ -53790,12 +53811,9 @@
 	            { className: 'side-panel-profile' },
 	            this.state.user.id
 	          ),
-	          _react2.default.createElement(_folder2.default, {
-	            child: this.state.root,
-	            mainView: this
-	          })
+	          folder
 	        ),
-	        _react2.default.createElement(_file_view2.default, { workingFile: this.state.workingFile })
+	        workingFile
 	      );
 	    }
 	  }]);
@@ -53821,6 +53839,18 @@
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
+	var _create_folder = __webpack_require__(355);
+
+	var _create_folder2 = _interopRequireDefault(_create_folder);
+
+	var _upload_form = __webpack_require__(354);
+
+	var _upload_form2 = _interopRequireDefault(_upload_form);
+
+	var _nuxeo_utils = __webpack_require__(217);
+
+	var _nuxeo_utils2 = _interopRequireDefault(_nuxeo_utils);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -53839,18 +53869,60 @@
 	  }
 
 	  _createClass(FileView, [{
+	    key: '_deleteFile',
+	    value: function _deleteFile(node, e) {
+	      e.preventDefault();
+	      _nuxeo_utils2.default.deleteDocument(node);
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var file = this.props.workingFile;
-	      var entry = void 0;
-	      if (file) {
-	        entry = file.item.title;
+	      var _this2 = this;
+
+	      var file = this.props.mainView.state.workingFile;
+	      var childNodes = this.props.mainView.state.workingFile.children;
+	      var list = Object.keys(childNodes).map(function (id) {
+	        return _react2.default.createElement(
+	          'li',
+	          { key: id, className: 'file-view-list-item' },
+	          _react2.default.createElement(
+	            'button',
+	            { onClick: _this2._deleteFile.bind(null, childNodes[id]) },
+	            'Delete'
+	          ),
+	          childNodes[id].item.title
+	        );
+	      });
+	      var createDocs = void 0;
+	      if (file.item.type === "Workspace") {
+	        createDocs = _react2.default.createElement(
+	          'div',
+	          null,
+	          _react2.default.createElement(_create_folder2.default, { mainView: this.props.mainView }),
+	          _react2.default.createElement(_upload_form2.default, { mainView: this.props.mainView }),
+	          _react2.default.createElement(
+	            'h3',
+	            null,
+	            'Sub-files & Folders'
+	          ),
+	          _react2.default.createElement(
+	            'ul',
+	            null,
+	            list
+	          )
+	        );
 	      }
 
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'file-view-wrapper' },
-	        entry
+	        _react2.default.createElement(
+	          'h2',
+	          null,
+	          'Title: ',
+	          file.item.title
+	        ),
+	        createDocs
 	      );
 	    }
 	  }]);
@@ -53861,115 +53933,7 @@
 	module.exports = FileView;
 
 /***/ },
-/* 351 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactDom = __webpack_require__(158);
-
-	var _reactDom2 = _interopRequireDefault(_reactDom);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var Folder = function (_React$Component) {
-	  _inherits(Folder, _React$Component);
-
-	  function Folder(props) {
-	    _classCallCheck(this, Folder);
-
-	    var _this = _possibleConstructorReturn(this, (Folder.__proto__ || Object.getPrototypeOf(Folder)).call(this, props));
-
-	    _this.state = {
-	      currentFile: _this.props.child,
-	      showSubFiles: false
-	    };
-	    return _this;
-	  }
-
-	  _createClass(Folder, [{
-	    key: '_showChildren',
-	    value: function _showChildren(e) {
-	      e.stopPropagation();
-	      if (this.state.showSubFiles) {
-	        this.setState({ showSubFiles: false });
-	      } else {
-	        this.setState({ showSubFiles: true });
-	      }
-	      if (this.state.currentFile.item.type === 'file') {
-	        this.props.mainView._setWorkingFile(this.state.currentFile);
-	      }
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      var _this2 = this;
-
-	      var file = this.state.currentFile;
-	      var subFiles = void 0;
-	      var showChildren = void 0;
-	      if (this.state.currentFile === this.props.mainView.state.workingFile) {
-	        showChildren = 'show-working';
-	      }
-	      if (this.state.showSubFiles && file) {
-	        var keys = Object.keys(file.children);
-	        if (this.state.currentFile.item.type === 'folder') {
-	          showChildren = 'show-children';
-	        }
-	        subFiles = keys.map(function (childId) {
-	          return _react2.default.createElement(
-	            'li',
-	            { key: childId },
-	            _react2.default.createElement(Folder, {
-	              child: file.children[childId],
-	              mainView: _this2.props.mainView
-	            })
-	          );
-	        });
-	      }
-
-	      return _react2.default.createElement(
-	        'div',
-	        { className: 'folder-view',
-	          onClick: this._showChildren.bind(this)
-	        },
-	        _react2.default.createElement(
-	          'div',
-	          { className: 'folder-title-wrapper' },
-	          _react2.default.createElement('div', { className: this.state.currentFile.item.type + ' ' + showChildren }),
-	          _react2.default.createElement(
-	            'div',
-	            null,
-	            file.item.title
-	          )
-	        ),
-	        _react2.default.createElement(
-	          'ul',
-	          null,
-	          subFiles
-	        )
-	      );
-	    }
-	  }]);
-
-	  return Folder;
-	}(_react2.default.Component);
-
-	module.exports = Folder;
-
-/***/ },
+/* 351 */,
 /* 352 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -54005,6 +53969,354 @@
 	});
 
 	module.exports = Root;
+
+/***/ },
+/* 353 */,
+/* 354 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactDom = __webpack_require__(158);
+
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+
+	var _nuxeo_utils = __webpack_require__(217);
+
+	var _nuxeo_utils2 = _interopRequireDefault(_nuxeo_utils);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	// store
+
+
+	var UploadForm = function (_React$Component) {
+	  _inherits(UploadForm, _React$Component);
+
+	  function UploadForm(props) {
+	    _classCallCheck(this, UploadForm);
+
+	    var _this = _possibleConstructorReturn(this, (UploadForm.__proto__ || Object.getPrototypeOf(UploadForm)).call(this, props));
+
+	    _this.state = {
+	      title: "",
+	      description: "",
+	      type: "File",
+	      fileUrl: "",
+	      file: undefined
+	    };
+	    return _this;
+	  }
+
+	  _createClass(UploadForm, [{
+	    key: '_handleChange',
+	    value: function _handleChange(field) {
+	      var _this2 = this;
+
+	      return function (e) {
+	        _this2.setState(_defineProperty({}, field, e.target.value));
+	      };
+	    }
+	  }, {
+	    key: '_previewFile',
+	    value: function _previewFile(e) {
+	      var _this3 = this;
+
+	      var file = e.currentTarget.files[0];
+	      var fileReader = new FileReader();
+
+	      fileReader.onloadend = function () {
+	        _this3.setState({ file: file, fileUrl: fileReader.result });
+	      };
+	      if (file) {
+	        fileReader.readAsDataURL(file);
+	      } else {
+	        this.setState({ fileUrl: "", file: undefined });
+	      }
+	    }
+	  }, {
+	    key: '_handleSubmit',
+	    value: function _handleSubmit(e) {
+	      e.preventDefault();
+	      var formData = new FormData();
+	      formData.append("doc[title]", this.state.title);
+	      formData.append("doc[nuxeo-entity]", this.state.file);
+	      formData.append("doc[description]", this.state.description);
+	      _nuxeo_utils2.default.createDocument(this.props.mainView.state.workingFile, this.state);
+	      this.setState({ title: "", description: "", file: "" });
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var button = _react2.default.createElement('input', { className: 'button-form', type: 'submit', value: 'Upload' });
+	      var submit = this._handleSubmit.bind(this);
+
+	      var embedded = void 0;
+	      if (this.state.file) {
+	        embedded = _react2.default.createElement('embed', { src: this.state.fileUrl, type: this.state.file.type, className: 'upload-preview-embed' });
+	      }
+
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(
+	          'h3',
+	          null,
+	          'Create Document'
+	        ),
+	        _react2.default.createElement(
+	          'form',
+	          { onSubmit: submit, className: 'create-form' },
+	          'Title:',
+	          _react2.default.createElement('input', { type: 'text', onChange: this._handleChange("title"), value: this.state.title }),
+	          'Description:',
+	          _react2.default.createElement('input', { type: 'text', onChange: this._handleChange("description"), value: this.state.description }),
+	          'File:',
+	          _react2.default.createElement('input', { type: 'file', onChange: this._previewFile.bind(this) }),
+	          _react2.default.createElement('input', { type: 'submit', value: 'Create Document' }),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'upload-preview' },
+	            embedded
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return UploadForm;
+	}(_react2.default.Component);
+
+	module.exports = UploadForm;
+
+/***/ },
+/* 355 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactDom = __webpack_require__(158);
+
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+
+	var _nuxeo_utils = __webpack_require__(217);
+
+	var _nuxeo_utils2 = _interopRequireDefault(_nuxeo_utils);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	// store
+
+
+	var CreateFolder = function (_React$Component) {
+	  _inherits(CreateFolder, _React$Component);
+
+	  function CreateFolder(props) {
+	    _classCallCheck(this, CreateFolder);
+
+	    var _this = _possibleConstructorReturn(this, (CreateFolder.__proto__ || Object.getPrototypeOf(CreateFolder)).call(this, props));
+
+	    _this.state = {
+	      title: "",
+	      description: "",
+	      type: "Workspace"
+	    };
+	    return _this;
+	  }
+
+	  _createClass(CreateFolder, [{
+	    key: '_handleChange',
+	    value: function _handleChange(field) {
+	      var _this2 = this;
+
+	      return function (e) {
+	        _this2.setState(_defineProperty({}, field, e.target.value));
+	      };
+	    }
+	  }, {
+	    key: '_handleSubmit',
+	    value: function _handleSubmit(e) {
+	      e.preventDefault();
+	      _nuxeo_utils2.default.createDocument(this.props.mainView.state.workingFile, this.state);
+	      this.setState({ title: "", description: "", type: "Workspace" });
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(
+	          'h3',
+	          null,
+	          'Create Folder'
+	        ),
+	        _react2.default.createElement(
+	          'form',
+	          { onSubmit: this._handleSubmit.bind(this), className: 'create-form' },
+	          'Title:',
+	          _react2.default.createElement('input', { type: 'text', onChange: this._handleChange("title"), value: this.state.title }),
+	          'Description:',
+	          _react2.default.createElement('input', { type: 'text', onChange: this._handleChange("description"), value: this.state.description }),
+	          _react2.default.createElement('input', { type: 'submit', value: 'Create Folder' })
+	        )
+	      );
+	    }
+	  }]);
+
+	  return CreateFolder;
+	}(_react2.default.Component);
+
+	module.exports = CreateFolder;
+
+/***/ },
+/* 356 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactDom = __webpack_require__(158);
+
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+
+	var _nuxeo_utils = __webpack_require__(217);
+
+	var _nuxeo_utils2 = _interopRequireDefault(_nuxeo_utils);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var FileTree = function (_React$Component) {
+	  _inherits(FileTree, _React$Component);
+
+	  function FileTree(props) {
+	    _classCallCheck(this, FileTree);
+
+	    var _this = _possibleConstructorReturn(this, (FileTree.__proto__ || Object.getPrototypeOf(FileTree)).call(this, props));
+
+	    _this.state = {
+	      currentFile: _this.props.child,
+	      showSubFiles: false,
+	      folder: ["Collection", "Workspace", "Favorites"]
+	    };
+	    return _this;
+	  }
+
+	  _createClass(FileTree, [{
+	    key: '_getChildren',
+	    value: function _getChildren() {
+	      _nuxeo_utils2.default.fetchChildren(this.state.currentFile);
+	    }
+	  }, {
+	    key: '_showChildren',
+	    value: function _showChildren(e) {
+	      e.stopPropagation();
+	      if (this.state.showSubFiles && this.state.currentFile === this.props.mainView.state.workingFile) {
+	        this.setState({ showSubFiles: false });
+	      } else {
+	        this.setState({ showSubFiles: true });
+	        this._getChildren();
+	        this.props.mainView._setWorkingFile(this.state.currentFile);
+	      }
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _this2 = this;
+
+	      var file = this.state.currentFile;
+	      var subFiles = void 0;
+	      var showChildren = void 0;
+	      if (this.state.currentFile === this.props.mainView.state.workingFile) {
+	        showChildren = 'show-working';
+	      }
+	      if (this.state.showSubFiles && file) {
+	        var keys = Object.keys(file.children);
+	        if (this.state.folder.includes(this.state.currentFile.item.type)) {
+	          showChildren = 'show-children';
+	        }
+	        subFiles = keys.map(function (childId) {
+	          return _react2.default.createElement(
+	            'li',
+	            { key: childId },
+	            _react2.default.createElement(FileTree, {
+	              child: file.children[childId],
+	              mainView: _this2.props.mainView
+	            })
+	          );
+	        });
+	      }
+
+	      var fileType = void 0;
+	      if (this.state.currentFile.item.type != "Workspace") {
+	        fileType = "File";
+	      } else {
+	        fileType = "Workspace";
+	      }
+
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'folder-view', onClick: this._showChildren.bind(this) },
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'folder-title-wrapper' },
+	          _react2.default.createElement('div', { className: fileType + ' ' + showChildren }),
+	          _react2.default.createElement(
+	            'div',
+	            null,
+	            file.item.title
+	          )
+	        ),
+	        _react2.default.createElement(
+	          'ul',
+	          null,
+	          subFiles
+	        )
+	      );
+	    }
+	  }]);
+
+	  return FileTree;
+	}(_react2.default.Component);
+
+	module.exports = FileTree;
 
 /***/ }
 /******/ ]);

@@ -1,22 +1,51 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+import CreateFolder from './create_folder.jsx';
+import UploadForm from './upload_form.jsx';
+
+import NuxeoUtils from '../utils/nuxeo_utils';
+
 
 class FileView extends React.Component {
   constructor(props) {
     super(props);
   }
 
+  _deleteFile(node, e){
+    e.preventDefault();
+    NuxeoUtils.deleteDocument(node);
+  }
+
   render() {
-    let file = this.props.workingFile;
-    let entry;
-    if (file) {
-      entry = file.item.title;
+    let file = this.props.mainView.state.workingFile;
+    let childNodes = this.props.mainView.state.workingFile.children;
+    let list = Object.keys(childNodes).map((id) => {
+      return (
+        <li key={id} className="file-view-list-item">
+          <button onClick={this._deleteFile.bind(null, childNodes[id])}>Delete</button>
+          {childNodes[id].item.title}
+        </li>
+      );
+    });
+    let createDocs;
+    if (file.item.type === "Workspace") {
+      createDocs = (
+        <div>
+          <CreateFolder mainView={this.props.mainView} />
+          <UploadForm mainView={this.props.mainView} />
+          <h3>Sub-files & Folders</h3>
+          <ul>
+            {list}
+          </ul>
+        </div>
+      );
     }
 
     return (
       <div className="file-view-wrapper">
-        {entry}
+        <h2>Title: {file.item.title}</h2>
+        {createDocs}
       </div>
     );
   }

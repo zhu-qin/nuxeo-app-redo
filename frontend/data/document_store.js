@@ -6,10 +6,24 @@ let _user;
 
 
 const DocumentStore = {
+  getRoot(){
+    return _root;
+  },
 
   setRoot(mainRepo) {
     _root = new TreeNode(mainRepo);
-    console.log(_root);
+    DocumentStore.invokeListeners();
+    return _root;
+  },
+
+  addChild(parentNode, childEl){
+    parentNode.addChild(new TreeNode(childEl));
+    DocumentStore.invokeListeners();
+  },
+
+  deleteChild(parentNode, childNode) {
+    parentNode.removeChild(childNode);
+    DocumentStore.invokeListeners();
   },
 
   setUser(user) {
@@ -29,16 +43,6 @@ const DocumentStore = {
       listener();
     });
   },
-
-  populateFolders(folders) {
-    _folders = folders;
-    DocumentStore.invokeListeners();
-  },
-
-  all() {
-    return Object.assign({}, _folders);
-  }
-
 
 };
 

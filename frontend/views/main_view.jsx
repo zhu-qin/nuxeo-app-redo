@@ -7,15 +7,17 @@ import NuxeoUtils from '../utils/nuxeo_utils.js';
 
 // components
 import FileView from './file_view.jsx';
-import Folder from './folder.jsx';
+import FileTree from './file_tree.jsx';
 import Root from '../data/dummy_data.js';
+
+
 
 class MainView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       user: DocumentStore.getUser(),
-      root: Root,
+      root: undefined,
       workingFile: undefined,
     };
   }
@@ -26,30 +28,38 @@ class MainView extends React.Component {
   }
 
   _setWorkingFile(file) {
-    this.setState({workingFile: file});
-  }
-
-  _addFile() {
-    this.setState({createFile: true});
+    this.setState({ workingFile: file });
   }
 
   storeListener() {
-    this.setState({documents: DocumentStore.all()});
+    this.setState({root: DocumentStore.getRoot()});
   }
 
   render() {
+    let folder;
+    let workingFile;
+    if (this.state.root) {
+      folder = (
+        <FileTree
+        child={this.state.root}
+        mainView={this}
+        />
+      );
+    }
+
+    if (this.state.workingFile) {
+      workingFile = <FileView mainView={this}/>;
+    }
+
     return (
       <div className="main-wrapper">
         <div className="side-panel-wrapper">
           <div className="side-panel-profile">
             {this.state.user.id}
           </div>
-        <Folder
-          child={this.state.root}
-          mainView={this}
-          />
+          {folder}
         </div>
-        <FileView workingFile={this.state.workingFile}/>
+        {workingFile}
       </div>
     );
   }

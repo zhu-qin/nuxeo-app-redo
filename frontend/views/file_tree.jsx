@@ -1,24 +1,29 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+import NuxeoUtils from '../utils/nuxeo_utils';
 
-class Folder extends React.Component {
+class FileTree extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       currentFile: this.props.child,
-      showSubFiles: false
+      showSubFiles: false,
+      folder: ["Collection", "Workspace", "Favorites"]
     };
+  }
+
+  _getChildren(){
+    NuxeoUtils.fetchChildren(this.state.currentFile);
   }
 
   _showChildren(e) {
     e.stopPropagation();
-    if (this.state.showSubFiles) {
+    if (this.state.showSubFiles && this.state.currentFile === this.props.mainView.state.workingFile) {
       this.setState({showSubFiles: false});
     } else {
       this.setState({showSubFiles: true});
-    }
-    if (this.state.currentFile.item.type === 'file') {
+      this._getChildren();
       this.props.mainView._setWorkingFile(this.state.currentFile);
     }
   }
@@ -32,13 +37,13 @@ class Folder extends React.Component {
     }
     if (this.state.showSubFiles && file) {
       let keys = Object.keys(file.children);
-      if (this.state.currentFile.item.type === 'folder') {
+      if (this.state.folder.includes(this.state.currentFile.item.type)) {
         showChildren = 'show-children';
       }
       subFiles = keys.map((childId) => {
         return (
           <li key={childId}>
-            <Folder
+            <FileTree
               child={file.children[childId]}
               mainView={this.props.mainView}
               />
@@ -47,13 +52,17 @@ class Folder extends React.Component {
       });
     }
 
+    let fileType;
+    if (this.state.currentFile.item.type != "Workspace") {
+      fileType = "File";
+    } else {
+      fileType = "Workspace";
+    }
 
     return (
-      <div className={`folder-view`}
-         onClick={this._showChildren.bind(this)}
-         >
+      <div className={`folder-view`} onClick={this._showChildren.bind(this)}>
          <div className="folder-title-wrapper">
-           <div className={`${this.state.currentFile.item.type} ${showChildren}`}>
+           <div className={`${fileType} ${showChildren}`}>
            </div>
            <div>
              {file.item.title}
@@ -67,4 +76,4 @@ class Folder extends React.Component {
   }
 }
 
-module.exports = Folder;
+module.exports = FileTree;

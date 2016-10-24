@@ -8,15 +8,8 @@ let _nuxeo;
 let _user;
 
 const NuxeoUtils = {
-
   signIn(logIn, directToDashboard){
     let nuxeo = new Nuxeo({
-      // baseURL:  `http://demo.nuxeo.com/nuxeo`,
-      // auth: {
-      //   method: 'basic',
-      //   username: `Administrator`,
-      //   password: `Administrator`
-      // },
       baseURL: "http://ec2-54-84-245-21.compute-1.amazonaws.com:8080/nuxeo",
       auth: {
         method: 'basic',
@@ -38,64 +31,78 @@ const NuxeoUtils = {
 
   fetchRepo() {
     _nuxeo.repository()
-
      .fetch(`/default-domain/UserWorkspaces/${_user.id}`)
      .then(function(doc) {
-       DocumentStore.setRoot(doc);
+       let root = DocumentStore.setRoot(doc);
+       NuxeoUtils.fetchChildren(root);
      })
      .catch(function(error) {
        throw error;
      });
   },
 
-  fetchChildren(){
-    _nuxeo.repository().schemas(['*'])    // specify the schemas you want to retrieve (could be ['*'])
-    .fetch('/default-domain/UserWorkspaces/qzhu/@children') // use the adapter to get the children
-    .then((docs) => {
-       docs.entries.forEach((doc) => {
-          console.log( doc.uid + ':' + doc.path + ' - ' + doc.title + ' (' + doc.type + ')');
-          console.log(doc.get('dc:created'));
-          console.log(doc.get('dc:contributors'));
-          //console.log(doc.properties);
-       });
-     })
-   .catch(function(error) {
-    console.log(error);
-    throw error;
-  });
+  fetchChildren(parentNode){
+      let path = parentNode.item.path.split(".")[0];
+      _nuxeo.repository().schemas(['*'])
+      .fetch(`/${path}/@children`)
+      .then((docs) => {
+        docs.entries.forEach((entry) => {
+          DocumentStore.addChild(parentNode, entry);
+        });
+       })
+     .catch(function(error) {
+      throw error;
+    });
   },
 
-  createDocument(doc) {
-    if (!doc) {
-      doc = {};
+  createDocument(parentNode, doc) {
+    let content;
+    if (doc.type != 'Workspace') {
+      doc.type = 'Picture';
+      content = {
+        "name": `${doc.title}`,
+        "mime-type": `${doc.file["type"]}`,
+        "encoding": null,
+        "length": `${doc.file["size"]}`,
+        "digestAlgorithm": "MD5",
+        "data": `${doc.fileUrl.split(',')[1]}`
+      };
     }
-    doc.name = "hello";
 
-    let defaultDoc = {
-      "entity-type": "directory",
-      "name":"Hello",
-      "type": "Collection",
+    let finalDoc = {
+      "entity-type": "document",
+      "name":`${doc.title}`,
+      "type": `${doc.type}`,
       "properties": {
-          "dc:title": "Hello",
-          "dc:description": "Created via the REST API"
+          "dc:title": `${doc.title}`,
+          "dc:description": `${doc.description}`,
+          "file:content": content
       }
     };
-
+    let path = parentNode.item.uid;
     _nuxeo.repository()
-     .create("/default-domain/UserWorkspaces/qzhu", defaultDoc)
+     .create(`${path}`, finalDoc)
      .then(function(doc) {
-       console.log(doc);
+       DocumentStore.addChild(parentNode, doc);
      })
      .catch(function(error) {
        throw error;
      });
   },
 
+  deleteDocument(node) {
+    let uid = node.item.uid;
+    _nuxeo.repository()
+     .delete(`${uid}`)
+     .then(function(doc) {
+       DocumentStore.deleteChild(node.parent, node);
+     })
+     .catch(function(error) {
+       throw error;
+     });
+  }
 
 };
 
-Object.keys(NuxeoUtils).forEach((fn) => {
-  window[fn] = NuxeoUtils[fn];
-});
 
 module.exports = NuxeoUtils;
