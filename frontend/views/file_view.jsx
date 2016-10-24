@@ -26,6 +26,12 @@ class FileView extends React.Component {
     NuxeoUtils.deleteDocument(node);
   }
 
+  _deleteCurrentFile(node, e){
+    e.preventDefault();
+    this.props.mainView._setWorkingFile(node.parent);
+    NuxeoUtils.deleteDocument(node);
+  }
+
   _setWorkingFile(node, e){
     e.preventDefault();
     this.props.mainView._setWorkingFile(node);
@@ -61,6 +67,7 @@ class FileView extends React.Component {
 
     return (
       <div className="file-view-wrapper">
+        <button onClick={this._deleteCurrentFile.bind(this, file)} className="submit-button delete-button">Delete Current</button>
         <h2>Title: {file.item.title}</h2>
         {createDocs}
       </div>

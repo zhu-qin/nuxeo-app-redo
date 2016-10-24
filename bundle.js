@@ -53889,6 +53889,13 @@
 	      _nuxeo_utils2.default.deleteDocument(node);
 	    }
 	  }, {
+	    key: '_deleteCurrentFile',
+	    value: function _deleteCurrentFile(node, e) {
+	      e.preventDefault();
+	      this.props.mainView._setWorkingFile(node.parent);
+	      _nuxeo_utils2.default.deleteDocument(node);
+	    }
+	  }, {
 	    key: '_setWorkingFile',
 	    value: function _setWorkingFile(node, e) {
 	      e.preventDefault();
@@ -53941,6 +53948,11 @@
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'file-view-wrapper' },
+	        _react2.default.createElement(
+	          'button',
+	          { onClick: this._deleteCurrentFile.bind(this, file), className: 'submit-button delete-button' },
+	          'Delete Current'
+	        ),
 	        _react2.default.createElement(
 	          'h2',
 	          null,
