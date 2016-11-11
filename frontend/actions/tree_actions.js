@@ -63,15 +63,20 @@ const TreeActions = {
         DocumentStore.setWorkingNode(node);
     },
 
+    getWorkingNode(){
+        return DocumentStore.getWorkingNode();
+    },
+
     toggleShowChildren(node, callback) {
-        if (node.showSubFiles && this.state.currentFile === this.props.mainView.state.workingFile) {
+        if (node.showChildren && node === TreeActions.getWorkingNode()) {
+            node.showChildren = false;
             this.setState({showSubFiles: false});
         } else {
             this.setState({showSubFiles: true});
             if (Object.keys(this.state.currentFile.children).length === 0){
                 this._getChildren();
             }
-            this.props.mainView._setWorkingFile(this.state.currentFile);
+            TreeActions.setWorkingFile(node);
         }
     }
 

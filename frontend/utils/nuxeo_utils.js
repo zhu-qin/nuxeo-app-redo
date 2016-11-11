@@ -4,7 +4,6 @@ import {merge} from 'lodash';
 import DocumentStore from '../data/document_store';
 
 let _nuxeo;
-let _user;
 
 const NuxeoUtils = {
   signIn(logIn, directToDashboard){
@@ -20,25 +19,12 @@ const NuxeoUtils = {
     _nuxeo.login()
       .then(function(res) {
         DocumentStore.setUser(res);
-        _user = res;
         directToDashboard();
       })
       .catch(function(error) {
         throw error;
       });
   },
-
-  // deleteDocument(node) {
-  //   let uid = node.item.uid;
-  //   _nuxeo.repository()
-  //    .delete(`${uid}`)
-  //    .then(function(doc) {
-  //      DocumentStore.deleteChild(node.parent, node);
-  //    })
-  //    .catch(function(error) {
-  //      throw error;
-  //    });
-  // },
 
   attachFile(docToAttachTo, upload) {
     //   let content = new Blob([upload.fileUrl], {
@@ -127,17 +113,8 @@ const NuxeoUtils = {
               break;
           default:
               throw "Method does not exist";
-
       }
-
   }
-
 };
-
-
-
-
-
-
 
 module.exports = NuxeoUtils;

@@ -13,7 +13,11 @@ class FileTree extends React.Component {
   }
 
   _getChildren(){
-    TreeActions.fetchChildren(this.state.currentFile);
+    TreeActions.fetchChildren(this.props.node);
+  }
+
+  _setWorkingNode(){
+    TreeActions.setWorkingNode(this.props.node);
   }
 
   _showChildren(e) {
@@ -25,6 +29,8 @@ class FileTree extends React.Component {
       if (Object.keys(this.state.currentFile.children).length === 0){
         this._getChildren();
       }
+      this._setWorkingNode();
+      console.log(TreeActions.getWorkingNode());
       this.props.mainView._setWorkingFile(this.state.currentFile);
     }
   }
