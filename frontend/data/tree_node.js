@@ -1,10 +1,14 @@
 class TreeNode {
   constructor(item){
     this.item = item;
-    this.id = item.id;
     this.uid = item.uid;
     this.parent = undefined;
+    //adapter parameters
     this.children = {};
+    this.acl = undefined;
+    this.workflow = undefined;
+    this.audit = undefined;
+    this.task = undefined;
   }
 
   setParent(node) {

@@ -1,78 +1,37 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 
-import CreateFolder from './create_folder.jsx';
-import UploadForm from './upload_form.jsx';
+import AttachFile from './attach_file.jsx';
 
 import NuxeoUtils from '../utils/nuxeo_utils';
 import DocumentStore from '../data/document_store';
 
-
 class FileView extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
-  componentDidMount(){
-    DocumentStore.addListener(this._storeListener.bind(this));
-  }
-
-  _storeListener(){
-    this.forceUpdate();
-  }
-
-  _deleteFile(node, e){
-    e.preventDefault();
-    NuxeoUtils.deleteDocument(node);
-  }
-
-  _deleteCurrentFile(node, e){
-    e.preventDefault();
-    this.props.mainView._setWorkingFile(node.parent);
-    NuxeoUtils.deleteDocument(node);
-  }
-
-  _setWorkingFile(node, e){
-    e.preventDefault();
-    this.props.mainView._setWorkingFile(node);
-    NuxeoUtils.fetchChildren(node);
-  }
-
-  render() {
-    let file = this.props.mainView.state.workingFile;
-    let childNodes = this.props.mainView.state.workingFile.children;
-    let list = Object.keys(childNodes).map((id) => {
-      return (
-        <li key={id} className="file-view-list-item">
-          <button onClick={this._deleteFile.bind(null, childNodes[id])} className="submit-button delete-button">Delete</button>
-          <div onClick={this._setWorkingFile.bind(this, childNodes[id])}>
-            {childNodes[id].item.title}
-          </div>
-        </li>
-      );
-    });
-    let createDocs;
-    if (file.item.type === "Workspace") {
-      createDocs = (
-        <div>
-          <CreateFolder mainView={this.props.mainView} />
-          <UploadForm mainView={this.props.mainView} />
-          <h3>Sub-files & Folders</h3>
-          <ul>
-            {list}
-          </ul>
-        </div>
-      );
+    constructor(props) {
+        super(props);
     }
 
-    return (
-      <div className="file-view-wrapper">
-        <button onClick={this._deleteCurrentFile.bind(this, file)} className="submit-button delete-button">Delete Current</button>
-        <h2>Title: {file.item.title}</h2>
-        {createDocs}
-      </div>
-    );
-  }
+    render() {
+        let file = this.props.mainView.state.workingFile.item;
+        let content = file.properties["file:content"];
+        let embedded;
+        if (content) {
+            embedded = (
+                <div><h3>{content["name"]}</h3>
+                    <embed src={content["data"]} type={content["mime-type"]} className="upload-preview-embed" />
+                </div>
+            );
+        }
+
+        return (
+            <div className="file-view-wrapper">
+                <AttachFile mainView={this.props.mainView} />
+                <h3>Attachments</h3>
+                <ul>
+                    {embedded}
+                </ul>
+            </div>
+        );
+    }
 
 }
 

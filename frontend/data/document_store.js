@@ -3,6 +3,7 @@ import TreeNode from './tree_node.js';
 let _listeners = [];
 let _root;
 let _user;
+let _workingNode;
 
 
 const DocumentStore = {
@@ -25,7 +26,7 @@ const DocumentStore = {
     parentNode.removeChild(childNode);
     DocumentStore.invokeListeners();
   },
-
+  
   setUser(user) {
     _user = user;
   },
@@ -43,6 +44,15 @@ const DocumentStore = {
       listener();
     });
   },
+
+  setWorkingNode(node) {
+    _workingNode = node;
+    DocumentStore.invokeListeners();
+  },
+
+  getWorkingNode() {
+    return _workingNode;
+  }
 
 };
 

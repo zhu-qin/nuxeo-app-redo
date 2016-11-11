@@ -1,6 +1,5 @@
 const Nuxeo = require('nuxeo');
-const merge = require('merge');
-
+import {merge} from 'lodash';
 
 import DocumentStore from '../data/document_store';
 
@@ -10,7 +9,7 @@ let _user;
 const NuxeoUtils = {
   signIn(logIn, directToDashboard){
     let nuxeo = new Nuxeo({
-      baseURL: "http://ec2-54-84-245-21.compute-1.amazonaws.com:8080/nuxeo",
+      baseURL: "http://localhost:8080/nuxeo",
       auth: {
         method: 'basic',
         username: `${logIn.username}`,
@@ -29,80 +28,116 @@ const NuxeoUtils = {
       });
   },
 
-  fetchRepo() {
-    _nuxeo.repository()
-     .fetch(`/default-domain/UserWorkspaces/${_user.id}`)
-     .then(function(doc) {
-       let root = DocumentStore.setRoot(doc);
-       NuxeoUtils.fetchChildren(root);
-     })
-     .catch(function(error) {
-       throw error;
-     });
+  // deleteDocument(node) {
+  //   let uid = node.item.uid;
+  //   _nuxeo.repository()
+  //    .delete(`${uid}`)
+  //    .then(function(doc) {
+  //      DocumentStore.deleteChild(node.parent, node);
+  //    })
+  //    .catch(function(error) {
+  //      throw error;
+  //    });
+  // },
+
+  attachFile(docToAttachTo, upload) {
+    //   let content = new Blob([upload.fileUrl], {
+    //       type: upload.file.type
+    //   });
+    //
+    let blob = new Nuxeo.Blob({content: upload.file});
+    _nuxeo.batchUpload()
+      .upload(blob)
+      .then(function(res) {
+        let batchId = res.blob["upload-batch"];
+        let fileId = res.blob["upload-fileId"];
+        docToAttachTo.item.set(
+            { "file:content": {"upload-batch":`${batchId}`, "upload-fileId":`${fileId}` }}
+        );
+
+        return docToAttachTo.item.save();
+      })
+
+      .then(function(doc) {
+
+        docToAttachTo.item = doc;
+        DocumentStore.invokeListeners();
+      })
+      .catch(function(error) {
+        throw error;
+      });
   },
 
-  fetchChildren(parentNode){
-      let path = parentNode.item.path.split(".")[0];
-      _nuxeo.repository().schemas(['*'])
-      .fetch(`/${path}/@children`)
-      .then((docs) => {
-        docs.entries.forEach((entry) => {
-          DocumentStore.addChild(parentNode, entry);
-        });
-       })
-     .catch(function(error) {
-      throw error;
-    });
+
+  getUser(username) {
+      _nuxeo.users()
+          .fetch(username)
+          .then((res) => {
+             console.log(res);
+          });
   },
 
-  createDocument(parentNode, doc) {
-    let content;
-    if (doc.type != 'Workspace') {
-      doc.type = 'Picture';
-      content = {
-        "name": `${doc.title}`,
-        "mime-type": `${doc.file["type"]}`,
-        "encoding": null,
-        "length": `${doc.file["size"]}`,
-        "digestAlgorithm": "MD5",
-        "data": `${doc.fileUrl.split(',')[1]}`
+  crudUtil(params) {
+      let defaults = {
+          method: "get",
+          adapter: undefined,
+          path: "/",
+          schemas: ["*"],
+          data: undefined,
+          operation: undefined,
+          success: (res) => {
+              console.log(res)
+          },
+          fail: (res) => {
+              console.log(res)
+          }
       };
-    }
+      let finalParams = merge({}, defaults, params);
 
-    let finalDoc = {
-      "entity-type": "document",
-      "name":`${doc.title}`,
-      "type": `${doc.type}`,
-      "properties": {
-          "dc:title": `${doc.title}`,
-          "dc:description": `${doc.description}`,
-          "file:content": content
+      let path = finalParams.path;
+
+      if (finalParams.adapter) {
+          path += `/@${finalParams.adapter}`;
       }
-    };
-    let path = parentNode.item.uid;
-    _nuxeo.repository()
-     .create(`${path}`, finalDoc)
-     .then(function(doc) {
-       DocumentStore.addChild(parentNode, doc);
-     })
-     .catch(function(error) {
-       throw error;
-     });
-  },
+      if (finalParams.operation) {
+          path += `/${finalParams.operation}`;
+      }
 
-  deleteDocument(node) {
-    let uid = node.item.uid;
-    _nuxeo.repository()
-     .delete(`${uid}`)
-     .then(function(doc) {
-       DocumentStore.deleteChild(node.parent, node);
-     })
-     .catch(function(error) {
-       throw error;
-     });
+      switch (finalParams.method.toLowerCase()) {
+          case "get":
+          _nuxeo.repository()
+              .schemas(finalParams.schemas)
+              .fetch(path)
+              .then(finalParams.success)
+              .catch(finalParams.fail);
+              break;
+          case "delete":
+          _nuxeo.repository()
+              .schemas(finalParams.schemas)
+              .delete(path)
+              .then(finalParams.success)
+              .catch(finalParams.fail);
+              break;
+          case "create":
+          _nuxeo.repository()
+              .schemas(finalParams.schemas)
+              .create(path, finalParams.data)
+              .then(finalParams.success)
+              .catch(finalParams.fail);
+              break;
+          default:
+              throw "Method does not exist";
+
+      }
+
   }
 
 };
+
+
+
+
+
 
 
 module.exports = NuxeoUtils;

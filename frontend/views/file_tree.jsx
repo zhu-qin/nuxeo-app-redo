@@ -1,20 +1,19 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 
-import NuxeoUtils from '../utils/nuxeo_utils';
+
+import TreeActions from '../actions/tree_actions';
 
 class FileTree extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentFile: this.props.child,
-      showSubFiles: false,
-      folder: ["Collection", "Workspace", "Favorites"]
+      currentFile: this.props.node,
+      showSubFiles: true
     };
   }
 
   _getChildren(){
-    NuxeoUtils.fetchChildren(this.state.currentFile);
+    TreeActions.fetchChildren(this.state.currentFile);
   }
 
   _showChildren(e) {
@@ -31,6 +30,7 @@ class FileTree extends React.Component {
   }
 
   render(){
+    let containers = ["Workspace", "Domain", "WorkspaceRoot", "SectionRoot", "TemplateRoot", "Folder"];
     let file = this.state.currentFile;
     let subFiles;
     let showChildren;
@@ -39,14 +39,14 @@ class FileTree extends React.Component {
     }
     if (this.state.showSubFiles && file) {
       let keys = Object.keys(file.children);
-      if (this.state.folder.includes(this.state.currentFile.item.type)) {
+      if (containers.includes(this.state.currentFile.item.type)) {
         showChildren = 'show-children';
       }
       subFiles = keys.map((childId) => {
         return (
           <li key={childId}>
             <FileTree
-              child={file.children[childId]}
+              node={file.children[childId]}
               mainView={this.props.mainView}
               />
           </li>
@@ -55,10 +55,11 @@ class FileTree extends React.Component {
     }
 
     let fileType;
-    if (this.state.currentFile.item.type != "Workspace") {
-      fileType = "File";
-    } else {
+
+    if (containers.includes(this.state.currentFile.item.type)) {
       fileType = "Workspace";
+    } else {
+      fileType = "File";
     }
 
     return (

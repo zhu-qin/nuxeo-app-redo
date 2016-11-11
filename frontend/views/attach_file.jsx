@@ -1,9 +1,8 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-// store
+
 import NuxeoUtils from '../utils/nuxeo_utils';
 
-class UploadForm extends React.Component {
+class AttachFile extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -41,7 +40,7 @@ _handleSubmit(e) {
   formData.append("doc[title]", this.state.title);
   formData.append("doc[nuxeo-entity]", this.state.file);
   formData.append("doc[description]", this.state.description);
-  NuxeoUtils.createDocument(this.props.mainView.state.workingFile, this.state);
+  NuxeoUtils.attachFile(this.props.mainView.state.workingFile, this.state);
   this.setState({title:"", description: "", file: ""});
 }
 
@@ -56,7 +55,7 @@ _handleSubmit(e) {
 
     return (
       <div>
-        <h3>Create Document</h3>
+        <h3>Attach File</h3>
         <form onSubmit={submit} className="create-form">
           Title:
           <input type="text" onChange={this._handleChange("title")} value={this.state.title} />
@@ -66,7 +65,7 @@ _handleSubmit(e) {
           File:
           <input className="submit-button submit-button-upload" type="file" onChange={this._previewFile.bind(this)}/>
           <br></br>
-          <input className="submit-button" type="submit" value="Create Document" />
+          <input className="submit-button" type="submit" value="Attach File" />
           <div className="upload-preview">{embedded}</div>
         </form>
       </div>
@@ -75,4 +74,4 @@ _handleSubmit(e) {
 
 }
 
-module.exports = UploadForm;
+module.exports = AttachFile;

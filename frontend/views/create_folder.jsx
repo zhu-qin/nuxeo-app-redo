@@ -1,7 +1,7 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-// store
-import NuxeoUtils from '../utils/nuxeo_utils';
+
+
+import TreeActions from '../actions/tree_actions.js';
 
 class CreateFolder extends React.Component {
   constructor(props) {
@@ -21,7 +21,7 @@ class CreateFolder extends React.Component {
 
   _handleSubmit(e) {
     e.preventDefault();
-    NuxeoUtils.createDocument(this.props.mainView.state.workingFile, this.state);
+    TreeActions.createDocument(this.props.mainView.state.workingFile, this.state);
     this.setState({title:"", description: "", type: "Workspace"});
   }
 

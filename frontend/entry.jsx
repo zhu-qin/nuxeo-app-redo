@@ -6,6 +6,8 @@ import ReactRouter, {Link, Router, Route, IndexRoute, hashHistory} from 'react-r
 import LogIn from './views/log_in';
 import MainView from './views/main_view';
 
+// utils
+import NuxeoUtils from './utils/nuxeo_utils.js';
 // data
 import DocumentStore from './data/document_store';
 
@@ -23,7 +25,24 @@ const AppRouter = (
   );
 
 
+
+
 document.addEventListener("DOMContentLoaded", () => {
   let root = document.getElementById('root');
   ReactDOM.render(AppRouter, root);
 });
+
+
+// testing
+
+Object.keys(NuxeoUtils).forEach((key) => {
+    window[key] = NuxeoUtils[key]
+});
+
+let success = (res) => {
+    debugger;
+    console.log(res);
+};
+
+window.success = success;
+window.store = DocumentStore;

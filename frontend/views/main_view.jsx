@@ -1,16 +1,12 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 // store
-import DocumentStore from '../data/document_store';
-// utils
-import NuxeoUtils from '../utils/nuxeo_utils.js';
+import DocumentStore from '../data/document_store.js';
+// actions
+import TreeActions from '../actions/tree_actions.js';
 
 // components
-import FileView from './file_view.jsx';
+import RightMainView from './right_main_view.jsx';
 import FileTree from './file_tree.jsx';
-import Root from '../data/dummy_data.js';
-
-
 
 class MainView extends React.Component {
   constructor(props) {
@@ -24,7 +20,7 @@ class MainView extends React.Component {
 
   componentDidMount() {
     DocumentStore.addListener(this.storeListener.bind(this));
-    NuxeoUtils.fetchRepo();
+    TreeActions.fetchRoot();
   }
 
   _setWorkingFile(file) {
@@ -41,14 +37,14 @@ class MainView extends React.Component {
     if (this.state.root) {
       folder = (
         <FileTree
-        child={this.state.root}
+        node={this.state.root}
         mainView={this}
         />
       );
     }
 
     if (this.state.workingFile) {
-      workingFile = <FileView mainView={this}/>;
+      workingFile = <RightMainView mainView={this}/>;
     }
 
     return (
