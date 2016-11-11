@@ -11,8 +11,8 @@ class FileView extends React.Component {
     }
 
     render() {
-        let file = this.props.mainView.state.workingFile.item;
-        let content = file.properties["file:content"];
+        let node = this.props.workingNode;
+        let content = node.item.properties["file:content"];
         let embedded;
         if (content) {
             embedded = (
@@ -24,7 +24,7 @@ class FileView extends React.Component {
 
         return (
             <div className="file-view-wrapper">
-                <AttachFile mainView={this.props.mainView} />
+                <AttachFile workingNode={this.props.workingNode} />
                 <h3>Attachments</h3>
                 <ul>
                     {embedded}

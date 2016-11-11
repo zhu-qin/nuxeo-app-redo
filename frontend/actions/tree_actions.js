@@ -6,6 +6,7 @@ const TreeActions = {
         NuxeoUtils.crudUtil({
             success: (doc) => {
                 let root = DocumentStore.setRoot(doc);
+
                 TreeActions.fetchChildren(root);
             }
         })
@@ -70,19 +71,15 @@ const TreeActions = {
     toggleShowChildren(node, callback) {
         if (node.showChildren && node === TreeActions.getWorkingNode()) {
             node.showChildren = false;
-            this.setState({showSubFiles: false});
         } else {
-            this.setState({showSubFiles: true});
-            if (Object.keys(this.state.currentFile.children).length === 0){
-                this._getChildren();
+            node.showChildren = true;
+            if (Object.keys(node.children).length === 0){
+                TreeActions.fetchChildren(node);
             }
-            TreeActions.setWorkingFile(node);
+            TreeActions.setWorkingNode(node);
         }
+        callback();
     }
-
-
-
-
 
 };
 

@@ -14,37 +14,37 @@ class MainView extends React.Component {
     this.state = {
       user: DocumentStore.getUser(),
       root: undefined,
-      workingFile: undefined,
+      workingNode: undefined,
     };
   }
 
   componentDidMount() {
-    DocumentStore.addListener(this.storeListener.bind(this));
+    DocumentStore.addListener(this._rootListener.bind(this));
+    DocumentStore.addListener(this._setWorkingNode.bind(this));
     TreeActions.fetchRoot();
   }
 
-  _setWorkingFile(file) {
-    this.setState({ workingFile: file });
+  _setWorkingNode() {
+    this.setState({ workingNode: DocumentStore.getWorkingNode() });
   }
 
-  storeListener() {
+  _rootListener() {
     this.setState({root: DocumentStore.getRoot()});
   }
 
   render() {
-    let folder;
-    let workingFile;
+    let tree;
+    let workingNode;
     if (this.state.root) {
-      folder = (
+      tree = (
         <FileTree
         node={this.state.root}
-        mainView={this}
         />
       );
     }
 
-    if (this.state.workingFile) {
-      workingFile = <RightMainView mainView={this}/>;
+    if (this.state.workingNode) {
+      workingNode = <RightMainView workingNode={this.state.workingNode}/>;
     }
 
     return (
@@ -53,9 +53,9 @@ class MainView extends React.Component {
           <div className="side-panel-profile">
             {this.state.user.id}
           </div>
-          {folder}
+          {tree}
         </div>
-        {workingFile}
+        {workingNode}
       </div>
     );
   }

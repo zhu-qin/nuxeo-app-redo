@@ -1,5 +1,4 @@
 import React from 'react';
-
 import NuxeoUtils from '../utils/nuxeo_utils';
 
 class AttachFile extends React.Component {
@@ -40,7 +39,7 @@ _handleSubmit(e) {
   formData.append("doc[title]", this.state.title);
   formData.append("doc[nuxeo-entity]", this.state.file);
   formData.append("doc[description]", this.state.description);
-  NuxeoUtils.attachFile(this.props.mainView.state.workingFile, this.state);
+  NuxeoUtils.attachFile(this.props.workingNode, this.state);
   this.setState({title:"", description: "", file: ""});
 }
 

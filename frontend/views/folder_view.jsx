@@ -19,19 +19,19 @@ class FolderView extends React.Component {
 
     _deleteCurrentFile(node, e){
         e.preventDefault();
-        this.props.mainView._setWorkingFile(node.parent);
+        TreeActions.setWorkingNode(node.parent);
         TreeActions.deleteDocument(node);
     }
 
     _setWorkingFile(node, e){
         e.preventDefault();
-        this.props.mainView._setWorkingFile(node);
+        TreeActions.setWorkingNode(node);
         TreeActions.fetchChildren(node);
     }
 
     render() {
 
-        let file = this.props.mainView.state.workingFile;
+        let file = TreeActions.getWorkingNode();
         let fileProperties = file.item.properties;
         let childNodes = file.children;
         let list = Object.keys(childNodes).map((id) => {
@@ -45,12 +45,10 @@ class FolderView extends React.Component {
             );
         });
 
-
         return (
             <div className="file-view-wrapper">
-
-                <CreateFolder mainView={this.props.mainView} />
-                <CreateDocument mainView={this.props.mainView} />
+                <CreateFolder workingNode={this.props.workingNode} />
+                <CreateDocument workingNode={this.props.workingNode} />
                 <h3>Sub-files & Folders</h3>
                 <ul>
                     {list}

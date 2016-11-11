@@ -25053,7 +25053,6 @@
 
 	            return docToAttachTo.item.save();
 	        }).then(function (doc) {
-
 	            docToAttachTo.item = doc;
 	            _document_store2.default.invokeListeners();
 	        }).catch(function (error) {
@@ -42226,7 +42225,7 @@
 	    this.item = item;
 	    this.uid = item.uid;
 	    this.parent = undefined;
-	    this.showChildren = true;
+	    this.showChildren = false;
 	    //adapter parameters
 	    this.children = {};
 	    this.acl = undefined;
@@ -70646,7 +70645,7 @@
 	    _this.state = {
 	      user: _document_store2.default.getUser(),
 	      root: undefined,
-	      workingFile: undefined
+	      workingNode: undefined
 	    };
 	    return _this;
 	  }
@@ -70654,33 +70653,33 @@
 	  _createClass(MainView, [{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-	      _document_store2.default.addListener(this.storeListener.bind(this));
+	      _document_store2.default.addListener(this._rootListener.bind(this));
+	      _document_store2.default.addListener(this._setWorkingNode.bind(this));
 	      _tree_actions2.default.fetchRoot();
 	    }
 	  }, {
-	    key: '_setWorkingFile',
-	    value: function _setWorkingFile(file) {
-	      this.setState({ workingFile: file });
+	    key: '_setWorkingNode',
+	    value: function _setWorkingNode() {
+	      this.setState({ workingNode: _document_store2.default.getWorkingNode() });
 	    }
 	  }, {
-	    key: 'storeListener',
-	    value: function storeListener() {
+	    key: '_rootListener',
+	    value: function _rootListener() {
 	      this.setState({ root: _document_store2.default.getRoot() });
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var folder = void 0;
-	      var workingFile = void 0;
+	      var tree = void 0;
+	      var workingNode = void 0;
 	      if (this.state.root) {
-	        folder = _react2.default.createElement(_file_tree2.default, {
-	          node: this.state.root,
-	          mainView: this
+	        tree = _react2.default.createElement(_file_tree2.default, {
+	          node: this.state.root
 	        });
 	      }
 
-	      if (this.state.workingFile) {
-	        workingFile = _react2.default.createElement(_right_main_view2.default, { mainView: this });
+	      if (this.state.workingNode) {
+	        workingNode = _react2.default.createElement(_right_main_view2.default, { workingNode: this.state.workingNode });
 	      }
 
 	      return _react2.default.createElement(
@@ -70694,9 +70693,9 @@
 	            { className: 'side-panel-profile' },
 	            this.state.user.id
 	          ),
-	          folder
+	          tree
 	        ),
-	        workingFile
+	        workingNode
 	      );
 	    }
 	  }]);
@@ -70731,6 +70730,7 @@
 	        _nuxeo_utils2.default.crudUtil({
 	            success: function success(doc) {
 	                var root = _document_store2.default.setRoot(doc);
+
 	                TreeActions.fetchChildren(root);
 	            }
 	        });
@@ -70789,14 +70789,14 @@
 	    toggleShowChildren: function toggleShowChildren(node, callback) {
 	        if (node.showChildren && node === TreeActions.getWorkingNode()) {
 	            node.showChildren = false;
-	            this.setState({ showSubFiles: false });
 	        } else {
-	            this.setState({ showSubFiles: true });
-	            if (Object.keys(this.state.currentFile.children).length === 0) {
-	                this._getChildren();
+	            node.showChildren = true;
+	            if (Object.keys(node.children).length === 0) {
+	                TreeActions.fetchChildren(node);
 	            }
-	            TreeActions.setWorkingFile(node);
+	            TreeActions.setWorkingNode(node);
 	        }
+	        callback();
 	    }
 	};
 
@@ -70851,48 +70851,37 @@
 	    return _possibleConstructorReturn(this, (RightMainView.__proto__ || Object.getPrototypeOf(RightMainView)).call(this, props));
 	  }
 
+	  // componentDidMount(){
+	  //   DocumentStore.addListener(this._storeListener.bind(this));
+	  // }
+	  //
+	  // _storeListener(){
+	  //   this.forceUpdate();
+	  // }
+
 	  _createClass(RightMainView, [{
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {
-	      _document_store2.default.addListener(this._storeListener.bind(this));
-	    }
-	  }, {
-	    key: '_storeListener',
-	    value: function _storeListener() {
-	      this.forceUpdate();
-	    }
-	  }, {
 	    key: '_deleteCurrentFile',
 	    value: function _deleteCurrentFile(node, e) {
 	      e.preventDefault();
-	      this.props.mainView._setWorkingFile(node.parent);
+	      _tree_actions2.default.setWorkingNode(node.parent);
 	      _tree_actions2.default.deleteDocument(node);
 	    }
-	  }, {
-	    key: '_fetchAdapter',
-	    value: function _fetchAdapter(adapter, e) {
-	      e.preventDefault();
-	      var file = this.props.mainView.state.workingFile;
-	      var success = function success(res) {
-	        console.log(res);
-	      };
-	      _nuxeo_utils2.default['get' + adapter](file, success, success)();
-	    }
+
+	    // _fetchAdapter(adapter, e) {
+	    //   e.preventDefault();
+	    //   let file = this.props.mainView.state.workingFile;
+	    //   let success = (res) => {
+	    //     console.log(res);
+	    //   };
+	    //   NuxeoUtils[`get${adapter}`](file, success, success)();
+	    // }
+
+
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _this2 = this;
-
-	      var file = this.props.mainView.state.workingFile;
-	      var fileProperties = file.item.properties;
-
-	      var buttons = ["audit", "children", "acl", "workflow", "task", "op", "bo"].map(function (adapter) {
-	        return _react2.default.createElement(
-	          'button',
-	          { onClick: _this2._fetchAdapter.bind(_this2, adapter) },
-	          adapter
-	        );
-	      });
+	      var node = this.props.workingNode;
+	      var fileProperties = node.item.properties;
 
 	      var propertiesList = Object.keys(fileProperties).map(function (id) {
 	        return _react2.default.createElement(
@@ -70907,10 +70896,10 @@
 	      var docView = void 0;
 	      var containers = ["Workspace", "Domain", "WorkspaceRoot", "SectionRoot", "TemplateRoot", "Folder"];
 
-	      if (containers.includes(file.item.type)) {
-	        docView = _react2.default.createElement(_folder_view2.default, { mainView: this.props.mainView });
-	      } else if (file.item.type === "File") {
-	        docView = _react2.default.createElement(_file_view2.default, { mainView: this.props.mainView });
+	      if (containers.includes(node.item.type)) {
+	        docView = _react2.default.createElement(_folder_view2.default, { workingNode: this.props.workingNode });
+	      } else if (node.item.type === "File") {
+	        docView = _react2.default.createElement(_file_view2.default, { workingNode: this.props.workingNode });
 	      }
 
 	      return _react2.default.createElement(
@@ -70918,19 +70907,14 @@
 	        { className: 'file-view-wrapper' },
 	        _react2.default.createElement(
 	          'button',
-	          { onClick: this._deleteCurrentFile.bind(this, file), className: 'submit-button delete-button' },
+	          { onClick: this._deleteCurrentFile.bind(this, node), className: 'submit-button delete-button' },
 	          'Delete Current'
-	        ),
-	        _react2.default.createElement(
-	          'div',
-	          null,
-	          buttons
 	        ),
 	        _react2.default.createElement(
 	          'h2',
 	          null,
 	          'Title: ',
-	          file.item.title
+	          node.item.title
 	        ),
 	        propertiesList,
 	        docView
@@ -70987,8 +70971,8 @@
 	    _createClass(FileView, [{
 	        key: 'render',
 	        value: function render() {
-	            var file = this.props.mainView.state.workingFile.item;
-	            var content = file.properties["file:content"];
+	            var node = this.props.workingNode;
+	            var content = node.item.properties["file:content"];
 	            var embedded = void 0;
 	            if (content) {
 	                embedded = _react2.default.createElement(
@@ -71006,7 +70990,7 @@
 	            return _react2.default.createElement(
 	                'div',
 	                { className: 'file-view-wrapper' },
-	                _react2.default.createElement(_attach_file2.default, { mainView: this.props.mainView }),
+	                _react2.default.createElement(_attach_file2.default, { workingNode: this.props.workingNode }),
 	                _react2.default.createElement(
 	                    'h3',
 	                    null,
@@ -71104,7 +71088,7 @@
 	      formData.append("doc[title]", this.state.title);
 	      formData.append("doc[nuxeo-entity]", this.state.file);
 	      formData.append("doc[description]", this.state.description);
-	      _nuxeo_utils2.default.attachFile(this.props.mainView.state.workingFile, this.state);
+	      _nuxeo_utils2.default.attachFile(this.props.workingNode, this.state);
 	      this.setState({ title: "", description: "", file: "" });
 	    }
 	  }, {
@@ -71204,14 +71188,14 @@
 	        key: '_deleteCurrentFile',
 	        value: function _deleteCurrentFile(node, e) {
 	            e.preventDefault();
-	            this.props.mainView._setWorkingFile(node.parent);
+	            _tree_actions2.default.setWorkingNode(node.parent);
 	            _tree_actions2.default.deleteDocument(node);
 	        }
 	    }, {
 	        key: '_setWorkingFile',
 	        value: function _setWorkingFile(node, e) {
 	            e.preventDefault();
-	            this.props.mainView._setWorkingFile(node);
+	            _tree_actions2.default.setWorkingNode(node);
 	            _tree_actions2.default.fetchChildren(node);
 	        }
 	    }, {
@@ -71219,7 +71203,7 @@
 	        value: function render() {
 	            var _this2 = this;
 
-	            var file = this.props.mainView.state.workingFile;
+	            var file = _tree_actions2.default.getWorkingNode();
 	            var fileProperties = file.item.properties;
 	            var childNodes = file.children;
 	            var list = Object.keys(childNodes).map(function (id) {
@@ -71242,8 +71226,8 @@
 	            return _react2.default.createElement(
 	                'div',
 	                { className: 'file-view-wrapper' },
-	                _react2.default.createElement(_create_folder2.default, { mainView: this.props.mainView }),
-	                _react2.default.createElement(_create_document2.default, { mainView: this.props.mainView }),
+	                _react2.default.createElement(_create_folder2.default, { workingNode: this.props.workingNode }),
+	                _react2.default.createElement(_create_document2.default, { workingNode: this.props.workingNode }),
 	                _react2.default.createElement(
 	                    'h3',
 	                    null,
@@ -71318,7 +71302,7 @@
 	    key: '_handleSubmit',
 	    value: function _handleSubmit(e) {
 	      e.preventDefault();
-	      _tree_actions2.default.createDocument(this.props.mainView.state.workingFile, this.state);
+	      _tree_actions2.default.createDocument(this.props.workingNode, this.state);
 	      this.setState({ title: "", description: "", type: "Workspace" });
 	    }
 	  }, {
@@ -71406,7 +71390,7 @@
 	        key: '_handleSubmit',
 	        value: function _handleSubmit(e) {
 	            e.preventDefault();
-	            _tree_actions2.default.createDocument(this.props.mainView.state.workingFile, this.state);
+	            _tree_actions2.default.createDocument(this.props.workingNode, this.state);
 	            this.setState({ title: "", description: "", type: "File" });
 	        }
 	    }, {
@@ -71469,73 +71453,42 @@
 	  function FileTree(props) {
 	    _classCallCheck(this, FileTree);
 
-	    var _this = _possibleConstructorReturn(this, (FileTree.__proto__ || Object.getPrototypeOf(FileTree)).call(this, props));
-
-	    _this.state = {
-	      currentFile: _this.props.node,
-	      showSubFiles: true
-	    };
-	    return _this;
+	    return _possibleConstructorReturn(this, (FileTree.__proto__ || Object.getPrototypeOf(FileTree)).call(this, props));
 	  }
 
 	  _createClass(FileTree, [{
-	    key: '_getChildren',
-	    value: function _getChildren() {
-	      _tree_actions2.default.fetchChildren(this.props.node);
-	    }
-	  }, {
-	    key: '_setWorkingNode',
-	    value: function _setWorkingNode() {
-	      _tree_actions2.default.setWorkingNode(this.props.node);
-	    }
-	  }, {
 	    key: '_showChildren',
 	    value: function _showChildren(e) {
 	      e.stopPropagation();
-	      if (this.state.showSubFiles && this.state.currentFile === this.props.mainView.state.workingFile) {
-	        this.setState({ showSubFiles: false });
-	      } else {
-	        this.setState({ showSubFiles: true });
-	        if (Object.keys(this.state.currentFile.children).length === 0) {
-	          this._getChildren();
-	        }
-	        this._setWorkingNode();
-	        console.log(_tree_actions2.default.getWorkingNode());
-	        this.props.mainView._setWorkingFile(this.state.currentFile);
-	      }
+	      _tree_actions2.default.toggleShowChildren(this.props.node, this.forceUpdate.bind(this));
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _this2 = this;
-
+	      var node = this.props.node;
 	      var containers = ["Workspace", "Domain", "WorkspaceRoot", "SectionRoot", "TemplateRoot", "Folder"];
-	      var file = this.state.currentFile;
 	      var subFiles = void 0;
 	      var showChildren = void 0;
-	      if (this.state.currentFile === this.props.mainView.state.workingFile) {
+	      if (node === _tree_actions2.default.getWorkingNode()) {
 	        showChildren = 'show-working';
 	      }
-	      if (this.state.showSubFiles && file) {
-	        var keys = Object.keys(file.children);
-	        if (containers.includes(this.state.currentFile.item.type)) {
+	      if (node.showChildren) {
+	        var keys = Object.keys(node.children);
+	        if (containers.includes(node.item.type)) {
 	          showChildren = 'show-children';
 	        }
 	        subFiles = keys.map(function (childId) {
 	          return _react2.default.createElement(
 	            'li',
 	            { key: childId },
-	            _react2.default.createElement(FileTree, {
-	              node: file.children[childId],
-	              mainView: _this2.props.mainView
-	            })
+	            _react2.default.createElement(FileTree, { node: node.children[childId] })
 	          );
 	        });
 	      }
 
 	      var fileType = void 0;
 
-	      if (containers.includes(this.state.currentFile.item.type)) {
+	      if (containers.includes(node.item.type)) {
 	        fileType = "Workspace";
 	      } else {
 	        fileType = "File";
@@ -71551,7 +71504,7 @@
 	          _react2.default.createElement(
 	            'div',
 	            null,
-	            file.item.title
+	            node.item.title
 	          )
 	        ),
 	        _react2.default.createElement(

@@ -19,7 +19,7 @@ class CreateDocument extends React.Component {
 
     _handleSubmit(e) {
         e.preventDefault();
-        TreeActions.createDocument(this.props.mainView.state.workingFile, this.state);
+        TreeActions.createDocument(this.props.workingNode, this.state);
         this.setState({title:"", description: "", type: "File"});
     }
 

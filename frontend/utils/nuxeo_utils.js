@@ -43,9 +43,7 @@ const NuxeoUtils = {
 
         return docToAttachTo.item.save();
       })
-
       .then(function(doc) {
-
         docToAttachTo.item = doc;
         DocumentStore.invokeListeners();
       })
