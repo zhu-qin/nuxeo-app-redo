@@ -12,12 +12,6 @@ class FolderView extends React.Component {
         TreeActions.deleteDocument(node);
     }
 
-    _deleteCurrentFile(node, e){
-        e.preventDefault();
-        TreeActions.setWorkingNode(node.parent);
-        TreeActions.deleteDocument(node);
-    }
-
     _setWorkingFile(node, e){
         e.preventDefault();
         TreeActions.setWorkingNode(node);
@@ -25,7 +19,6 @@ class FolderView extends React.Component {
     }
 
     render() {
-
         let file = TreeActions.getWorkingNode();
         let fileProperties = file.item.properties;
         let childNodes = file.children;
@@ -49,7 +42,6 @@ class FolderView extends React.Component {
             </div>
         );
     }
-
 }
 
 module.exports = FolderView;

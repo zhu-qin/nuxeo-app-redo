@@ -1,15 +1,15 @@
 import React from 'react';
 import TreeActions from '../../actions/tree_actions.js';
 
-class ShowTasks extends React.Component {
+class ShowBlob extends React.Component {
     constructor(props){
         super(props);
-        TreeActions.gettasks(this.props.workingNode);
+        TreeActions.getblob(this.props.workingNode);
     }
 
     render() {
         let node = this.props.workingNode;
-        let string = JSON.stringify(node.tasks);
+        let string = JSON.stringify(node.blob);
         return (
             <div className="right-main-view-show-working-button">
                 {string}
@@ -18,4 +18,4 @@ class ShowTasks extends React.Component {
     }
 }
 
-module.exports = ShowTasks;
+module.exports = ShowBlob;

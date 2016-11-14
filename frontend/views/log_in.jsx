@@ -10,7 +10,8 @@ class LogIn extends React.Component {
     super(props);
     this.state = {
       username: "Administrator",
-      password: "Administrator"
+      password: "Administrator",
+      url: "http://localhost:8080/nuxeo"
     };
   }
 
@@ -36,6 +37,10 @@ class LogIn extends React.Component {
 
           <div className="container-fluid login-wrapper">
             <form className="login-form" onSubmit={this._submitForm.bind(this)}>
+              <div>
+                URL:
+                <input type="text" value={this.state.url} onChange={this._handleChange("url")}/>
+              </div>
               <div>
                 Username:
                 <input type="text" value={this.state.username} onChange={this._handleChange("username")}/>

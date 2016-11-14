@@ -1,5 +1,6 @@
 import React from 'react';
-import NuxeoUtils from '../utils/nuxeo_utils';
+import TreeActions from '../actions/tree_actions.js';
+import NuxeoUtils from '../utils/nuxeo_utils.js';
 
 class AttachFile extends React.Component {
   constructor(props) {
@@ -40,6 +41,7 @@ class AttachFile extends React.Component {
     // formData.append("doc[title]", this.state.title);
     // formData.append("doc[nuxeo-entity]", this.state.file);
     // formData.append("doc[description]", this.state.description);
+    // TreeActions.attachFile(this.props.workingNode, this.state);
     NuxeoUtils.attachFile(this.props.workingNode, this.state);
     this.setState({title:"", description: "", file: ""});
   }

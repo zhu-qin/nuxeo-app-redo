@@ -36,11 +36,7 @@ class MainView extends React.Component {
     let tree;
     let workingNode;
     if (this.state.root) {
-      tree = (
-        <FileTree
-        node={this.state.root}
-        />
-      );
+      tree = (<FileTree node={this.state.root}/>);
     }
 
     if (this.state.workingNode) {

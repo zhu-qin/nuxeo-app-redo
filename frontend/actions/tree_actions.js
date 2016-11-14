@@ -5,7 +5,6 @@ const TreeActions = {
     fetchRoot(){
         NuxeoUtils.crudUtil({
             success: (doc) => {
-                console.log(doc);
                 let root = DocumentStore.setRoot(doc);
                 TreeActions.fetchChildren(root);
             }
@@ -15,7 +14,6 @@ const TreeActions = {
     fetchChildren(node) {
         let success = (docs) => {
             docs.entries.forEach((entry) => {
-                console.log(entry);
                 DocumentStore.addChild(node, entry);
             });
         };
@@ -48,14 +46,24 @@ const TreeActions = {
         let success = (doc) => {
             DocumentStore.addChild(node, doc);
         };
-
         let path = node.item.uid;
         NuxeoUtils.crudUtil({
             method: "create",
             path: path,
             data: finalDoc,
             success: success
-        })
+        });
+    },
+
+    attachFile(node, doc) {
+        let success = (res) => {
+            debugger;
+        };
+
+        NuxeoUtils.batchUpload({
+            path: node.parent.item.uid,
+            data: doc
+        });
     },
 
     setWorkingNode(node) {
@@ -81,7 +89,7 @@ const TreeActions = {
 
 };
 
-["acl", "workflow", "tasks", "audit"].forEach((adapter) => {
+["acl", "workflow", "task", "audit"].forEach((adapter) => {
    TreeActions[`get${adapter}`] = (node) => {
        let success = (res) => {
            DocumentStore.setProperty(node, res, adapter);
@@ -98,5 +106,21 @@ const TreeActions = {
    }
 });
 
+
+TreeActions.getblob = (node) => {
+  let success = (res) => {
+      DocumentStore.setProperty(node,res, 'blob');
+  };
+
+  let path = node.item.uid;
+  NuxeoUtils.crudUtil({
+    method: "get",
+      path: path,
+      adapter: "blob",
+      operation: "file:content",
+      success: success
+  });
+
+};
 
 export default TreeActions;
