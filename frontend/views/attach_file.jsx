@@ -26,22 +26,23 @@ class AttachFile extends React.Component {
   fileReader.onloadend = () => {
     this.setState({ file: file, fileUrl: fileReader.result });
   };
-  if (file) {
-    fileReader.readAsDataURL(file);
-  } else {
-    this.setState({ fileUrl: "", file: undefined });
-  }
-}
 
-_handleSubmit(e) {
-  e.preventDefault();
-  let formData = new FormData();
-  formData.append("doc[title]", this.state.title);
-  formData.append("doc[nuxeo-entity]", this.state.file);
-  formData.append("doc[description]", this.state.description);
-  NuxeoUtils.attachFile(this.props.workingNode, this.state);
-  this.setState({title:"", description: "", file: ""});
-}
+  if (file) {
+      fileReader.readAsDataURL(file);
+    } else {
+      this.setState({ fileUrl: "", file: undefined });
+    }
+  }
+
+  _handleSubmit(e) {
+    e.preventDefault();
+    // let formData = new FormData();
+    // formData.append("doc[title]", this.state.title);
+    // formData.append("doc[nuxeo-entity]", this.state.file);
+    // formData.append("doc[description]", this.state.description);
+    NuxeoUtils.attachFile(this.props.workingNode, this.state);
+    this.setState({title:"", description: "", file: ""});
+  }
 
   render() {
     let button = <input className="button-form" type="submit" value="Upload"/>;

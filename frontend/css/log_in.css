@@ -9,16 +9,14 @@
 }
 
 .login-wrapper {
-  width: 550px;
+  width: 650px;
   margin: auto;
   padding: 20px;
   background-color: rgba(1, 44, 22, 0.2);
-  border-radius: 3px;
 }
 
 .login-wrapper * {
   padding: 5px;
-  border-radius: 3px;
 }
 
 .login-button {

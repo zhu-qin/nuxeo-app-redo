@@ -3,23 +3,37 @@ import React from 'react';
 import FileView from './file_view.jsx';
 
 import TreeActions from '../actions/tree_actions.js';
-import NuxeoUtils from '../utils/nuxeo_utils';
-import DocumentStore from '../data/document_store';
 
 import FolderView from './folder_view';
+
+
+import CreateDocumentForm from './right_main_view_components/create_document_form.jsx';
+import ShowACL from './right_main_view_components/show_acl.jsx';
+import ShowAudit from './right_main_view_components/show_audit.jsx';
+import ShowTasks from './right_main_view_components/show_tasks.jsx';
+import ShowWorkFlow from './right_main_view_components/show_workflow.jsx';
+
+const workingButtons = {
+  "Create Document": CreateDocumentForm,
+  "ACL": ShowACL,
+  "Work Flow": ShowWorkFlow,
+  "Tasks": ShowTasks,
+  "Audit": ShowAudit
+};
 
 class RightMainView extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      showWorkingButton: undefined
+    };
   }
 
-  // componentDidMount(){
-  //   DocumentStore.addListener(this._storeListener.bind(this));
-  // }
-  //
-  // _storeListener(){
-  //   this.forceUpdate();
-  // }
+  componentWillReceiveProps(newProps) {
+    if (newProps.workingNode != this.props.workingNode) {
+      this.setState({showWorkingButton: undefined});
+    }
+  }
 
   _deleteCurrentFile(node, e){
     e.preventDefault();
@@ -27,21 +41,19 @@ class RightMainView extends React.Component {
     TreeActions.deleteDocument(node);
   }
 
-  // _fetchAdapter(adapter, e) {
-  //   e.preventDefault();
-  //   let file = this.props.mainView.state.workingFile;
-  //   let success = (res) => {
-  //     console.log(res);
-  //   };
-  //   NuxeoUtils[`get${adapter}`](file, success, success)();
-  // }
-
+  _setWorkingButton(buttonText, e){
+    if (this.state.showWorkingButton === buttonText) {
+      this.setState({showWorkingButton: undefined});
+    } else {
+      this.setState({showWorkingButton: buttonText});
+    }
+  }
 
   render() {
     let node = this.props.workingNode;
     let fileProperties = node.item.properties;
 
-    let propertiesList = Object.keys(fileProperties).map((id) => {
+    let propertiesList = ["dc:creator", "dc:lastContributor", "dc:created", "dc:modified" ].map((id) => {
       return (
           <li key={id}>
             {id} : {JSON.stringify(fileProperties[id])}
@@ -49,21 +61,44 @@ class RightMainView extends React.Component {
       );
     });
 
-    let docView;
-    let containers = ["Workspace", "Domain", "WorkspaceRoot", "SectionRoot", "TemplateRoot", "Folder"];
+    let buttonList = ["ACL", "Work Flow", "Tasks", "Audit"].map((button) => {
+      return (
+        <button key={button} onClick={this._setWorkingButton.bind(this,`${button}`)} className="submit-button">{`${button}`}</button>
+      );
+    });
 
-    if (containers.includes(node.item.type)) {
-      docView = (< FolderView workingNode={this.props.workingNode}/>);
-    } else if (node.item.type === "File") {
-      docView = (<FileView workingNode={this.props.workingNode}/>);
+    let showWorking;
+
+    if (this.state.showWorkingButton) {
+      let props = {
+        workingNode:node,
+        _setWorkingButton: this._setWorkingButton
+      };
+      showWorking = React.createElement(workingButtons[this.state.showWorkingButton], props);
+    }
+
+    let title;
+    if (node.item.type === 'root'){
+      title = "Root";
+    } else {
+      title = node.item.title;
     }
 
     return (
       <div className="file-view-wrapper">
-        <button onClick={this._deleteCurrentFile.bind(this, node)} className="submit-button delete-button">Delete Current</button>
-        <h2>Title: {node.item.title}</h2>
-        {propertiesList}
-        {docView}
+        <h2>Title: {title}</h2>
+        <div className="right-main-view-button-wrapper">
+          <button onClick={this._setWorkingButton.bind(this,"Create Document")} className="submit-button">Create Document</button>
+          {buttonList}
+          <button onClick={this._deleteCurrentFile.bind(this, node)} className="submit-button delete-button">Delete Current</button>
+        </div>
+
+        {showWorking}
+
+        <div className="right-main-view-properties">
+          {propertiesList}
+        </div>
+        <FolderView workingNode={this.props.workingNode}/>
       </div>
     );
   }

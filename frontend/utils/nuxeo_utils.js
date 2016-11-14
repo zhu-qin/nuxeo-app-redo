@@ -27,23 +27,42 @@ const NuxeoUtils = {
   },
 
   attachFile(docToAttachTo, upload) {
-    //   let content = new Blob([upload.fileUrl], {
-    //       type: upload.file.type
-    //   });
-    //
-    let blob = new Nuxeo.Blob({content: upload.file});
+    var blob = new Nuxeo.Blob({ content: upload.file, name: upload.title, mimeType: upload.file.type, size: upload.file.size });
+
+    // let blob = new Nuxeo.Blob({content: upload.file});
+    //   _nuxeo.batchUpload()
+    //       .upload(blob)
+    //       .then(function(res) {
+    //           debugger
+    //           return _nuxeo.operation('Blob.AttachOnDocument')
+    //               .param('document', `${docToAttachTo.item.path}`)
+    //               .input(res.blob)
+    //               .execute({ schemas: ['dublincore', 'file']});
+    //       })
+    //       .then(function(doc) {
+    //           debugger;
+    //           console.log(doc.properties["file:content"]);
+    //       })
+    //       .catch(function(error) {
+    //           throw error;
+    //       });
+
     _nuxeo.batchUpload()
       .upload(blob)
       .then(function(res) {
-        let batchId = res.blob["upload-batch"];
-        let fileId = res.blob["upload-fileId"];
-        docToAttachTo.item.set(
-            { "file:content": {"upload-batch":`${batchId}`, "upload-fileId":`${fileId}` }}
-        );
+
+          let data = {
+              "upload-batch": res.blob["upload-batch"],
+              "upload-fileId": res.blob["upload-fileId"]
+          };
+        debugger
+
+          docToAttachTo.item.set({ 'file:content': data });
 
         return docToAttachTo.item.save();
       })
       .then(function(doc) {
+          debugger
         docToAttachTo.item = doc;
         DocumentStore.invokeListeners();
       })

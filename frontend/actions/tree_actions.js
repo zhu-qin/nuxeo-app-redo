@@ -5,8 +5,8 @@ const TreeActions = {
     fetchRoot(){
         NuxeoUtils.crudUtil({
             success: (doc) => {
+                console.log(doc);
                 let root = DocumentStore.setRoot(doc);
-
                 TreeActions.fetchChildren(root);
             }
         })
@@ -15,6 +15,7 @@ const TreeActions = {
     fetchChildren(node) {
         let success = (docs) => {
             docs.entries.forEach((entry) => {
+                console.log(entry);
                 DocumentStore.addChild(node, entry);
             });
         };
@@ -39,9 +40,6 @@ const TreeActions = {
     },
 
     createDocument(node, doc){
-        if (doc.type != 'Workspace') {
-            doc.type = 'File';
-        }
         let finalDoc = {
             "entity-type": "document",
             "name":`${doc.title}`,
@@ -79,9 +77,26 @@ const TreeActions = {
             TreeActions.setWorkingNode(node);
         }
         callback();
-    }
+    },
 
 };
+
+["acl", "workflow", "tasks", "audit"].forEach((adapter) => {
+   TreeActions[`get${adapter}`] = (node) => {
+       let success = (res) => {
+           DocumentStore.setProperty(node, res, adapter);
+       };
+
+       let path = node.item.uid;
+       NuxeoUtils.crudUtil({
+          method:"get",
+          path: path,
+          adapter: `${adapter}`,
+          success: success
+       });
+
+   }
+});
 
 
 export default TreeActions;

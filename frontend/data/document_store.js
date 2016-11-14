@@ -52,6 +52,11 @@ const DocumentStore = {
 
   getWorkingNode() {
     return _workingNode;
+  },
+
+  setProperty(node, res, adapter){
+    node[adapter] = res;
+    DocumentStore.invokeListeners();
   }
 
 };

@@ -1,0 +1,45 @@
+.file-view-list-item {
+    padding: 10px;
+    display: flex;
+}
+
+.file-view-list-item > *{
+    padding: 10px;
+    cursor: pointer
+}
+
+.Workspace, .Folder, .Forum, .Collection, .Workspace, .File, .Domain, .WorkspaceRoot, .SectionRoot, .TemplateRoot, .Root{
+    height: 10px;
+    width: 10px;
+    margin: 5px;
+    border: 1px solid black;
+}
+
+.File {
+    border-radius: 50%;
+}
+
+.show-children {
+    background-color: red;
+}
+
+.side-panel-wrapper {
+    font-size: 18px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    height: 100%;
+    border-right: 1px solid black;
+    width: 20%;
+}
+
+.side-panel-profile {
+    height: 150px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid black;
+}
+
+.highlight-working {
+    background: lightblue;
+    padding: 0 5px;
+}

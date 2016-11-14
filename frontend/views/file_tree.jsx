@@ -12,12 +12,14 @@ class FileTree extends React.Component {
   }
 
   render(){
+    let workingNode = TreeActions.getWorkingNode();
     let node = this.props.node;
-    let containers = ["Workspace", "Domain", "WorkspaceRoot", "SectionRoot", "TemplateRoot", "Folder"];
+    let containers = ["Root", "Workspace", "Domain", "WorkspaceRoot", "SectionRoot", "TemplateRoot", "Folder"];
     let subFiles;
     let showChildren;
-    if (node === TreeActions.getWorkingNode()) {
-      showChildren = 'show-working';
+    let highlightWorking;
+    if (workingNode === node) {
+      highlightWorking = 'highlight-working';
     }
     if (node.showChildren) {
       let keys = Object.keys(node.children);
@@ -33,21 +35,19 @@ class FileTree extends React.Component {
       });
     }
 
-    let fileType;
-
-    if (containers.includes(node.item.type)) {
-      fileType = "Workspace";
+    let title;
+    if (node.item.type === 'Root') {
+      title = "Root";
     } else {
-      fileType = "File";
+      title = node.item.title;
     }
 
     return (
       <div className={`folder-view`} onClick={this._showChildren.bind(this)}>
          <div className="folder-title-wrapper">
-           <div className={`${fileType} ${showChildren}`}>
-           </div>
-           <div>
-             {node.item.title}
+           <div className={`${node.item.type} ${showChildren}`}></div>
+           <div className={highlightWorking}>
+             {title}
            </div>
          </div>
         <ul>

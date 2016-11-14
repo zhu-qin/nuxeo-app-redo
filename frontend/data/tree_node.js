@@ -10,6 +10,7 @@ class TreeNode {
     this.workflow = undefined;
     this.audit = undefined;
     this.task = undefined;
+    this.blob = undefined;
   }
 
   setParent(node) {

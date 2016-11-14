@@ -1,9 +1,4 @@
 import React from 'react';
-
-
-import CreateFolder from './create_folder.jsx';
-import CreateDocument from './create_document.jsx';
-
 import TreeActions from '../actions/tree_actions';
 
 
@@ -47,8 +42,6 @@ class FolderView extends React.Component {
 
         return (
             <div className="file-view-wrapper">
-                <CreateFolder workingNode={this.props.workingNode} />
-                <CreateDocument workingNode={this.props.workingNode} />
                 <h3>Sub-files & Folders</h3>
                 <ul>
                     {list}
