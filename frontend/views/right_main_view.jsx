@@ -53,13 +53,14 @@ class RightMainView extends React.Component {
     let node = this.props.workingNode;
     let fileProperties = node.item.properties;
 
-    let propertiesList = ["dc:creator", "dc:lastContributor", "dc:created", "dc:modified" ].map((id) => {
-      return (
-          <li key={id}>
-            {id} : {JSON.stringify(fileProperties[id])}
-          </li>
-      );
-    });
+    let propertiesList = (
+        <div>
+          Creator : {fileProperties["dc:creator"]} <br/>
+          Last Contributor : {fileProperties["dc:lastContributor"]} <br/>
+          Created At : {new Date(fileProperties["dc:created"]).toString()} <br/>
+          Modified At : {new Date(fileProperties["dc:modified"]).toString()}
+        </div>
+    );
 
     let buttonList = ["ACL", "Work Flow", "Tasks", "Audit","Blob"].map((button) => {
       return (
@@ -99,9 +100,7 @@ class RightMainView extends React.Component {
           {buttonList}
           <button onClick={this._deleteCurrentFile.bind(this, node)} className="submit-button delete-button">Delete Current</button>
         </div>
-
         {showWorking}
-
         <div className="right-main-view-properties">
           {propertiesList}
         </div>

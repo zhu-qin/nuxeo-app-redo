@@ -55,15 +55,12 @@ const TreeActions = {
         });
     },
 
-    attachFile(node, doc) {
+    attachFile(node, upload) {
         let success = (res) => {
-            debugger;
+            node.item = res;
+            TreeActions.setWorkingNode(node);
         };
-
-        NuxeoUtils.batchUpload({
-            path: node.parent.item.uid,
-            data: doc
-        });
+        NuxeoUtils.attachFile(node, upload, success);
     },
 
     setWorkingNode(node) {

@@ -1,4 +1,4 @@
-const Nuxeo = require('nuxeo');
+const Nuxeo = require('nuxeo/dist/nuxeo');
 import {merge} from 'lodash';
 
 import DocumentStore from '../data/document_store';
@@ -64,7 +64,7 @@ const NuxeoUtils = {
   },
 
 
-  attachFile(docToAttachTo, upload) {
+  attachFile(docToAttachTo, upload, success) {
 
     // var blob = new Nuxeo.Blob({
     //     content: upload.file,
@@ -74,23 +74,24 @@ const NuxeoUtils = {
     // });
 
     let blob = new Nuxeo.Blob({content: upload.file});
-      _nuxeo.batchUpload()
-          .upload(blob)
-          .then(function(res) {
-              return _nuxeo.operation('Blob.AttachOnDocument')
-                  .param('document', `${docToAttachTo.item.uid}`)
-                  .input(res.blob)
-                  .execute({ schemas: ['dublincore', 'file']});
-          })
-          .then(function(res) {
-              return _nuxeo.repository().fetch(`${docToAttachTo.item.uid}`)
-          })
-          .then((doc) => {
-             debugger
-          })
-          .catch(function(error) {
-              throw error;
-          });
+      // debugger
+      // _nuxeo.batchUpload()
+      //     .upload(blob)
+      //     .then(function(res) {
+      //         return _nuxeo.operation('Blob.AttachOnDocument')
+      //             .param('document', `${docToAttachTo.item.uid}`)
+      //             .input(res.blob)
+      //             .execute({ schemas: ['dublincore', 'file']});
+      //     })
+      //     .then(function(res) {
+      //         return _nuxeo.repository().fetch(`${docToAttachTo.item.uid}`)
+      //     })
+      //     .then((doc) => {
+      //        debugger
+      //     })
+      //     .catch(function(error) {
+      //         throw error;
+      //     });
       // let blob = new Blob(["Hello World"], {
       //     type: 'text/plain',
       // });
@@ -101,23 +102,14 @@ const NuxeoUtils = {
       //     mimeType: 'text/plain',
       //     size: blob.length,
       // });
-      // const batch = _nuxeo.batchUpload();
-      // return _nuxeo.Promise.all([batch.upload(finalBlob), _nuxeo.repository().fetch(docToAttachTo.item.uid)])
-      //     .then((values) => {
-      //         const batchBlob = values[0].blob;
-      //         const doc = values[1];
-      //         doc.set({ 'file:content': batchBlob });
-      //         return doc.save({ schemas: ['dublincore', 'file'] });
-      //     })
-      //     .then((doc) => {
-      //
-      //         let fileReader = new FileReader();
-      //         fileReader.onloadend = () => {
-      //             let results = fileReader.result;
-      //             let text = fileReader.readAsText(results);
-      //             debugger
-      //         };
-      //     });
+      const batch = _nuxeo.batchUpload();
+      _nuxeo.Promise.all([batch.upload(blob)])
+          .then((values) => {
+              let batchBlob = values[0].blob;
+              docToAttachTo.item.set({ 'file:content': batchBlob });
+              return docToAttachTo.item.save({ schemas: ['dublincore', 'file'] });
+          })
+          .then(success);
   },
 
 

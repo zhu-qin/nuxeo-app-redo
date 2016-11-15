@@ -9,10 +9,13 @@ class ShowBlob extends React.Component {
 
     render() {
         let node = this.props.workingNode;
-        let string = JSON.stringify(node.blob);
+        let urlString;
+        if (node.blob) {
+            urlString = node.blob.url;
+        }
         return (
             <div className="right-main-view-show-working-button">
-                {string}
+                {urlString}
             </div>
         )
     }

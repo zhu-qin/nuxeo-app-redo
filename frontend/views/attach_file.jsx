@@ -14,6 +14,16 @@ class AttachFile extends React.Component {
     };
   }
 
+  componentWillReceiveProps(newProps) {
+      this.setState({
+      title: "",
+      description: "",
+      type: "File",
+      fileUrl: "",
+      file: undefined
+    });
+  }
+
   _handleChange(field) {
     return (e) => {
       this.setState({[field]: e.target.value});
@@ -21,13 +31,12 @@ class AttachFile extends React.Component {
   }
 
   _previewFile(e) {
+    console.log(e);
   let file = e.currentTarget.files[0];
   let fileReader = new FileReader();
-
   fileReader.onloadend = () => {
     this.setState({ file: file, fileUrl: fileReader.result });
   };
-
   if (file) {
       fileReader.readAsDataURL(file);
     } else {
@@ -41,14 +50,20 @@ class AttachFile extends React.Component {
     // formData.append("doc[title]", this.state.title);
     // formData.append("doc[nuxeo-entity]", this.state.file);
     // formData.append("doc[description]", this.state.description);
-    // TreeActions.attachFile(this.props.workingNode, this.state);
-    NuxeoUtils.attachFile(this.props.workingNode, this.state);
-    this.setState({title:"", description: "", file: ""});
+    TreeActions.attachFile(this.props.workingNode, this.state);
+    this.setState({
+      title: "",
+      description: "",
+      type: "File",
+      fileUrl: "",
+      file: undefined
+    });
   }
 
   render() {
     let button = <input className="button-form" type="submit" value="Upload"/>;
     let submit = this._handleSubmit.bind(this);
+    let preview = this._previewFile.bind(this);
 
     let embedded;
     if(this.state.file) {
@@ -65,7 +80,7 @@ class AttachFile extends React.Component {
           <input type="text" onChange={this._handleChange("description")} value={this.state.description} />
           <br></br>
           File:
-          <input className="submit-button submit-button-upload" type="file" onChange={this._previewFile.bind(this)}/>
+          <input className="submit-button submit-button-upload" type="file" onChange={preview}/>
           <br></br>
           <input className="submit-button" type="submit" value="Attach File" />
           <div className="upload-preview">{embedded}</div>
