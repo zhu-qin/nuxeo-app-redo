@@ -1,10 +1,5 @@
 import React from 'react';
 
-import AttachFile from './attach_file.jsx';
-
-import NuxeoUtils from '../utils/nuxeo_utils';
-import DocumentStore from '../data/document_store';
-
 class FileView extends React.Component {
     constructor(props) {
         super(props);
@@ -14,6 +9,7 @@ class FileView extends React.Component {
         let node = this.props.workingNode;
         let content = node.item.properties["file:content"];
         let embedded;
+        console.log(content);
         if (content) {
             embedded = (
                 <div><h3>{content["name"]}</h3>
@@ -24,7 +20,6 @@ class FileView extends React.Component {
 
         return (
             <div className="file-view-wrapper">
-                <AttachFile workingNode={this.props.workingNode} />
                 <h3>Attachments</h3>
                 <ul>
                     {embedded}

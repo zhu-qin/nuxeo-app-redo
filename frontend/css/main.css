@@ -20,39 +20,23 @@ body {
   display: flex;
 }
 
-.side-panel-wrapper, .file-view-wrapper{
+.side-panel-wrapper, .right-main-view-wrapper{
   height: 100%;
   padding: 20px;
 }
 
-.file-view-wrapper {
+.side-panel-wrapper {
+  font-size: 18px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 100%;
+  border-right: 1px solid black;
+  width: 20%;
+}
+
+.right-main-view-wrapper {
   width: 80%;
   overflow-x: hidden;
-}
-
-.createfolder-form{
-  position: absolute;
-  width: 400px;
-  height: 200px;
-  border: 1px solid black;
-  display: none;
-}
-
-.folder-view {
-  cursor: pointer;
-  margin-left: 15px;
-}
-
-.folder-title-wrapper {
-  display: flex;
-}
-
-.create-form {
-  padding: 20px;
-}
-
-.create-form > * {
-  padding: 5px;
 }
 
 .submit-button, .delete-button {

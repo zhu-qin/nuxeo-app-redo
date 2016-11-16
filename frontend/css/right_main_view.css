@@ -1,10 +1,11 @@
-.right-main-view-button-wrapper, .right-main-view-properties ,.right-main-view-show-working-button{
+.right-main-view-button-wrapper, .right-main-view-properties,.right-main-view-show-working-button {
     padding:10px;
     border: 1px solid black;
     margin-bottom: 10px;
 }
 
 .create-document-button {
+    cursor: pointer;
     height:35px;
     border-radius: 3px;
     color: white;
@@ -27,4 +28,12 @@
 .right-main-view-show-working-button {
     height: 300px;
     overflow-y: scroll;
+}
+
+.create-document-form .attach-file-form{
+    padding: 20px;
+}
+
+.create-document-form, .attach-file-form > * {
+    padding: 5px;
 }

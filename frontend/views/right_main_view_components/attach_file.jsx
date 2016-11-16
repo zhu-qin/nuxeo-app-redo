@@ -1,6 +1,6 @@
 import React from 'react';
-import TreeActions from '../actions/tree_actions.js';
-import NuxeoUtils from '../utils/nuxeo_utils.js';
+import TreeActions from '../../actions/tree_actions.js';
+import NuxeoUtils from '../../utils/nuxeo_utils.js';
 
 class AttachFile extends React.Component {
   constructor(props) {
@@ -31,7 +31,6 @@ class AttachFile extends React.Component {
   }
 
   _previewFile(e) {
-    console.log(e);
   let file = e.currentTarget.files[0];
   let fileReader = new FileReader();
   fileReader.onloadend = () => {
@@ -71,9 +70,9 @@ class AttachFile extends React.Component {
     }
 
     return (
-      <div>
+      <div className="right-main-view-show-working-button">
         <h3>Attach File</h3>
-        <form onSubmit={submit} className="create-form">
+        <form onSubmit={submit} className="attach-file-form">
           Title:
           <input type="text" onChange={this._handleChange("title")} value={this.state.title} />
           Description:

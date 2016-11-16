@@ -2,16 +2,22 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5b8a1a3f-53c9-4036-a8b0-54716379b752" name="Default" comment="">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/frontend/helpers/date_helper.js" afterPath="" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/frontend/views/attach_file.jsx" afterPath="$PROJECT_DIR$/frontend/views/right_main_view_components/attach_file.jsx" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/frontend/views/file_view.jsx" afterPath="$PROJECT_DIR$/frontend/views/right_main_view_components/file_view.jsx" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/frontend/views/folder_view.jsx" afterPath="$PROJECT_DIR$/frontend/views/right_main_view_components/folder_view.jsx" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bundle.js" afterPath="$PROJECT_DIR$/bundle.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/frontend/actions/tree_actions.js" afterPath="$PROJECT_DIR$/frontend/actions/tree_actions.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/frontend/css/filetree.css" afterPath="$PROJECT_DIR$/frontend/css/filetree.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/frontend/css/main.css" afterPath="$PROJECT_DIR$/frontend/css/main.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/frontend/css/right_main_view.css" afterPath="$PROJECT_DIR$/frontend/css/right_main_view.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/frontend/data/document_store.js" afterPath="$PROJECT_DIR$/frontend/data/document_store.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/frontend/utils/nuxeo_utils.js" afterPath="$PROJECT_DIR$/frontend/utils/nuxeo_utils.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/frontend/views/attach_file.jsx" afterPath="$PROJECT_DIR$/frontend/views/attach_file.jsx" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/frontend/views/file_tree.jsx" afterPath="$PROJECT_DIR$/frontend/views/file_tree.jsx" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/frontend/views/main_view.jsx" afterPath="$PROJECT_DIR$/frontend/views/main_view.jsx" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/frontend/views/right_main_view.jsx" afterPath="$PROJECT_DIR$/frontend/views/right_main_view.jsx" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/frontend/views/right_main_view_components/show_acl.jsx" afterPath="$PROJECT_DIR$/frontend/views/right_main_view_components/show_acl.jsx" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/frontend/views/right_main_view_components/show_audit.jsx" afterPath="$PROJECT_DIR$/frontend/views/right_main_view_components/show_audit.jsx" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/frontend/views/right_main_view_components/show_blob.jsx" afterPath="$PROJECT_DIR$/frontend/views/right_main_view_components/show_blob.jsx" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/frontend/views/right_main_view_components/create_document_form.jsx" afterPath="$PROJECT_DIR$/frontend/views/right_main_view_components/create_document_form.jsx" />
     </list>
     <ignored path="nuxeo-app.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -34,11 +40,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="attach_file.jsx" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/frontend/views/attach_file.jsx">
+      <file leaf-file-name="create_document_form.jsx" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/frontend/views/right_main_view_components/create_document_form.jsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="40" column="19" selection-start-line="40" selection-start-column="19" selection-end-line="40" selection-end-column="19" />
+            <state relative-caret-position="421">
+              <caret line="66" column="53" selection-start-line="66" selection-start-column="53" selection-end-line="66" selection-end-column="53" />
               <folding>
                 <element signature="e#0#26#0" expanded="true" />
               </folding>
@@ -46,11 +52,43 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="create_document_form.jsx" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/frontend/views/right_main_view_components/create_document_form.jsx">
+      <file leaf-file-name="attach_file.jsx" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/frontend/views/right_main_view_components/attach_file.jsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="690">
-              <caret line="47" column="36" selection-start-line="47" selection-start-column="36" selection-end-line="47" selection-end-column="36" />
+            <state relative-caret-position="60">
+              <caret line="4" column="42" selection-start-line="4" selection-start-column="42" selection-end-line="4" selection-end-column="42" />
+              <folding>
+                <element signature="e#0#26#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="main_view.jsx" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/frontend/views/main_view.jsx">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="90">
+              <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="tree_node.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/frontend/data/tree_node.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="270">
+              <caret line="18" column="5" selection-start-line="18" selection-start-column="5" selection-end-line="18" selection-end-column="5" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="file_view.jsx" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/frontend/views/right_main_view_components/file_view.jsx">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="180">
+              <caret line="12" column="22" selection-start-line="12" selection-start-column="22" selection-end-line="12" selection-end-column="22" />
               <folding />
             </state>
           </provider>
@@ -59,8 +97,8 @@
       <file leaf-file-name="nuxeo_utils.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/frontend/utils/nuxeo_utils.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="315">
-              <caret line="106" column="29" selection-start-line="106" selection-start-column="29" selection-end-line="106" selection-end-column="29" />
+            <state relative-caret-position="303">
+              <caret line="118" column="26" selection-start-line="118" selection-start-column="26" selection-end-line="118" selection-end-column="26" />
               <folding>
                 <element signature="e#43#72#0" expanded="true" />
               </folding>
@@ -68,55 +106,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="tree_actions.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/frontend/actions/tree_actions.js">
+      <file leaf-file-name="document_store.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/frontend/data/document_store.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="301">
-              <caret line="63" column="6" selection-start-line="63" selection-start-column="6" selection-end-line="63" selection-end-column="6" />
-              <folding>
-                <element signature="e#0#46#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="show_audit.jsx" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/frontend/views/right_main_view_components/show_audit.jsx">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="300">
-              <caret line="22" column="51" selection-start-line="22" selection-start-column="51" selection-end-line="22" selection-end-column="51" />
+            <state relative-caret-position="186">
+              <caret line="54" column="24" selection-start-line="54" selection-start-column="24" selection-end-line="54" selection-end-column="24" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="folder_view.jsx" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/frontend/views/folder_view.jsx">
+      <file leaf-file-name="document_type_constants.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/frontend/constants/document_type_constants.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="345">
-              <caret line="24" column="44" selection-start-line="24" selection-start-column="44" selection-end-line="24" selection-end-column="44" />
-              <folding>
-                <element signature="e#0#26#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="file_view.jsx" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/frontend/views/file_view.jsx">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="150">
-              <caret line="15" column="21" selection-start-line="15" selection-start-column="21" selection-end-line="15" selection-end-column="21" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="file_tree.jsx" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/frontend/views/file_tree.jsx">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="273">
-              <caret line="20" column="27" selection-start-line="20" selection-start-column="27" selection-end-line="20" selection-end-column="27" />
+            <state relative-caret-position="405">
+              <caret line="27" column="0" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -125,24 +129,23 @@
       <file leaf-file-name="right_main_view.jsx" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/frontend/views/right_main_view.jsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="300">
-              <caret line="35" column="3" selection-start-line="35" selection-start-column="3" selection-end-line="35" selection-end-column="3" />
+            <state relative-caret-position="285">
+              <caret line="45" column="44" selection-start-line="45" selection-start-column="44" selection-end-line="45" selection-end-column="44" />
               <folding>
                 <element signature="e#0#26#0" expanded="true" />
-                <element signature="e#96#135#0" expanded="true" />
+                <element signature="e#96#162#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="show_blob.jsx" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/frontend/views/right_main_view_components/show_blob.jsx">
+      <file leaf-file-name="tree_actions.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/frontend/actions/tree_actions.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="300">
-              <caret line="21" column="1" selection-start-line="21" selection-start-column="1" selection-end-line="21" selection-end-column="1" />
+            <state relative-caret-position="705">
+              <caret line="47" column="46" selection-start-line="47" selection-start-column="46" selection-end-line="47" selection-end-column="46" />
               <folding>
-                <marker date="1479224812000" expanded="true" signature="124:534" ph="{...}" />
-                <marker date="1479224812000" expanded="true" signature="245:532" ph="{...}" />
+                <element signature="e#0#46#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -161,31 +164,34 @@
         <option value="$PROJECT_DIR$/frontend/views/create_folder.jsx" />
         <option value="$PROJECT_DIR$/frontend/views/create_document.jsx" />
         <option value="$PROJECT_DIR$/frontend/data/tree_node.js" />
-        <option value="$PROJECT_DIR$/frontend/views/right_main_view_components/create_document_form.jsx" />
         <option value="$PROJECT_DIR$/frontend/views/right_main_view_components/show_workflow.jsx" />
-        <option value="$PROJECT_DIR$/frontend/css/main.css" />
         <option value="$PROJECT_DIR$/index.html" />
-        <option value="$PROJECT_DIR$/frontend/views/file_tree.jsx" />
-        <option value="$PROJECT_DIR$/frontend/css/filetree.css" />
-        <option value="$PROJECT_DIR$/frontend/data/document_store.js" />
         <option value="$PROJECT_DIR$/frontend/views/right_main_view_components/show_tasks.jsx" />
-        <option value="$PROJECT_DIR$/frontend/views/folder_view.jsx" />
         <option value="$PROJECT_DIR$/frontend/views/log_in.jsx" />
         <option value="$PROJECT_DIR$/frontend/css/log_in.css" />
-        <option value="$PROJECT_DIR$/frontend/views/main_view.jsx" />
         <option value="$PROJECT_DIR$/node_modules/nuxeo/lib/blob.js" />
         <option value="$PROJECT_DIR$/node_modules/nuxeo/lib/nuxeo.js" />
         <option value="$PROJECT_DIR$/node_modules/nuxeo/lib/upload/batch.js" />
         <option value="$PROJECT_DIR$/frontend/views/right_main_view_components/show_acl.jsx" />
-        <option value="$PROJECT_DIR$/frontend/css/right_main_view.css" />
         <option value="$PROJECT_DIR$/frontend/helpers/date_helper.js" />
         <option value="$PROJECT_DIR$/frontend/views/right_main_view_components/show_audit.jsx" />
-        <option value="$PROJECT_DIR$/frontend/views/right_main_view.jsx" />
         <option value="$PROJECT_DIR$/frontend/views/right_main_view_components/show_blob.jsx" />
-        <option value="$PROJECT_DIR$/frontend/utils/nuxeo_utils.js" />
-        <option value="$PROJECT_DIR$/frontend/actions/tree_actions.js" />
-        <option value="$PROJECT_DIR$/frontend/views/file_view.jsx" />
         <option value="$PROJECT_DIR$/frontend/views/attach_file.jsx" />
+        <option value="$PROJECT_DIR$/frontend/actions/tree_actions.js" />
+        <option value="$PROJECT_DIR$/frontend/constants/document_type_constants.js" />
+        <option value="$PROJECT_DIR$/frontend/views/file_tree.jsx" />
+        <option value="$PROJECT_DIR$/frontend/css/filetree.css" />
+        <option value="$PROJECT_DIR$/frontend/css/main.css" />
+        <option value="$PROJECT_DIR$/frontend/views/right_main_view_components/create_document_form.jsx" />
+        <option value="$PROJECT_DIR$/frontend/views/folder_view.jsx" />
+        <option value="$PROJECT_DIR$/frontend/views/file_view.jsx" />
+        <option value="$PROJECT_DIR$/frontend/css/right_main_view.css" />
+        <option value="$PROJECT_DIR$/frontend/views/right_main_view_components/attach_file.jsx" />
+        <option value="$PROJECT_DIR$/frontend/views/right_main_view.jsx" />
+        <option value="$PROJECT_DIR$/frontend/views/main_view.jsx" />
+        <option value="$PROJECT_DIR$/frontend/data/document_store.js" />
+        <option value="$PROJECT_DIR$/frontend/utils/nuxeo_utils.js" />
+        <option value="$PROJECT_DIR$/frontend/views/right_main_view_components/file_view.jsx" />
       </list>
     </option>
   </component>
@@ -202,7 +208,7 @@
   </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="13" />
-    <option name="y" value="57" />
+    <option name="y" value="87" />
     <option name="width" value="1357" />
     <option name="height" value="653" />
   </component>
@@ -336,7 +342,43 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="helpers" />
+              <option name="myItemId" value="data" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="nuxeo-app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="nuxeo-app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="frontend" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="css" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="nuxeo-app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="nuxeo-app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="frontend" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="constants" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -374,6 +416,10 @@
     <property name="js-jscs-nodeInterpreter" value="/usr/local/bin/node" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/frontend/views/right_main_view_components" />
+      <recent name="$PROJECT_DIR$/frontend/views" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/frontend/views" />
     </key>
@@ -446,20 +492,20 @@
       <workItem from="1478704740829" duration="2800000" />
       <workItem from="1478711270616" duration="156000" />
       <workItem from="1478711440472" duration="14000000" />
-      <workItem from="1478788997997" duration="97450000" />
+      <workItem from="1478788997997" duration="111920000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="114406000" />
+    <option name="totallyTimeSpent" value="128876000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="13" y="57" width="1357" height="653" extended-state="0" />
+    <frame x="13" y="87" width="1357" height="653" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2284451" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32876712" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -508,7 +554,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/frontend/views/attach_file.jsx">
+    <entry file="file://$PROJECT_DIR$/frontend/views/right_main_view_components/attach_file.jsx">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="855">
           <caret line="58" column="23" selection-start-line="58" selection-start-column="23" selection-end-line="58" selection-end-column="23" />
@@ -529,7 +575,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/frontend/views/file_view.jsx">
+    <entry file="file://$PROJECT_DIR$/frontend/views/right_main_view_components/file_view.jsx">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1140">
           <caret line="84" column="0" selection-start-line="84" selection-start-column="0" selection-end-line="84" selection-end-column="0" />
@@ -565,7 +611,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/frontend/views/attach_file.jsx">
+    <entry file="file://$PROJECT_DIR$/frontend/views/right_main_view_components/attach_file.jsx">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="855">
           <caret line="58" column="23" selection-start-line="58" selection-start-column="23" selection-end-line="58" selection-end-column="23" />
@@ -644,42 +690,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/frontend/css/filetree.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="27" column="23" selection-start-line="27" selection-start-column="23" selection-end-line="27" selection-end-column="23" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/frontend/data/tree_node.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="495">
-          <caret line="33" column="0" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/frontend/views/log_in.jsx">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="240">
           <caret line="40" column="20" selection-start-line="40" selection-start-column="20" selection-end-line="40" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/frontend/css/main.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="24">
-          <caret line="36" column="26" selection-start-line="36" selection-start-column="26" selection-end-line="36" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/frontend/css/log_in.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="11" column="12" selection-start-line="11" selection-start-column="12" selection-end-line="11" selection-end-column="12" />
           <folding />
         </state>
       </provider>
@@ -699,22 +713,6 @@
           <folding>
             <element signature="e#0#26#0" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/frontend/views/main_view.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="333">
-          <caret line="34" column="12" selection-start-line="34" selection-start-column="12" selection-end-line="34" selection-end-column="12" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/frontend/data/document_store.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="393">
-          <caret line="60" column="0" selection-start-line="60" selection-start-column="0" selection-end-line="60" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -798,22 +796,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/frontend/css/right_main_view.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="28" column="23" selection-start-line="28" selection-start-column="23" selection-end-line="28" selection-end-column="23" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/frontend/helpers/date_helper.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="2" selection-start-line="2" selection-start-column="2" selection-end-line="2" selection-end-column="2" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/frontend/views/right_main_view_components/show_acl.jsx">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="345">
@@ -841,78 +823,164 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/frontend/utils/nuxeo_utils.js">
+    <entry file="file://$PROJECT_DIR$/frontend/css/main.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="106" column="29" selection-start-line="106" selection-start-column="29" selection-end-line="106" selection-end-column="29" />
+        <state relative-caret-position="175">
+          <caret line="40" column="0" selection-start-line="40" selection-start-column="0" selection-end-line="40" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/views/file_tree.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="526">
+          <caret line="49" column="40" selection-start-line="49" selection-start-column="40" selection-end-line="49" selection-end-column="40" />
           <folding>
-            <element signature="e#43#72#0" expanded="true" />
+            <element signature="e#0#26#0" expanded="false" />
+            <marker date="1479245091000" expanded="true" signature="1494:1537" ph="..." />
+            <marker date="1479245091000" expanded="true" signature="1568:1603" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/frontend/actions/tree_actions.js">
+    <entry file="file://$PROJECT_DIR$/frontend/views/right_main_view_components/folder_view.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="301">
-          <caret line="63" column="6" selection-start-line="63" selection-start-column="6" selection-end-line="63" selection-end-column="6" />
-          <folding>
-            <element signature="e#0#46#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/frontend/views/folder_view.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="24" column="44" selection-start-line="24" selection-start-column="44" selection-end-line="24" selection-end-column="44" />
+        <state relative-caret-position="45">
+          <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
           <folding>
             <element signature="e#0#26#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/frontend/views/file_tree.jsx">
+    <entry file="file://$PROJECT_DIR$/frontend/css/filetree.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="273">
-          <caret line="20" column="27" selection-start-line="20" selection-start-column="27" selection-end-line="20" selection-end-column="27" />
+        <state relative-caret-position="645">
+          <caret line="43" column="0" selection-start-line="43" selection-start-column="0" selection-end-line="43" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/css/log_in.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="11" column="12" selection-start-line="11" selection-start-column="12" selection-end-line="11" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/css/right_main_view.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="382">
+          <caret line="34" column="1" selection-start-line="34" selection-start-column="1" selection-end-line="34" selection-end-column="1" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/frontend/views/right_main_view_components/create_document_form.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="690">
-          <caret line="47" column="36" selection-start-line="47" selection-start-column="36" selection-end-line="47" selection-end-column="36" />
+        <state relative-caret-position="421">
+          <caret line="66" column="53" selection-start-line="66" selection-start-column="53" selection-end-line="66" selection-end-column="53" />
+          <folding>
+            <element signature="e#0#26#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/nuxeo/dist/nuxeo.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-14158">
+          <caret line="4471" column="0" selection-start-line="4471" selection-start-column="0" selection-end-line="4471" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/views/right_main_view_components/attach_file.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="42" selection-start-line="4" selection-start-column="42" selection-end-line="4" selection-end-column="42" />
+          <folding>
+            <element signature="e#0#26#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/helpers/date_helper.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="2" selection-start-line="2" selection-start-column="2" selection-end-line="2" selection-end-column="2" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/constants/document_type_constants.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="405">
+          <caret line="27" column="0" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/frontend/views/right_main_view.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="35" column="3" selection-start-line="35" selection-start-column="3" selection-end-line="35" selection-end-column="3" />
+        <state relative-caret-position="285">
+          <caret line="45" column="44" selection-start-line="45" selection-start-column="44" selection-end-line="45" selection-end-column="44" />
           <folding>
             <element signature="e#0#26#0" expanded="true" />
-            <element signature="e#96#135#0" expanded="true" />
+            <element signature="e#96#162#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/frontend/views/file_view.jsx">
+    <entry file="file://$PROJECT_DIR$/frontend/views/main_view.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="15" column="21" selection-start-line="15" selection-start-column="21" selection-end-line="15" selection-end-column="21" />
+        <state relative-caret-position="90">
+          <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/frontend/views/attach_file.jsx">
+    <entry file="file://$PROJECT_DIR$/frontend/actions/tree_actions.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="40" column="19" selection-start-line="40" selection-start-column="19" selection-end-line="40" selection-end-column="19" />
+        <state relative-caret-position="705">
+          <caret line="47" column="46" selection-start-line="47" selection-start-column="46" selection-end-line="47" selection-end-column="46" />
           <folding>
-            <element signature="e#0#26#0" expanded="true" />
+            <element signature="e#0#46#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/utils/nuxeo_utils.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="303">
+          <caret line="118" column="26" selection-start-line="118" selection-start-column="26" selection-end-line="118" selection-end-column="26" />
+          <folding>
+            <element signature="e#43#72#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/data/document_store.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="186">
+          <caret line="54" column="24" selection-start-line="54" selection-start-column="24" selection-end-line="54" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/data/tree_node.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="18" column="5" selection-start-line="18" selection-start-column="5" selection-end-line="18" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/views/right_main_view_components/file_view.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="12" column="22" selection-start-line="12" selection-start-column="22" selection-end-line="12" selection-end-column="22" />
+          <folding />
         </state>
       </provider>
     </entry>

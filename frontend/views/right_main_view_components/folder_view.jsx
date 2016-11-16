@@ -1,6 +1,5 @@
 import React from 'react';
-import TreeActions from '../actions/tree_actions';
-
+import TreeActions from '../../actions/tree_actions';
 
 class FolderView extends React.Component {
     constructor(props) {

@@ -14,6 +14,7 @@ const TreeActions = {
     fetchChildren(node) {
         let success = (docs) => {
             docs.entries.forEach((entry) => {
+                console.log(entry);
                 DocumentStore.addChild(node, entry);
             });
         };

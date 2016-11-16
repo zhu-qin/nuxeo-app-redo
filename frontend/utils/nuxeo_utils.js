@@ -4,6 +4,20 @@ import {merge} from 'lodash';
 import DocumentStore from '../data/document_store';
 
 let _nuxeo;
+const DEFAULTS = {
+    method: "get",
+    adapter: undefined,
+    path: "/",
+    schemas: ["*"],
+    data: undefined,
+    operation: undefined,
+    success: (res) => {
+        console.log(res)
+    },
+    fail: (res) => {
+        console.log(res)
+    }
+};
 
 const NuxeoUtils = {
   signIn(logIn, directToDashboard){
@@ -11,8 +25,8 @@ const NuxeoUtils = {
       baseURL: logIn.url,
       auth: {
         method: 'basic',
-        username: `${logIn.username}`,
-        password: `${logIn.password}`
+        username: logIn.username,
+        password: logIn.password
       },
     });
     _nuxeo = nuxeo;
@@ -26,7 +40,6 @@ const NuxeoUtils = {
       });
   },
 
-
   batchUpload(params){
       var blob = new Nuxeo.Blob({
           content: params.data.file,
@@ -34,7 +47,6 @@ const NuxeoUtils = {
           mimeType: params.data.file.type,
           size: params.data.file.size
       });
-
       _nuxeo.batchUpload()
           .upload(blob)
           .then((res) => {
@@ -57,22 +69,11 @@ const NuxeoUtils = {
                   data: finalDoc,
                   success: params.success
               })
-
-
           });
-
   },
 
 
   attachFile(docToAttachTo, upload, success) {
-
-    // var blob = new Nuxeo.Blob({
-    //     content: upload.file,
-    //     name: upload.title,
-    //     mimeType: upload.file.type,
-    //     size: upload.file.size
-    // });
-
     let blob = new Nuxeo.Blob({content: upload.file});
       // debugger
       // _nuxeo.batchUpload()
@@ -122,24 +123,8 @@ const NuxeoUtils = {
   },
 
   crudUtil(params) {
-      let defaults = {
-          method: "get",
-          adapter: undefined,
-          path: "/",
-          schemas: ["*"],
-          data: undefined,
-          operation: undefined,
-          success: (res) => {
-              console.log(res)
-          },
-          fail: (res) => {
-              console.log(res)
-          }
-      };
-      let finalParams = merge({}, defaults, params);
-
+      let finalParams = merge({}, DEFAULTS, params);
       let path = finalParams.path;
-
       if (finalParams.adapter) {
           path += `/@${finalParams.adapter}`;
       }

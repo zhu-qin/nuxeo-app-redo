@@ -37,9 +37,15 @@ const DocumentStore = {
 
   addListener(listener) {
     _listeners.push(listener);
+    let idx = _listeners.indexOf(listener);
+    return {
+      remove: () => {
+        _listeners.splice(idx, 1)
+      }
+    }
   },
 
-  invokeListeners(){
+  invokeListeners() {
     _listeners.forEach((listener) => {
       listener();
     });

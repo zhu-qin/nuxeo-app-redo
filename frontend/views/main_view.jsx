@@ -19,9 +19,14 @@ class MainView extends React.Component {
   }
 
   componentDidMount() {
-    DocumentStore.addListener(this._rootListener.bind(this));
-    DocumentStore.addListener(this._setWorkingNode.bind(this));
+    this.rootListener = DocumentStore.addListener(this._rootListener.bind(this));
+    this.nodeListener = DocumentStore.addListener(this._setWorkingNode.bind(this));
     TreeActions.fetchRoot();
+  }
+
+  componentWillUnmount(){
+    this.rootListener.remove();
+    this.nodeListener.remove();
   }
 
   _setWorkingNode() {
@@ -51,11 +56,12 @@ class MainView extends React.Component {
           </div>
           {tree}
         </div>
-        {workingNode}
+        <div className="right-main-view-wrapper">
+          {workingNode}
+        </div>
       </div>
     );
   }
-
 }
 
 module.exports = MainView;

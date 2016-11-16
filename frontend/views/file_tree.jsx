@@ -1,5 +1,6 @@
 import React from 'react';
 import TreeActions from '../actions/tree_actions';
+import DocumentTypeConstants from '../constants/document_type_constants';
 
 class FileTree extends React.Component {
   constructor(props) {
@@ -14,13 +15,14 @@ class FileTree extends React.Component {
   render(){
     let workingNode = TreeActions.getWorkingNode();
     let node = this.props.node;
-    let containers = ["Root", "Workspace", "Domain", "WorkspaceRoot", "SectionRoot", "TemplateRoot", "Folder"];
+    let containers = DocumentTypeConstants.containers.concat(DocumentTypeConstants.defaultContainers);
     let subFiles;
     let showChildren;
     let highlightWorking;
     if (workingNode === node) {
       highlightWorking = 'highlight-working';
     }
+
     if (node.showChildren) {
       let keys = Object.keys(node.children);
       if (containers.includes(node.item.type)) {
@@ -43,13 +45,13 @@ class FileTree extends React.Component {
     }
 
     return (
-      <div className={`folder-view`} onClick={this._showChildren.bind(this)}>
-         <div className="folder-title-wrapper">
-           <div className={`${node.item.type} ${showChildren}`}></div>
-           <div className={highlightWorking}>
-             {title}
+      <div className={`file-tree-view`} >
+           <div className="file-tree-title-wrapper" onClick={this._showChildren.bind(this)}>
+             <div className={`${node.item.type} ${showChildren}`}></div>
+             <div className={`file-tree-title ${highlightWorking}`} >
+               {title}
+             </div>
            </div>
-         </div>
         <ul>
           {subFiles}
         </ul>
