@@ -54888,7 +54888,6 @@
 	            var node = this.props.workingNode;
 	            var content = node.item.properties["file:content"];
 	            var embedded = void 0;
-	            console.log(content);
 	            if (content) {
 	                embedded = _react2.default.createElement(
 	                    "div",

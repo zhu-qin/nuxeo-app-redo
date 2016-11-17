@@ -9,7 +9,6 @@ class FileView extends React.Component {
         let node = this.props.workingNode;
         let content = node.item.properties["file:content"];
         let embedded;
-        console.log(content);
         if (content) {
             embedded = (
                 <div><h3>{content["name"]}</h3>

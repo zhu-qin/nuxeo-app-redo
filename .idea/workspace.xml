@@ -2,22 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5b8a1a3f-53c9-4036-a8b0-54716379b752" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/frontend/helpers/date_helper.js" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/frontend/views/attach_file.jsx" afterPath="$PROJECT_DIR$/frontend/views/right_main_view_components/attach_file.jsx" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/frontend/views/file_view.jsx" afterPath="$PROJECT_DIR$/frontend/views/right_main_view_components/file_view.jsx" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/frontend/views/folder_view.jsx" afterPath="$PROJECT_DIR$/frontend/views/right_main_view_components/folder_view.jsx" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bundle.js" afterPath="$PROJECT_DIR$/bundle.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/frontend/actions/tree_actions.js" afterPath="$PROJECT_DIR$/frontend/actions/tree_actions.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/frontend/css/filetree.css" afterPath="$PROJECT_DIR$/frontend/css/filetree.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/frontend/css/main.css" afterPath="$PROJECT_DIR$/frontend/css/main.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/frontend/css/right_main_view.css" afterPath="$PROJECT_DIR$/frontend/css/right_main_view.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/frontend/data/document_store.js" afterPath="$PROJECT_DIR$/frontend/data/document_store.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/frontend/utils/nuxeo_utils.js" afterPath="$PROJECT_DIR$/frontend/utils/nuxeo_utils.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/frontend/views/file_tree.jsx" afterPath="$PROJECT_DIR$/frontend/views/file_tree.jsx" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/frontend/views/main_view.jsx" afterPath="$PROJECT_DIR$/frontend/views/main_view.jsx" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/frontend/views/right_main_view.jsx" afterPath="$PROJECT_DIR$/frontend/views/right_main_view.jsx" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/frontend/views/right_main_view_components/create_document_form.jsx" afterPath="$PROJECT_DIR$/frontend/views/right_main_view_components/create_document_form.jsx" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/frontend/views/right_main_view_components/file_view.jsx" afterPath="$PROJECT_DIR$/frontend/views/right_main_view_components/file_view.jsx" />
     </list>
     <ignored path="nuxeo-app.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -87,8 +73,8 @@
       <file leaf-file-name="file_view.jsx" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/frontend/views/right_main_view_components/file_view.jsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="12" column="22" selection-start-line="12" selection-start-column="22" selection-end-line="12" selection-end-column="22" />
+            <state relative-caret-position="450">
+              <caret line="30" column="0" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -492,15 +478,15 @@
       <workItem from="1478704740829" duration="2800000" />
       <workItem from="1478711270616" duration="156000" />
       <workItem from="1478711440472" duration="14000000" />
-      <workItem from="1478788997997" duration="111920000" />
+      <workItem from="1478788997997" duration="113018000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="128876000" />
+    <option name="totallyTimeSpent" value="129974000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="13" y="87" width="1357" height="653" extended-state="0" />
+    <frame x="13" y="87" width="1357" height="653" extended-state="1" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2284451" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -978,8 +964,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/frontend/views/right_main_view_components/file_view.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="12" column="22" selection-start-line="12" selection-start-column="22" selection-end-line="12" selection-end-column="22" />
+        <state relative-caret-position="450">
+          <caret line="30" column="0" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
           <folding />
         </state>
       </provider>
