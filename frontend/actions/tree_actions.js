@@ -122,7 +122,6 @@ TreeActions.getblob = (node) => {
 
 TreeActions.getrendition = (node) => {
     let success = (res) => {
-        
         DocumentStore.setProperty(node, res, 'rendition');
     };
     let path = node.item.uid;

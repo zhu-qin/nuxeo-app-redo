@@ -24976,7 +24976,7 @@
 	        _react2.default.createElement('div', { className: 'login-buffer-box' }),
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'container-fluid login-wrapper' },
+	          { className: 'login-wrapper' },
 	          _react2.default.createElement(
 	            'form',
 	            { className: 'login-form', onSubmit: this._submitForm.bind(this) },
@@ -24984,19 +24984,7 @@
 	              'div',
 	              null,
 	              'URL:',
-	              _react2.default.createElement('input', { type: 'text', value: this.state.url, onChange: this._handleChange("url") })
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              null,
-	              'Username:',
-	              _react2.default.createElement('input', { type: 'text', value: this.state.username, onChange: this._handleChange("username") })
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              null,
-	              'Password:',
-	              _react2.default.createElement('input', { type: 'password', value: this.state.password, onChange: this._handleChange("password") })
+	              _react2.default.createElement('input', { className: 'login-input-field', type: 'text', value: this.state.url, onChange: this._handleChange("url") })
 	            ),
 	            _react2.default.createElement('input', { type: 'submit', value: 'Sign In', className: 'login-button' })
 	          )
@@ -25050,20 +25038,25 @@
 	var NuxeoUtils = {
 	    signIn: function signIn(logIn, directToDashboard) {
 	        var nuxeo = new Nuxeo({
-	            baseURL: logIn.url,
-	            auth: {
-	                method: 'basic',
-	                username: logIn.username,
-	                password: logIn.password
-	            }
+	            baseURL: logIn.url
 	        });
 	        _nuxeo = nuxeo;
-	        _nuxeo.login().then(function (res) {
+	        var success = function success(res) {
 	            _document_store2.default.setUser(res);
 	            directToDashboard();
-	        }).catch(function (error) {
-	            throw error;
+	        };
+	        NuxeoUtils.crudUtil({
+	            success: success
 	        });
+	        // _nuxeo.login()
+	        //   .then(function(res) {
+	        //       debugger
+	        //     DocumentStore.setUser(res);
+	        //     directToDashboard();
+	        //   })
+	        //   .catch(function(error) {
+	        //     throw error;
+	        //   });
 	    },
 	    batchUpload: function batchUpload(params) {
 	        var blob = new Nuxeo.Blob({
@@ -53777,7 +53770,6 @@
 
 	TreeActions.getrendition = function (node) {
 	    var success = function success(res) {
-
 	        _document_store2.default.setProperty(node, res, 'rendition');
 	    };
 	    var path = node.item.uid;

@@ -23,21 +23,29 @@ const NuxeoUtils = {
   signIn(logIn, directToDashboard){
     let nuxeo = new Nuxeo({
       baseURL: logIn.url,
-      auth: {
-        method: 'basic',
-        username: logIn.username,
-        password: logIn.password
-      },
+      // auth: {
+      //   method: 'basic',
+      //   username: logIn.username,
+      //   password: logIn.password
+      // },
     });
     _nuxeo = nuxeo;
-    _nuxeo.login()
-      .then(function(res) {
+    let success = (res) => {
         DocumentStore.setUser(res);
         directToDashboard();
-      })
-      .catch(function(error) {
-        throw error;
-      });
+    };
+    NuxeoUtils.crudUtil({
+        success: success
+    });
+    // _nuxeo.login()
+    //   .then(function(res) {
+    //       debugger
+    //     DocumentStore.setUser(res);
+    //     directToDashboard();
+    //   })
+    //   .catch(function(error) {
+    //     throw error;
+    //   });
   },
 
   batchUpload(params){
