@@ -167,4 +167,4 @@ const NuxeoUtils = {
   },
 };
 
-module.exports = NuxeoUtils;
+export default NuxeoUtils;

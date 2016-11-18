@@ -11,6 +11,8 @@ import ShowAudit from './right_main_view_components/show_audit.jsx';
 import ShowTask from './right_main_view_components/show_task.jsx';
 import ShowWorkFlow from './right_main_view_components/show_workflow.jsx';
 import ShowBlob from './right_main_view_components/show_blob.jsx';
+import ShowRendition from './right_main_view_components/show_rendition.jsx';
+
 import AttachFile from './right_main_view_components/attach_file.jsx';
 
 import DocumentTypeConstants from '../constants/document_type_constants';
@@ -22,7 +24,8 @@ const workingButtons = {
   "Tasks": ShowTask,
   "Audit": ShowAudit,
   "Blob": ShowBlob,
-  "Attach File": AttachFile
+  "Rendition": ShowRendition,
+  "Attach File": AttachFile,
 };
 
 const containers = DocumentTypeConstants.containers.concat(DocumentTypeConstants.defaultContainers);
@@ -68,7 +71,7 @@ class RightMainView extends React.Component {
         </div>
     );
 
-    let buttonList = ["ACL", "Work Flow", "Tasks", "Audit"].map((button) => {
+    let buttonList = ["ACL", "Work Flow", "Tasks", "Audit", "Rendition"].map((button) => {
       return (
         <button key={button} onClick={this._setWorkingButton.bind(this,`${button}`)} className="submit-button">{`${button}`}</button>
       );

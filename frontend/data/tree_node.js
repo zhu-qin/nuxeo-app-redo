@@ -11,6 +11,7 @@ class TreeNode {
     this.audit = undefined;
     this.task = undefined;
     this.blob = undefined;
+    this.rendition = undefined;
   }
 
   setParent(node) {

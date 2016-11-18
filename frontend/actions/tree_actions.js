@@ -100,7 +100,6 @@ const TreeActions = {
           adapter: `${adapter}`,
           success: success
        });
-
    }
 });
 
@@ -119,6 +118,21 @@ TreeActions.getblob = (node) => {
       success: success
   });
 
+};
+
+TreeActions.getrendition = (node) => {
+    let success = (res) => {
+        
+        DocumentStore.setProperty(node, res, 'rendition');
+    };
+    let path = node.item.uid;
+    NuxeoUtils.crudUtil({
+        method: "get",
+        path: path,
+        adapter: "rendition",
+        operation: "thumbnail",
+        success: success
+    });
 };
 
 export default TreeActions;
