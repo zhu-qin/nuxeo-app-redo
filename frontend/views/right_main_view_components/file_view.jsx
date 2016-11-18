@@ -13,6 +13,7 @@ class FileView extends React.Component {
             embedded = (
                 <div><h3>{content["name"]}</h3>
                     <embed src={content["data"]} type={content["mime-type"]} className="upload-preview-embed" />
+                    <a href={content["data"]} download>Download Link</a>
                 </div>
             );
         }

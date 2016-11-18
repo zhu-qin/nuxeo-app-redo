@@ -54897,7 +54897,12 @@
 	                        null,
 	                        content["name"]
 	                    ),
-	                    _react2.default.createElement("embed", { src: content["data"], type: content["mime-type"], className: "upload-preview-embed" })
+	                    _react2.default.createElement("embed", { src: content["data"], type: content["mime-type"], className: "upload-preview-embed" }),
+	                    _react2.default.createElement(
+	                        "a",
+	                        { href: content["data"], download: true },
+	                        "Download Link"
+	                    )
 	                );
 	            }
 

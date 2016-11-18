@@ -4,6 +4,7 @@
     <list default="true" id="5b8a1a3f-53c9-4036-a8b0-54716379b752" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bundle.js" afterPath="$PROJECT_DIR$/bundle.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/frontend/views/right_main_view_components/file_view.jsx" afterPath="$PROJECT_DIR$/frontend/views/right_main_view_components/file_view.jsx" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/readme.md" afterPath="$PROJECT_DIR$/readme.md" />
     </list>
     <ignored path="nuxeo-app.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -26,18 +27,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="create_document_form.jsx" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/frontend/views/right_main_view_components/create_document_form.jsx">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="421">
-              <caret line="66" column="53" selection-start-line="66" selection-start-column="53" selection-end-line="66" selection-end-column="53" />
-              <folding>
-                <element signature="e#0#26#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="attach_file.jsx" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/frontend/views/right_main_view_components/attach_file.jsx">
           <provider selected="true" editor-type-id="text-editor">
@@ -70,11 +59,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="file_view.jsx" pinned="false" current-in-tab="true">
+      <file leaf-file-name="file_view.jsx" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/frontend/views/right_main_view_components/file_view.jsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="450">
-              <caret line="30" column="0" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
+            <state relative-caret-position="270">
+              <caret line="18" column="9" selection-start-line="18" selection-start-column="9" selection-end-line="18" selection-end-column="9" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="readme.md" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/readme.md">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="45">
+              <caret line="3" column="64" selection-start-line="3" selection-start-column="64" selection-end-line="3" selection-end-column="64" />
               <folding />
             </state>
           </provider>
@@ -146,7 +145,6 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/frontend/entry.jsx" />
-        <option value="$PROJECT_DIR$/readme.md" />
         <option value="$PROJECT_DIR$/frontend/views/create_folder.jsx" />
         <option value="$PROJECT_DIR$/frontend/views/create_document.jsx" />
         <option value="$PROJECT_DIR$/frontend/data/tree_node.js" />
@@ -178,6 +176,7 @@
         <option value="$PROJECT_DIR$/frontend/data/document_store.js" />
         <option value="$PROJECT_DIR$/frontend/utils/nuxeo_utils.js" />
         <option value="$PROJECT_DIR$/frontend/views/right_main_view_components/file_view.jsx" />
+        <option value="$PROJECT_DIR$/readme.md" />
       </list>
     </option>
   </component>
@@ -193,8 +192,8 @@
     <handled-path value="$PROJECT_DIR$/node_modules" />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="13" />
-    <option name="y" value="87" />
+    <option name="x" value="3" />
+    <option name="y" value="113" />
     <option name="width" value="1357" />
     <option name="height" value="653" />
   </component>
@@ -478,15 +477,15 @@
       <workItem from="1478704740829" duration="2800000" />
       <workItem from="1478711270616" duration="156000" />
       <workItem from="1478711440472" duration="14000000" />
-      <workItem from="1478788997997" duration="113018000" />
+      <workItem from="1478788997997" duration="113708000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="129974000" />
+    <option name="totallyTimeSpent" value="130664000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="13" y="87" width="1357" height="653" extended-state="1" />
+    <frame x="3" y="113" width="1357" height="653" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2284451" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -630,14 +629,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/readme.md">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -964,8 +955,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/frontend/views/right_main_view_components/file_view.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="30" column="0" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
+        <state relative-caret-position="270">
+          <caret line="18" column="9" selection-start-line="18" selection-start-column="9" selection-end-line="18" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/readme.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="64" selection-start-line="3" selection-start-column="64" selection-end-line="3" selection-end-column="64" />
           <folding />
         </state>
       </provider>
