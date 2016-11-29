@@ -158,4 +158,5 @@ export default NuxeoUtils;
 
 Object.keys(NuxeoUtils).forEach((key) => {
    window[key] = NuxeoUtils[key];
+    
 });
