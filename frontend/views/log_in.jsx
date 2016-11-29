@@ -34,7 +34,6 @@ class LogIn extends React.Component {
     return (
       <div className="login-background">
         <div className="login-buffer-box"></div>
-
           <div className="login-wrapper">
             <form className="login-form" onSubmit={this._submitForm.bind(this)}>
               <div >

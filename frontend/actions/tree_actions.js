@@ -14,7 +14,6 @@ const TreeActions = {
     fetchChildren(node) {
         let success = (docs) => {
             docs.entries.forEach((entry) => {
-                console.log(entry);
                 DocumentStore.addChild(node, entry);
             });
         };
@@ -56,6 +55,20 @@ const TreeActions = {
         });
     },
 
+    editDocument(node, doc){
+        let success = (doc) => {
+          debugger
+        };
+        debugger;
+        let path = node.item.uid;
+        NuxeoUtils.crudUtil({
+           type: 'update',
+           path:  path,
+           data:  doc,
+           success: success
+        });
+    },
+
     attachFile(node, upload) {
         let success = (res) => {
             node.item = res;
@@ -64,7 +77,7 @@ const TreeActions = {
         NuxeoUtils.attachFile(node, upload, success);
     },
 
-    setWorkingNode(node) {
+    setWorkingNode(node){
         DocumentStore.setWorkingNode(node);
     },
 

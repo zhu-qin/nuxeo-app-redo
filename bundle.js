@@ -66,26 +66,22 @@
 
 	var _main_view2 = _interopRequireDefault(_main_view);
 
-	var _nuxeo_utils = __webpack_require__(217);
-
-	var _nuxeo_utils2 = _interopRequireDefault(_nuxeo_utils);
-
 	var _document_store = __webpack_require__(220);
 
 	var _document_store2 = _interopRequireDefault(_document_store);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	// utils
-
-
-	// components
 	var redirectConditions = function redirectConditions(nextState, replace) {
 	  if (!_document_store2.default.getUser()) {
 	    replace("/");
 	  }
 	};
+
 	// data
+
+
+	// components
 
 
 	var AppRouter = _react2.default.createElement(
@@ -99,20 +95,6 @@
 	  var root = document.getElementById('root');
 	  _reactDom2.default.render(AppRouter, root);
 	});
-
-	// testing
-
-	Object.keys(_nuxeo_utils2.default).forEach(function (key) {
-	  window[key] = _nuxeo_utils2.default[key];
-	});
-
-	var success = function success(res) {
-	  debugger;
-	  console.log(res);
-	};
-
-	window.success = success;
-	window.store = _document_store2.default;
 
 /***/ },
 /* 1 */
@@ -25050,7 +25032,6 @@
 	        });
 	        // _nuxeo.login()
 	        //   .then(function(res) {
-	        //       debugger
 	        //     DocumentStore.setUser(res);
 	        //     directToDashboard();
 	        //   })
@@ -25089,34 +25070,6 @@
 	    },
 	    attachFile: function attachFile(docToAttachTo, upload, success) {
 	        var blob = new Nuxeo.Blob({ content: upload.file });
-	        // debugger
-	        // _nuxeo.batchUpload()
-	        //     .upload(blob)
-	        //     .then(function(res) {
-	        //         return _nuxeo.operation('Blob.AttachOnDocument')
-	        //             .param('document', `${docToAttachTo.item.uid}`)
-	        //             .input(res.blob)
-	        //             .execute({ schemas: ['dublincore', 'file']});
-	        //     })
-	        //     .then(function(res) {
-	        //         return _nuxeo.repository().fetch(`${docToAttachTo.item.uid}`)
-	        //     })
-	        //     .then((doc) => {
-	        //        debugger
-	        //     })
-	        //     .catch(function(error) {
-	        //         throw error;
-	        //     });
-	        // let blob = new Blob(["Hello World"], {
-	        //     type: 'text/plain',
-	        // });
-	        //
-	        // let finalBlob = new Nuxeo.Blob({
-	        //     name: "test",
-	        //     content: blob,
-	        //     mimeType: 'text/plain',
-	        //     size: blob.length,
-	        // });
 	        var batch = _nuxeo.batchUpload();
 	        _nuxeo.Promise.all([batch.upload(blob)]).then(function (values) {
 	            var batchBlob = values[0].blob;
@@ -25147,7 +25100,7 @@
 	                _nuxeo.repository().schemas(finalParams.schemas).delete(path).then(finalParams.success).catch(finalParams.fail);
 	                break;
 	            case "update":
-	                _nuxeo.repository().schemas(finalParams.schemas).update(path, finalParams.data).then(finalParams.success).catch(finalParams.fail);
+	                _nuxeo.repository().schemas(finalParams.schemas).update(finalParams.data).then(finalParams.success).catch(finalParams.fail);
 	                break;
 	            case "create":
 	                _nuxeo.repository().schemas(finalParams.schemas).create(path, finalParams.data).then(finalParams.success).catch(finalParams.fail);
@@ -25155,10 +25108,20 @@
 	            default:
 	                throw "Method does not exist";
 	        }
+	    },
+	    getConfiguration: function getConfiguration() {
+	        _nuxeo.request('api/v1/config/types').get().then(function (res) {
+	            debugger;
+	        });
 	    }
 	};
 
 	exports.default = NuxeoUtils;
+
+
+	Object.keys(NuxeoUtils).forEach(function (key) {
+	    window[key] = NuxeoUtils[key];
+	});
 
 /***/ },
 /* 218 */
@@ -53541,7 +53504,7 @@
 
 	var _right_main_view2 = _interopRequireDefault(_right_main_view);
 
-	var _file_tree = __webpack_require__(241);
+	var _file_tree = __webpack_require__(242);
 
 	var _file_tree2 = _interopRequireDefault(_file_tree);
 
@@ -53671,7 +53634,6 @@
 	    fetchChildren: function fetchChildren(node) {
 	        var success = function success(docs) {
 	            docs.entries.forEach(function (entry) {
-	                console.log(entry);
 	                _document_store2.default.addChild(node, entry);
 	            });
 	        };
@@ -53707,6 +53669,19 @@
 	            method: "create",
 	            path: path,
 	            data: finalDoc,
+	            success: success
+	        });
+	    },
+	    editDocument: function editDocument(node, doc) {
+	        var success = function success(doc) {
+	            debugger;
+	        };
+	        debugger;
+	        var path = node.item.uid;
+	        _nuxeo_utils2.default.crudUtil({
+	            type: 'update',
+	            path: path,
+	            data: doc,
 	            success: success
 	        });
 	    },
@@ -53840,6 +53815,10 @@
 
 	var _attach_file2 = _interopRequireDefault(_attach_file);
 
+	var _edit_document = __webpack_require__(241);
+
+	var _edit_document2 = _interopRequireDefault(_edit_document);
+
 	var _document_type_constants = __webpack_require__(233);
 
 	var _document_type_constants2 = _interopRequireDefault(_document_type_constants);
@@ -53863,8 +53842,11 @@
 	  "Audit": _show_audit2.default,
 	  "Blob": _show_blob2.default,
 	  "Rendition": _show_rendition2.default,
-	  "Attach File": _attach_file2.default
+	  "Attach File": _attach_file2.default,
+	  "Edit": _edit_document2.default
 	};
+
+	var showWorkingButtons = ['ACL', 'Work Flow', 'Tasks', 'Audit', 'Edit'];
 
 	var containers = _document_type_constants2.default.containers.concat(_document_type_constants2.default.defaultContainers);
 
@@ -53932,7 +53914,7 @@
 	        new Date(fileProperties["dc:modified"]).toString()
 	      );
 
-	      var buttonList = ["ACL", "Work Flow", "Tasks", "Audit", "Rendition"].map(function (button) {
+	      var buttonList = showWorkingButtons.map(function (button) {
 	        return _react2.default.createElement(
 	          'button',
 	          { key: button, onClick: _this2._setWorkingButton.bind(_this2, '' + button), className: 'submit-button' },
@@ -54867,6 +54849,102 @@
 
 /***/ },
 /* 241 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _tree_actions = __webpack_require__(228);
+
+	var _tree_actions2 = _interopRequireDefault(_tree_actions);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var EditDocument = function (_React$Component) {
+	    _inherits(EditDocument, _React$Component);
+
+	    function EditDocument(props) {
+	        _classCallCheck(this, EditDocument);
+
+	        var _this = _possibleConstructorReturn(this, (EditDocument.__proto__ || Object.getPrototypeOf(EditDocument)).call(this, props));
+
+	        _this.state = {
+	            title: '' + _this.props.workingNode.item.title,
+	            description: '' + _this.props.workingNode.item.description
+	        };
+	        return _this;
+	    }
+
+	    _createClass(EditDocument, [{
+	        key: '_handleChange',
+	        value: function _handleChange(field) {
+	            var _this2 = this;
+
+	            return function (e) {
+	                _this2.setState(_defineProperty({}, field, e.target.value));
+	            };
+	        }
+	    }, {
+	        key: '_handleSubmit',
+	        value: function _handleSubmit(e) {
+	            e.preventDefault();
+	            var doc = this.props.workingNode.item;
+
+	            // doc.set({ 'dc:title' : this.state.title});
+	            // doc.set({'dc:description': this.state.description});
+
+	            doc.properties['dc:title'] = this.state.title;
+	            doc.properties['dc:description'] = this.state.description;
+	            debugger;
+	            _tree_actions2.default.editDocument(this.props.workingNode, doc);
+	            // this.setState({title:"", description: ""});
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+
+	            return _react2.default.createElement(
+	                'div',
+	                { className: 'right-main-view-show-working-button' },
+	                _react2.default.createElement(
+	                    'h4',
+	                    null,
+	                    'Edit ',
+	                    this.state.type
+	                ),
+	                _react2.default.createElement(
+	                    'form',
+	                    { onSubmit: this._handleSubmit.bind(this), className: 'create-document-form' },
+	                    'Title:',
+	                    _react2.default.createElement('input', { type: 'text', onChange: this._handleChange("title"), value: this.state.title }),
+	                    'Description:',
+	                    _react2.default.createElement('input', { type: 'text', onChange: this._handleChange("description"), value: this.state.description }),
+	                    _react2.default.createElement('input', { className: 'create-document-button', type: 'submit', value: 'Update' })
+	                )
+	            );
+	        }
+	    }]);
+
+	    return EditDocument;
+	}(_react2.default.Component);
+
+	module.exports = EditDocument;
+
+/***/ },
+/* 242 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';

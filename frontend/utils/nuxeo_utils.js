@@ -39,7 +39,6 @@ const NuxeoUtils = {
     });
     // _nuxeo.login()
     //   .then(function(res) {
-    //       debugger
     //     DocumentStore.setUser(res);
     //     directToDashboard();
     //   })
@@ -83,34 +82,6 @@ const NuxeoUtils = {
 
   attachFile(docToAttachTo, upload, success) {
     let blob = new Nuxeo.Blob({content: upload.file});
-      // debugger
-      // _nuxeo.batchUpload()
-      //     .upload(blob)
-      //     .then(function(res) {
-      //         return _nuxeo.operation('Blob.AttachOnDocument')
-      //             .param('document', `${docToAttachTo.item.uid}`)
-      //             .input(res.blob)
-      //             .execute({ schemas: ['dublincore', 'file']});
-      //     })
-      //     .then(function(res) {
-      //         return _nuxeo.repository().fetch(`${docToAttachTo.item.uid}`)
-      //     })
-      //     .then((doc) => {
-      //        debugger
-      //     })
-      //     .catch(function(error) {
-      //         throw error;
-      //     });
-      // let blob = new Blob(["Hello World"], {
-      //     type: 'text/plain',
-      // });
-      //
-      // let finalBlob = new Nuxeo.Blob({
-      //     name: "test",
-      //     content: blob,
-      //     mimeType: 'text/plain',
-      //     size: blob.length,
-      // });
       const batch = _nuxeo.batchUpload();
       _nuxeo.Promise.all([batch.upload(blob)])
           .then((values) => {
@@ -156,11 +127,11 @@ const NuxeoUtils = {
               .catch(finalParams.fail);
               break;
           case "update":
-              _nuxeo.repository()
-                  .schemas(finalParams.schemas)
-                  .update(path, finalParams.data)
-                  .then(finalParams.success)
-                  .catch(finalParams.fail);
+          _nuxeo.repository()
+              .schemas(finalParams.schemas)
+              .update(finalParams.data)
+              .then(finalParams.success)
+              .catch(finalParams.fail);
               break;
           case "create":
           _nuxeo.repository()
@@ -173,6 +144,18 @@ const NuxeoUtils = {
               throw "Method does not exist";
       }
   },
+
+  getConfiguration() {
+      _nuxeo.request('api/v1/config/types')
+          .get()
+          .then((res) => {
+              debugger;
+          })
+  }
 };
 
 export default NuxeoUtils;
+
+Object.keys(NuxeoUtils).forEach((key) => {
+   window[key] = NuxeoUtils[key];
+});

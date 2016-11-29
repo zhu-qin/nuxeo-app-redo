@@ -37,3 +37,13 @@
 .create-document-form, .attach-file-form > * {
     padding: 5px;
 }
+
+
+.file-view-list-item {
+    padding: 10px;
+    display: flex;
+}
+
+.file-view-list-item > *{
+    padding: 10px;
+}

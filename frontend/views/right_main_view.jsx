@@ -14,6 +14,7 @@ import ShowBlob from './right_main_view_components/show_blob.jsx';
 import ShowRendition from './right_main_view_components/show_rendition.jsx';
 
 import AttachFile from './right_main_view_components/attach_file.jsx';
+import EditDocument from './right_main_view_components/edit_document.jsx'
 
 import DocumentTypeConstants from '../constants/document_type_constants';
 
@@ -26,7 +27,10 @@ const workingButtons = {
   "Blob": ShowBlob,
   "Rendition": ShowRendition,
   "Attach File": AttachFile,
+  "Edit": EditDocument
 };
+
+const showWorkingButtons = ['ACL', 'Work Flow', 'Tasks', 'Audit', 'Edit'];
 
 const containers = DocumentTypeConstants.containers.concat(DocumentTypeConstants.defaultContainers);
 
@@ -71,7 +75,7 @@ class RightMainView extends React.Component {
         </div>
     );
 
-    let buttonList = ["ACL", "Work Flow", "Tasks", "Audit", "Rendition"].map((button) => {
+    let buttonList = showWorkingButtons.map((button) => {
       return (
         <button key={button} onClick={this._setWorkingButton.bind(this,`${button}`)} className="submit-button">{`${button}`}</button>
       );
