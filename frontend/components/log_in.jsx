@@ -1,8 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import {hashHistory} from 'react-router';
-
-
 import NuxeoUtils from '../utils/nuxeo_utils.js';
 
 class LogIn extends React.Component {

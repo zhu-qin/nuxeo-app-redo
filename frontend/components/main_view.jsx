@@ -5,6 +5,7 @@ import DocumentStore from '../data/document_store.js';
 import TreeActions from '../actions/tree_actions.js';
 
 // components
+import ErrorsComponent from './errors/errors_component.jsx';
 import RightMainView from './right_main_view.jsx';
 import FileTree from './file_tree.jsx';
 
@@ -50,6 +51,7 @@ class MainView extends React.Component {
 
     return (
       <div className="main-wrapper">
+        <ErrorsComponent store={this.props.store}/>
         <div className="side-panel-wrapper">
           <div className="side-panel-profile">
             {this.state.user.id}

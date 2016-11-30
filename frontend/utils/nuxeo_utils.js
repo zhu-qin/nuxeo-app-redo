@@ -1,7 +1,9 @@
 const Nuxeo = require('nuxeo/dist/nuxeo');
 import {merge} from 'lodash';
+import { dispatch } from 'redux';
 
 import DocumentStore from '../data/document_store';
+import { receiveErrors } from '../actions/error_actions'
 
 let _nuxeo;
 const DEFAULTS = {
@@ -15,7 +17,7 @@ const DEFAULTS = {
         console.log(res)
     },
     fail: (res) => {
-        console.log(res)
+        dispatch(receiveErrors(res));
     }
 };
 

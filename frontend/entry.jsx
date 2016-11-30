@@ -1,13 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ReactRouter, {Link, Router, Route, IndexRoute, hashHistory} from 'react-router';
+import { Provider } from 'react-redux';
 
 // components
-import LogIn from './views/log_in';
-import MainView from './views/main_view';
+import LogIn from './components/log_in';
+import MainView from './components/main_view';
+import ErrorsComponent from './components/errors/errors_component.jsx';
 
 // data
 import DocumentStore from './data/document_store';
+
+// store
+import configureStore from './store/store';
 
 let redirectConditions = function (nextState, replace) {
   if (!DocumentStore.getUser()) {
@@ -15,14 +20,23 @@ let redirectConditions = function (nextState, replace) {
   }
 };
 
-const AppRouter = (
-    <Router history={hashHistory}>
-      <Route path="/" component={LogIn} />
-      <Route path="/documents" component={MainView} onEnter={redirectConditions}/>
-    </Router>
-  );
+const Root = ({ store }) => {
+    return (
+        <Provider store={store}>
+            <Router history={hashHistory}>
+                <Route path="/" component={LogIn}/>
+                <Route path="/documents" component={MainView} onEnter={redirectConditions}/>
+            </Router>
+        </Provider>
+    )
+};
 
 document.addEventListener("DOMContentLoaded", () => {
-  let root = document.getElementById('root');
-  ReactDOM.render(AppRouter, root);
+  const store = configureStore();
+  const root = document.getElementById('root');
+  store.dispatch({
+      type: 'RECEIVE_ERRORS',
+      errors: ["error1"]
+  });
+  ReactDOM.render(<Root store={store} />, root);
 });
