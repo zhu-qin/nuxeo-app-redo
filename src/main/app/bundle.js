@@ -68,9 +68,9 @@
 
 	var _main_view2 = _interopRequireDefault(_main_view);
 
-	var _errors_component = __webpack_require__(302);
+	var _errors_container = __webpack_require__(303);
 
-	var _errors_component2 = _interopRequireDefault(_errors_component);
+	var _errors_container2 = _interopRequireDefault(_errors_container);
 
 	var _document_store = __webpack_require__(274);
 
@@ -80,19 +80,26 @@
 
 	var _store2 = _interopRequireDefault(_store);
 
+	var _nuxeo_utils = __webpack_require__(272);
+
+	var _nuxeo_utils2 = _interopRequireDefault(_nuxeo_utils);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	// data
+	// store
+
+
+	// components
 	var redirectConditions = function redirectConditions(nextState, replace) {
 	    if (!_document_store2.default.getUser()) {
 	        replace("/");
 	    }
 	};
 
-	// store
+	//utils
 
 
-	// components
+	// data
 
 
 	var Root = function Root(_ref) {
@@ -102,10 +109,14 @@
 	        _reactRedux.Provider,
 	        { store: store },
 	        _react2.default.createElement(
-	            _reactRouter.Router,
-	            { history: _reactRouter.hashHistory },
-	            _react2.default.createElement(_reactRouter.Route, { path: '/', component: _log_in2.default }),
-	            _react2.default.createElement(_reactRouter.Route, { path: '/documents', component: _main_view2.default, onEnter: redirectConditions })
+	            _errors_container2.default,
+	            null,
+	            _react2.default.createElement(
+	                _reactRouter.Router,
+	                { history: _reactRouter.hashHistory },
+	                _react2.default.createElement(_reactRouter.Route, { path: '/', component: _log_in2.default }),
+	                _react2.default.createElement(_reactRouter.Route, { path: '/documents', component: _main_view2.default, onEnter: redirectConditions })
+	            )
 	        )
 	    );
 	};
@@ -113,10 +124,7 @@
 	document.addEventListener("DOMContentLoaded", function () {
 	    var store = (0, _store2.default)();
 	    var root = document.getElementById('root');
-	    store.dispatch({
-	        type: 'RECEIVE_ERRORS',
-	        errors: ["error1"]
-	    });
+	    _nuxeo_utils2.default.addStore(store);
 	    _reactDom2.default.render(_react2.default.createElement(Root, { store: store }), root);
 	});
 
@@ -28462,8 +28470,6 @@
 
 	var _lodash = __webpack_require__(273);
 
-	var _redux = __webpack_require__(240);
-
 	var _document_store = __webpack_require__(274);
 
 	var _document_store2 = _interopRequireDefault(_document_store);
@@ -28476,6 +28482,8 @@
 
 
 	var _nuxeo = void 0;
+	var _store = void 0;
+
 	var DEFAULTS = {
 	    method: "get",
 	    adapter: undefined,
@@ -28487,7 +28495,7 @@
 	        console.log(res);
 	    },
 	    fail: function fail(res) {
-	        (0, _redux.dispatch)((0, _error_actions.receiveErrors)(res));
+	        _store.dispatch((0, _error_actions.receiveErrors)(res));
 	    }
 	};
 
@@ -28504,6 +28512,8 @@
 	        NuxeoUtils.crudUtil({
 	            success: success
 	        });
+
+	        _nuxeo.enrichers({ document: ['subtypes'] });
 	        // _nuxeo.login()
 	        //   .then(function(res) {
 	        //     DocumentStore.setUser(res);
@@ -28565,7 +28575,6 @@
 	        if (finalParams.operation) {
 	            path += '/' + finalParams.operation;
 	        }
-
 	        switch (finalParams.method.toLowerCase()) {
 	            case "get":
 	                _nuxeo.repository().schemas(finalParams.schemas).fetch(path).then(finalParams.success).catch(finalParams.fail);
@@ -28587,6 +28596,9 @@
 	        _nuxeo.request('api/v1/config/types').get().then(function (res) {
 	            debugger;
 	        });
+	    },
+	    addStore: function addStore(store) {
+	        _store = store;
 	    }
 	};
 
@@ -56891,10 +56903,11 @@
 	    fetchChildren: function fetchChildren(node) {
 	        var success = function success(docs) {
 	            docs.entries.forEach(function (entry) {
+	                console.log(entry);
 	                _document_store2.default.addChild(node, entry);
 	            });
 	        };
-	        var path = node.item.path.split(".")[0];
+	        var path = node.item.uid;
 	        _nuxeo_utils2.default.crudUtil({
 	            path: path,
 	            adapter: 'children',
@@ -56912,21 +56925,20 @@
 	            success: success
 	        });
 	    },
-	    createDocument: function createDocument(node, doc) {
+	    createDocument: function createDocument(node, doc, success, fail) {
 	        var finalDoc = {
 	            "entity-type": "document",
 	            "name": '' + doc.title,
 	            "type": '' + doc.type
 	        };
-	        var success = function success(doc) {
-	            _document_store2.default.addChild(node, doc);
-	        };
+
 	        var path = node.item.uid;
 	        _nuxeo_utils2.default.crudUtil({
 	            method: "create",
 	            path: path,
 	            data: finalDoc,
-	            success: success
+	            success: success,
+	            fail: fail
 	        });
 	    },
 	    editDocument: function editDocument(node, doc) {
@@ -57486,7 +57498,13 @@
 	        key: '_handleSubmit',
 	        value: function _handleSubmit(e) {
 	            e.preventDefault();
-	            _tree_actions2.default.createDocument(this.props.workingNode, this.state);
+	            var success = function success(res) {
+	                DocumentStore.addChild(node, res);
+	            };
+	            // let fail = (res, xhr) => {
+	            //     debugger
+	            // };
+	            _tree_actions2.default.createDocument(this.props.workingNode, this.state, success);
 	            this.setState({ title: "", description: "" });
 	        }
 	    }, {
@@ -58422,23 +58440,87 @@
 	    value: true
 	});
 
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var ErrorsComponent = function ErrorsComponent(_ref) {
-	    var errors = _ref.errors;
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	    return _react2.default.createElement(
-	        'div',
-	        null,
-	        JSON.stringify(errors)
-	    );
-	};
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var ErrorsComponent = function (_React$Component) {
+	    _inherits(ErrorsComponent, _React$Component);
+
+	    function ErrorsComponent(props) {
+	        _classCallCheck(this, ErrorsComponent);
+
+	        return _possibleConstructorReturn(this, (ErrorsComponent.__proto__ || Object.getPrototypeOf(ErrorsComponent)).call(this, props));
+	    }
+
+	    _createClass(ErrorsComponent, [{
+	        key: 'render',
+	        value: function render() {
+	            console.log(this.props.errors);
+	            return _react2.default.createElement(
+	                'div',
+	                null,
+	                JSON.stringify(this.props.errors),
+	                this.props.children
+	            );
+	        }
+	    }]);
+
+	    return ErrorsComponent;
+	}(_react2.default.Component);
+
+	;
 
 	exports.default = ErrorsComponent;
+
+/***/ },
+/* 303 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _reactRedux = __webpack_require__(233);
+
+	var _error_actions = __webpack_require__(276);
+
+	var _errors_component = __webpack_require__(302);
+
+	var _errors_component2 = _interopRequireDefault(_errors_component);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var mapStateToProps = function mapStateToProps(_ref) {
+	    var errors = _ref.errors;
+	    return {
+	        errors: errors
+	    };
+	};
+
+	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+	    return {
+	        receiveErrors: function receiveErrors(errors) {
+	            return dispatch((0, _error_actions.receiveErrors)(errors));
+	        }
+	    };
+	};
+
+	var ErrorContainer = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_errors_component2.default);
+
+	exports.default = ErrorContainer;
 
 /***/ }
 /******/ ]);

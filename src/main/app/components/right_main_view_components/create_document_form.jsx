@@ -28,7 +28,13 @@ class CreateDocument extends React.Component {
 
     _handleSubmit(e) {
         e.preventDefault();
-        TreeActions.createDocument(this.props.workingNode, this.state);
+        let success = (res) => {
+            DocumentStore.addChild(node, res);
+        };
+        // let fail = (res, xhr) => {
+        //     debugger
+        // };
+        TreeActions.createDocument(this.props.workingNode, this.state, success);
         this.setState({title:"", description: ""});
     }
 

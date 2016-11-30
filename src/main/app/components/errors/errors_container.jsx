@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { receiveErrors } from '../../../actions/error_actions';
+import { receiveErrors } from '../../actions/error_actions';
 
 import ErrorsComponent from './errors_component.jsx';
 

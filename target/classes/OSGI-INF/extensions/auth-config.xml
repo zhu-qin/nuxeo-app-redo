@@ -1,0 +1,11 @@
+<component name="react.ui">
+    <extension
+            point="startURL"
+            target="org.nuxeo.ecm.platform.ui.web.auth.service.PluggableAuthenticationService">
+        <startURLPattern>
+            <patterns>
+                <pattern>sampleUI/</pattern>
+            </patterns>
+        </startURLPattern>
+    </extension>
+</component>

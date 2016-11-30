@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Archiver-Version: Plexus Archiver
+Created-By: Apache Maven
+Built-By: qin
+Build-Jdk: 1.8.0_112
+Bundle-ManifestVersion: 2
+Bundle-Version: 1.0.0
+Bundle-ActivationPolicy: lazy
+Bundle-ClassPath: .
+Bundle-Vendor: org.nuxeo.lifeins
+Bundle-Name: react-ui-sample
+Bundle-SymbolicName: react-ui:sample.ui;singleton=true
+Nuxeo-Component: OSGI-INF/extensions/auth-config.xml
+

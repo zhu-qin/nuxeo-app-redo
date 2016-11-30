@@ -1,11 +1,11 @@
 const Nuxeo = require('nuxeo/dist/nuxeo');
 import {merge} from 'lodash';
-import { dispatch } from 'redux';
-
 import DocumentStore from '../data/document_store';
 import { receiveErrors } from '../actions/error_actions'
 
 let _nuxeo;
+let _store;
+
 const DEFAULTS = {
     method: "get",
     adapter: undefined,
@@ -17,7 +17,7 @@ const DEFAULTS = {
         console.log(res)
     },
     fail: (res) => {
-        dispatch(receiveErrors(res));
+        _store.dispatch(receiveErrors(res));
     }
 };
 
@@ -39,6 +39,10 @@ const NuxeoUtils = {
     NuxeoUtils.crudUtil({
         success: success
     });
+
+
+
+   _nuxeo.enrichers({document: ['subtypes']});
     // _nuxeo.login()
     //   .then(function(res) {
     //     DocumentStore.setUser(res);
@@ -112,7 +116,6 @@ const NuxeoUtils = {
       if (finalParams.operation) {
           path += `/${finalParams.operation}`;
       }
-
       switch (finalParams.method.toLowerCase()) {
           case "get":
           _nuxeo.repository()
@@ -153,6 +156,10 @@ const NuxeoUtils = {
           .then((res) => {
               debugger;
           })
+  },
+
+  addStore(store){
+      _store = store;
   }
 };
 
@@ -162,3 +169,4 @@ Object.keys(NuxeoUtils).forEach((key) => {
    window[key] = NuxeoUtils[key];
     
 });
+
