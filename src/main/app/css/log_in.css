@@ -1,0 +1,38 @@
+.login-background {
+  height: 100%;
+  width: 100%;
+  background-image: url('../images/rocket_ship.jpg');
+}
+
+.login-buffer-box {
+  height: 500px
+}
+
+.login-wrapper {
+  width: 520px;
+  margin: auto;
+  padding: 20px;
+  background-color: rgba(1, 44, 22, 0.2);
+}
+
+.login-wrapper * {
+  padding: 5px;
+}
+
+.login-button {
+  background-color: rgb(16, 79, 48);
+  width: 100px;
+  color: white;
+  padding: 10px;
+  margin-left: 20px;
+  border: none;
+
+}
+
+.login-input-field {
+  width: 300px;
+}
+
+.login-form{
+  display: flex;
+}
