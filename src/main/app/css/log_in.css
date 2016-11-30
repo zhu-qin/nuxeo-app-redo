@@ -1,7 +1,7 @@
 .login-background {
   height: 100%;
   width: 100%;
-  background-image: url('../assets/rocket_ship.jpg');
+  background-image: url('../images/rocket_ship.jpg');
 }
 
 .login-buffer-box {

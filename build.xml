@@ -56,9 +56,9 @@
         <mkdir dir="target/surefire-reports" />
         <copy file="test-results.xml" todir="target/surefire-reports" failonerror="false" />
     </target>
+
     <target name="build-skip-tests" if="skipTests">
         <exec executable="${cmd.gulp}" failonerror="true">
-
         </exec>
     </target>
 

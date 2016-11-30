@@ -14,7 +14,6 @@ const TreeActions = {
     fetchChildren(node) {
         let success = (docs) => {
             docs.entries.forEach((entry) => {
-                console.log(entry);
                 DocumentStore.addChild(node, entry);
             });
         };
@@ -38,7 +37,7 @@ const TreeActions = {
        });
     },
 
-    createDocument(node, doc, success, fail){
+    createDocument(node, doc, success){
         let finalDoc = {
             "entity-type": "document",
             "name":`${doc.title}`,
@@ -50,16 +49,14 @@ const TreeActions = {
             method: "create",
             path: path,
             data: finalDoc,
-            success: success,
-            fail: fail
+            success: success
+
         });
     },
 
     editDocument(node, doc){
         let success = (doc) => {
-          debugger
         };
-        debugger;
         let path = node.item.uid;
         NuxeoUtils.crudUtil({
            type: 'update',

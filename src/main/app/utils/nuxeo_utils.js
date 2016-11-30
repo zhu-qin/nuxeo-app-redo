@@ -1,7 +1,7 @@
 const Nuxeo = require('nuxeo/dist/nuxeo');
 import {merge} from 'lodash';
 import DocumentStore from '../data/document_store';
-import { receiveErrors } from '../actions/error_actions'
+import { receiveErrors, clearErrors } from '../actions/error_actions'
 
 let _nuxeo;
 let _store;
@@ -16,8 +16,11 @@ const DEFAULTS = {
     success: (res) => {
         console.log(res)
     },
-    fail: (res) => {
-        _store.dispatch(receiveErrors(res));
+    fail: (res,xhr) => {
+        _store.dispatch(receiveErrors(res,xhr));
+        setTimeout(function() {
+            _store.dispatch(clearErrors())
+        }, 1500);
     }
 };
 

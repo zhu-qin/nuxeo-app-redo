@@ -51,7 +51,6 @@ class MainView extends React.Component {
 
     return (
       <div className="main-wrapper">
-        <ErrorsComponent store={this.props.store}/>
         <div className="side-panel-wrapper">
           <div className="side-panel-profile">
             {this.state.user.id}

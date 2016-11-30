@@ -1,6 +1,7 @@
 import React from 'react';
 import TreeActions from '../../actions/tree_actions.js';
 import DocumentTypeConstants from '../../constants/document_type_constants';
+import DocumentStore from '../../data/document_store.js';
 
 const containers = DocumentTypeConstants.containers;
 const documents = DocumentTypeConstants.documents;
@@ -27,15 +28,13 @@ class CreateDocument extends React.Component {
     }
 
     _handleSubmit(e) {
+        let parentNode = this.props.workingNode;
         e.preventDefault();
         let success = (res) => {
-            DocumentStore.addChild(node, res);
+            DocumentStore.addChild(parentNode, res);
+            this.setState({title:"", description: ""});
         };
-        // let fail = (res, xhr) => {
-        //     debugger
-        // };
-        TreeActions.createDocument(this.props.workingNode, this.state, success);
-        this.setState({title:"", description: ""});
+        TreeActions.createDocument(parentNode, this.state, success);
     }
 
     render() {

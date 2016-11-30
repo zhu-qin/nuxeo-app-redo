@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <project name="maven-antrun-" default="main"  >
 <target name="main">
-  <ant antfile="/Users/qin/Desktop/react-ui/build.xml" dir="/Users/qin/Desktop/react-ui"></ant>
+  <ant antfile="/Users/qin/Desktop/nuxeo-app-redo/build.xml" dir="/Users/qin/Desktop/nuxeo-app-redo"></ant>
 </target>
 </project>

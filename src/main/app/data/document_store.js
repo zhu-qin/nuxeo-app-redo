@@ -68,4 +68,4 @@ const DocumentStore = {
 };
 
 
-module.exports = DocumentStore;
+export default DocumentStore;
