@@ -2,13 +2,13 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.nuxeo.ecm.distribution</groupId>
-    <artifactId>nuxeo-distribution</artifactId>
-    <version>8.3</version>
+    <groupId>react.sample.ui</groupId>
+    <artifactId>react-ui-parent</artifactId>
+    <version>1.0-SNAPSHOT</version>
   </parent>
 
   <artifactId>react-ui</artifactId>
-  <groupId>sample.ui</groupId>
+  <groupId>react.sample.ui</groupId>
   <version>1.0-SNAPSHOT</version>
   <name>The REACT UI Module</name>
   <description>Sample UI</description>

@@ -2,82 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5b8a1a3f-53c9-4036-a8b0-54716379b752" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/build.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/gulpfile.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/package.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/pom.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/readme.md" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/app/actions/error_actions.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/app/actions/tree_actions.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/app/bundle.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/app/components/errors/errors_component.jsx" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/app/components/errors/errors_container.jsx" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/app/components/file_tree.jsx" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/app/components/log_in.jsx" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/app/components/main_view.jsx" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/app/components/right_main_view.jsx" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/app/components/right_main_view_components/attach_file.jsx" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/app/components/right_main_view_components/create_document_form.jsx" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/app/components/right_main_view_components/edit_document.jsx" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/app/components/right_main_view_components/file_view.jsx" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/app/components/right_main_view_components/folder_view.jsx" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/app/components/right_main_view_components/show_acl.jsx" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/app/components/right_main_view_components/show_audit.jsx" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/app/components/right_main_view_components/show_blob.jsx" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/app/components/right_main_view_components/show_rendition.jsx" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/app/components/right_main_view_components/show_task.jsx" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/app/components/right_main_view_components/show_workflow.jsx" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/app/constants/document_type_constants.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/app/css/filetree.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/app/css/log_in.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/app/css/main.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/app/css/right_main_view.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/app/data/document_store.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/app/data/tree_node.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/app/entry.jsx" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/app/images/rocket_ship.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/app/index.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/app/reducers/errors_reducer.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/app/reducers/root_reducer.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/app/store/store.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/app/utils/nuxeo_utils.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/resources/META-INF/MANIFEST.MF" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/resources/OSGI-INF/deployment-fragment.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/resources/OSGI-INF/extensions/auth-config.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/antrun/build-main.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/META-INF/MANIFEST.MF" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/OSGI-INF/deployment-fragment.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/OSGI-INF/extensions/auth-config.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/nuxeo.war/sampleUI/bundle.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/nuxeo.war/sampleUI/css/filetree.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/nuxeo.war/sampleUI/css/log_in.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/nuxeo.war/sampleUI/css/main.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/nuxeo.war/sampleUI/css/right_main_view.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/nuxeo.war/sampleUI/entry.jsx" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/nuxeo.war/sampleUI/images/rocket_ship.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/nuxeo.war/sampleUI/index.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/nuxeo.war/sampleUI/readme.md" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/maven-archiver/pom.properties" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/react-ui-1.0-SNAPSHOT.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/react-ui-1.0-SNAPSHOT/META-INF/MANIFEST.MF" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/react-ui-1.0-SNAPSHOT/META-INF/maven/sample.ui/react-ui/pom.properties" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/react-ui-1.0-SNAPSHOT/META-INF/maven/sample.ui/react-ui/pom.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/react-ui-1.0-SNAPSHOT/OSGI-INF/deployment-fragment.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/react-ui-1.0-SNAPSHOT/OSGI-INF/extensions/auth-config.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/react-ui-1.0-SNAPSHOT/nuxeo.war/sampleUI/bundle.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/react-ui-1.0-SNAPSHOT/nuxeo.war/sampleUI/css/filetree.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/react-ui-1.0-SNAPSHOT/nuxeo.war/sampleUI/css/log_in.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/react-ui-1.0-SNAPSHOT/nuxeo.war/sampleUI/css/main.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/react-ui-1.0-SNAPSHOT/nuxeo.war/sampleUI/css/right_main_view.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/react-ui-1.0-SNAPSHOT/nuxeo.war/sampleUI/entry.jsx" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/react-ui-1.0-SNAPSHOT/nuxeo.war/sampleUI/images/rocket_ship.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/react-ui-1.0-SNAPSHOT/nuxeo.war/sampleUI/index.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/react-ui-1.0-SNAPSHOT/nuxeo.war/sampleUI/readme.md" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesList" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/testResourcesList" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/timestamp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/webpack.config.js" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/react-sample-ui/pom.xml" afterPath="$PROJECT_DIR$/react-sample-ui/pom.xml" />
     </list>
     <ignored path="nuxeo-app.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -208,16 +133,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="nuxeo-app-redo" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="nuxeo-app-redo" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
     </panes>
@@ -327,12 +242,12 @@
       <workItem from="1480602078368" duration="2878000" />
       <workItem from="1480605662393" duration="868000" />
       <workItem from="1480611628162" duration="146000" />
-      <workItem from="1480611776541" duration="10000" />
+      <workItem from="1480611776541" duration="971000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="190104000" />
+    <option name="totallyTimeSpent" value="191065000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="115" y="23" width="1320" height="688" extended-state="0" />

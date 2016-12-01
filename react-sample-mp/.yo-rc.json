@@ -1,0 +1,9 @@
+{
+  "generator-nuxeo": {
+    "lastRemote": "/Users/qin/.cache/node-yeoman-remote-cache/nuxeo/generator-nuxeo-meta/2.1.0",
+    "promptValues": {
+      "parent_package": "org.nuxeo.ecm.distribution",
+      "parent_artifact": "nuxeo-distribution"
+    }
+  }
+}

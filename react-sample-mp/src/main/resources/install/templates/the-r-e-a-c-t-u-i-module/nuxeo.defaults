@@ -1,0 +1,7 @@
+## Edit this file to customize your configuration ##
+#the-r-e-a-c-t-u-i-module.target=
+
+# Set list of templates to include, comma separated values.
+nuxeo.template.includes=common
+
+# org.nuxeo.ecm.instance.description=Nuxeo ECM customized with The REACT UI Module
