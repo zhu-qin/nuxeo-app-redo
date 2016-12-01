@@ -1,6 +1,6 @@
 import React from 'react';
-import TreeActions from '../actions/tree_actions';
-import DocumentTypeConstants from '../constants/document_type_constants';
+import TreeActions from '../../actions/tree_actions';
+import DocumentTypeConstants from '../../constants/document_type_constants';
 
 class FileTree extends React.Component {
   constructor(props) {

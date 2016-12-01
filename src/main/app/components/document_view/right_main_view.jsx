@@ -1,5 +1,5 @@
 import React from 'react';
-import TreeActions from '../actions/tree_actions.js';
+import TreeActions from '../../actions/tree_actions.js';
 
 // components
 import FileView from './right_main_view_components/file_view.jsx';
@@ -16,7 +16,7 @@ import ShowRendition from './right_main_view_components/show_rendition.jsx';
 import AttachFile from './right_main_view_components/attach_file.jsx';
 import EditDocument from './right_main_view_components/edit_document.jsx'
 
-import DocumentTypeConstants from '../constants/document_type_constants';
+import DocumentTypeConstants from '../../constants/document_type_constants';
 
 const workingButtons = {
   "Create Document": CreateDocumentForm,

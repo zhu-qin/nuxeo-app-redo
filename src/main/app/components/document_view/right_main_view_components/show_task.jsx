@@ -1,15 +1,15 @@
 import React from 'react';
-import TreeActions from '../../actions/tree_actions.js';
+import TreeActions from '../../../actions/tree_actions.js';
 
-class ShowWorkFlow extends React.Component {
+class ShowTask extends React.Component {
     constructor(props){
         super(props);
-        TreeActions.getworkflow(this.props.workingNode);
+        TreeActions.gettask(this.props.workingNode);
     }
 
     render() {
         let node = this.props.workingNode;
-        let string = JSON.stringify(node.workflow);
+        let string = JSON.stringify(node.task);
         return (
             <div className="right-main-view-show-working-button">
                 {string}
@@ -18,4 +18,4 @@ class ShowWorkFlow extends React.Component {
     }
 }
 
-module.exports = ShowWorkFlow;
+module.exports = ShowTask;

@@ -5,8 +5,10 @@ import { Provider } from 'react-redux';
 
 // components
 import LogIn from './components/log_in';
-import MainView from './components/main_view';
+import MainView from './components/document_view/main_view';
 import ErrorsContainer from './components/errors/errors_container.jsx';
+
+import DocumentViewContainer from './components/document_view/document_view_container';
 
 // data
 import DocumentStore from './data/document_store';
@@ -29,7 +31,7 @@ const Root = ({ store }) => {
             <ErrorsContainer>
                 <Router history={hashHistory}>
                     <Route path="/" component={LogIn}/>
-                    <Route path="/documents" component={MainView} onEnter={redirectConditions}/>
+                    <Route path="/documents" component={DocumentViewContainer} onEnter={redirectConditions}/>
                 </Router>
             </ErrorsContainer>
         </Provider>

@@ -1,11 +1,12 @@
 import React from 'react';
 // store
-import DocumentStore from '../data/document_store.js';
+import DocumentStore from '../../data/document_store.js';
 // actions
-import TreeActions from '../actions/tree_actions.js';
+import TreeActions from '../../actions/tree_actions.js';
+
+
 
 // components
-import ErrorsComponent from './errors/errors_component.jsx';
 import RightMainView from './right_main_view.jsx';
 import FileTree from './file_tree.jsx';
 

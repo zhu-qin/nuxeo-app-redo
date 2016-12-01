@@ -1,6 +1,6 @@
 import React from 'react';
-import TreeActions from '../../actions/tree_actions.js';
-import NuxeoUtils from '../../utils/nuxeo_utils.js';
+import TreeActions from '../../../actions/tree_actions.js';
+import NuxeoUtils from '../../../utils/nuxeo_utils.js';
 
 class AttachFile extends React.Component {
   constructor(props) {

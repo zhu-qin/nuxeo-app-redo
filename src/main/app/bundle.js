@@ -68,9 +68,13 @@
 
 	var _main_view2 = _interopRequireDefault(_main_view);
 
-	var _errors_container = __webpack_require__(289);
+	var _errors_container = __webpack_require__(288);
 
 	var _errors_container2 = _interopRequireDefault(_errors_container);
+
+	var _document_view_container = __webpack_require__(295);
+
+	var _document_view_container2 = _interopRequireDefault(_document_view_container);
 
 	var _document_store = __webpack_require__(264);
 
@@ -87,9 +91,6 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	// store
-
-
-	// components
 	var redirectConditions = function redirectConditions(nextState, replace) {
 	    if (!_document_store2.default.getUser()) {
 	        replace("/");
@@ -100,6 +101,9 @@
 
 
 	// data
+
+
+	// components
 
 
 	var Root = function Root(_ref) {
@@ -115,7 +119,7 @@
 	                _reactRouter.Router,
 	                { history: _reactRouter.hashHistory },
 	                _react2.default.createElement(_reactRouter.Route, { path: '/', component: _log_in2.default }),
-	                _react2.default.createElement(_reactRouter.Route, { path: '/documents', component: _main_view2.default, onEnter: redirectConditions })
+	                _react2.default.createElement(_reactRouter.Route, { path: '/documents', component: _document_view_container2.default, onEnter: redirectConditions })
 	            )
 	        )
 	    );
@@ -28206,10 +28210,11 @@
 	        console.log(res);
 	    },
 	    fail: function fail(res, xhr) {
-	        _store.dispatch((0, _error_actions.receiveErrors)(res, xhr));
-	        setTimeout(function () {
-	            _store.dispatch((0, _error_actions.clearErrors)());
-	        }, 1500);
+	        (0, _error_actions.flashErrors)(res)(_store.dispatch);
+	        // _store.dispatch(receiveErrors(res,xhr));
+	        // setTimeout(function() {
+	        //     _store.dispatch(clearErrors())
+	        // }, 1500);
 	    }
 	};
 
@@ -28219,6 +28224,8 @@
 	            baseURL: logIn.url
 	        });
 	        _nuxeo = nuxeo;
+	        _nuxeo.header('X-NXDocumentProperties', '*');
+	        window.nuxeo = _nuxeo;
 	        var success = function success(res) {
 	            _document_store2.default.setUser(res);
 	            directToDashboard();
@@ -28226,7 +28233,6 @@
 	        NuxeoUtils.crudUtil({
 	            success: success
 	        });
-
 	        _nuxeo.enrichers({ document: ['subtypes'] });
 	        // _nuxeo.login()
 	        //   .then(function(res) {
@@ -28289,9 +28295,11 @@
 	        if (finalParams.operation) {
 	            path += '/' + finalParams.operation;
 	        }
+
 	        switch (finalParams.method.toLowerCase()) {
+	            // ,'X-NXproperties':'*'
 	            case "get":
-	                _nuxeo.repository().schemas(finalParams.schemas).fetch(path).then(finalParams.success).catch(finalParams.fail);
+	                _nuxeo.repository().schemas(finalParams.schemas).headers({ 'X-NXenrichers.document': 'subtypes' }).fetch(path).then(finalParams.success).catch(finalParams.fail);
 	                break;
 	            case "delete":
 	                _nuxeo.repository().schemas(finalParams.schemas).delete(path).then(finalParams.success).catch(finalParams.fail);
@@ -28313,6 +28321,11 @@
 	    },
 	    addStore: function addStore(store) {
 	        _store = store;
+	    },
+	    getSubTypes: function getSubTypes() {
+	        _nuxeo.request('/default-domain').header('X-NXenrichers.document', 'subtypes').fetch().then(function (res) {
+	            debugger;
+	        });
 	    }
 	};
 
@@ -45533,6 +45546,7 @@
 	});
 	exports.receiveErrors = receiveErrors;
 	exports.clearErrors = clearErrors;
+	exports.flashErrors = flashErrors;
 	var RECEIVE_ERRORS = exports.RECEIVE_ERRORS = 'RECEIVE_ERRORS';
 	var CLEAR_ERRORS = exports.CLEAR_ERRORS = 'CLEAR_ERRORS';
 
@@ -45547,6 +45561,15 @@
 	    return {
 	        type: CLEAR_ERRORS,
 	        errors: []
+	    };
+	}
+
+	function flashErrors(errors) {
+	    return function (dispatch) {
+	        dispatch(receiveErrors(errors));
+	        setTimeout(function () {
+	            dispatch(clearErrors());
+	        }, 1500);
 	    };
 	}
 
@@ -56491,15 +56514,11 @@
 
 	var _tree_actions2 = _interopRequireDefault(_tree_actions);
 
-	var _errors_component = __webpack_require__(274);
-
-	var _errors_component2 = _interopRequireDefault(_errors_component);
-
-	var _right_main_view = __webpack_require__(275);
+	var _right_main_view = __webpack_require__(274);
 
 	var _right_main_view2 = _interopRequireDefault(_right_main_view);
 
-	var _file_tree = __webpack_require__(288);
+	var _file_tree = __webpack_require__(287);
 
 	var _file_tree2 = _interopRequireDefault(_file_tree);
 
@@ -56606,6 +56625,8 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
+	exports.SET_CURRENT_NODE = undefined;
+	exports.setCurrentNode = setCurrentNode;
 
 	var _nuxeo_utils = __webpack_require__(262);
 
@@ -56616,6 +56637,15 @@
 	var _document_store2 = _interopRequireDefault(_document_store);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var SET_CURRENT_NODE = exports.SET_CURRENT_NODE = "SET_CURRENT_NODE";
+
+	function setCurrentNode(node) {
+	    return {
+	        type: SET_CURRENT_NODE,
+	        currentNode: node
+	    };
+	}
 
 	var TreeActions = {
 	    fetchRoot: function fetchRoot() {
@@ -56684,6 +56714,8 @@
 	        _nuxeo_utils2.default.attachFile(node, upload, success);
 	    },
 	    setWorkingNode: function setWorkingNode(node) {
+	        console.log(node);
+	        setCurrentNode(node);
 	        _document_store2.default.setWorkingNode(node);
 	    },
 	    getWorkingNode: function getWorkingNode() {
@@ -56754,67 +56786,6 @@
 /* 274 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var ErrorsComponent = function (_React$Component) {
-	    _inherits(ErrorsComponent, _React$Component);
-
-	    function ErrorsComponent(props) {
-	        _classCallCheck(this, ErrorsComponent);
-
-	        return _possibleConstructorReturn(this, (ErrorsComponent.__proto__ || Object.getPrototypeOf(ErrorsComponent)).call(this, props));
-	    }
-
-	    _createClass(ErrorsComponent, [{
-	        key: "render",
-	        value: function render() {
-	            var errors = void 0;
-	            if (this.props.errors.length > 0) {
-	                errors = this.props.errors[0].message;
-	            }
-
-	            return _react2.default.createElement(
-	                "div",
-	                { className: "main-wrapper" },
-	                _react2.default.createElement(
-	                    "div",
-	                    { className: "error-messages" },
-	                    errors
-	                ),
-	                this.props.children
-	            );
-	        }
-	    }]);
-
-	    return ErrorsComponent;
-	}(_react2.default.Component);
-
-	;
-
-	exports.default = ErrorsComponent;
-
-/***/ },
-/* 275 */
-/***/ function(module, exports, __webpack_require__) {
-
 	'use strict';
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -56827,51 +56798,51 @@
 
 	var _tree_actions2 = _interopRequireDefault(_tree_actions);
 
-	var _file_view = __webpack_require__(276);
+	var _file_view = __webpack_require__(275);
 
 	var _file_view2 = _interopRequireDefault(_file_view);
 
-	var _folder_view = __webpack_require__(277);
+	var _folder_view = __webpack_require__(276);
 
 	var _folder_view2 = _interopRequireDefault(_folder_view);
 
-	var _create_document_form = __webpack_require__(278);
+	var _create_document_form = __webpack_require__(277);
 
 	var _create_document_form2 = _interopRequireDefault(_create_document_form);
 
-	var _show_acl = __webpack_require__(280);
+	var _show_acl = __webpack_require__(279);
 
 	var _show_acl2 = _interopRequireDefault(_show_acl);
 
-	var _show_audit = __webpack_require__(281);
+	var _show_audit = __webpack_require__(280);
 
 	var _show_audit2 = _interopRequireDefault(_show_audit);
 
-	var _show_task = __webpack_require__(282);
+	var _show_task = __webpack_require__(281);
 
 	var _show_task2 = _interopRequireDefault(_show_task);
 
-	var _show_workflow = __webpack_require__(283);
+	var _show_workflow = __webpack_require__(282);
 
 	var _show_workflow2 = _interopRequireDefault(_show_workflow);
 
-	var _show_blob = __webpack_require__(284);
+	var _show_blob = __webpack_require__(283);
 
 	var _show_blob2 = _interopRequireDefault(_show_blob);
 
-	var _show_rendition = __webpack_require__(285);
+	var _show_rendition = __webpack_require__(284);
 
 	var _show_rendition2 = _interopRequireDefault(_show_rendition);
 
-	var _attach_file = __webpack_require__(286);
+	var _attach_file = __webpack_require__(285);
 
 	var _attach_file2 = _interopRequireDefault(_attach_file);
 
-	var _edit_document = __webpack_require__(287);
+	var _edit_document = __webpack_require__(286);
 
 	var _edit_document2 = _interopRequireDefault(_edit_document);
 
-	var _document_type_constants = __webpack_require__(279);
+	var _document_type_constants = __webpack_require__(278);
 
 	var _document_type_constants2 = _interopRequireDefault(_document_type_constants);
 
@@ -57046,7 +57017,7 @@
 	module.exports = RightMainView;
 
 /***/ },
-/* 276 */
+/* 275 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -57121,7 +57092,7 @@
 	module.exports = FileView;
 
 /***/ },
-/* 277 */
+/* 276 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -57214,7 +57185,7 @@
 	module.exports = FolderView;
 
 /***/ },
-/* 278 */
+/* 277 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -57229,7 +57200,7 @@
 
 	var _tree_actions2 = _interopRequireDefault(_tree_actions);
 
-	var _document_type_constants = __webpack_require__(279);
+	var _document_type_constants = __webpack_require__(278);
 
 	var _document_type_constants2 = _interopRequireDefault(_document_type_constants);
 
@@ -57367,7 +57338,7 @@
 	module.exports = CreateDocument;
 
 /***/ },
-/* 279 */
+/* 278 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -57384,7 +57355,7 @@
 	exports.default = DocumentTypeConstants;
 
 /***/ },
-/* 280 */
+/* 279 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -57453,7 +57424,7 @@
 	module.exports = ShowACL;
 
 /***/ },
-/* 281 */
+/* 280 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -57540,7 +57511,7 @@
 	module.exports = ShowAudit;
 
 /***/ },
-/* 282 */
+/* 281 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -57594,7 +57565,7 @@
 	module.exports = ShowTask;
 
 /***/ },
-/* 283 */
+/* 282 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -57648,7 +57619,7 @@
 	module.exports = ShowWorkFlow;
 
 /***/ },
-/* 284 */
+/* 283 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -57705,7 +57676,7 @@
 	module.exports = ShowBlob;
 
 /***/ },
-/* 285 */
+/* 284 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -57762,7 +57733,7 @@
 	module.exports = ShowRendition;
 
 /***/ },
-/* 286 */
+/* 285 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -57910,7 +57881,7 @@
 	module.exports = AttachFile;
 
 /***/ },
-/* 287 */
+/* 286 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -58006,7 +57977,7 @@
 	module.exports = EditDocument;
 
 /***/ },
-/* 288 */
+/* 287 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -58021,7 +57992,7 @@
 
 	var _tree_actions2 = _interopRequireDefault(_tree_actions);
 
-	var _document_type_constants = __webpack_require__(279);
+	var _document_type_constants = __webpack_require__(278);
 
 	var _document_type_constants2 = _interopRequireDefault(_document_type_constants);
 
@@ -58110,7 +58081,7 @@
 	module.exports = FileTree;
 
 /***/ },
-/* 289 */
+/* 288 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -58123,7 +58094,7 @@
 
 	var _error_actions = __webpack_require__(266);
 
-	var _errors_component = __webpack_require__(274);
+	var _errors_component = __webpack_require__(289);
 
 	var _errors_component2 = _interopRequireDefault(_errors_component);
 
@@ -58143,6 +58114,9 @@
 	        },
 	        clearErrors: function clearErrors() {
 	            return dispatch((0, _error_actions.clearErrors)());
+	        },
+	        flashErrors: function flashErrors(errors) {
+	            return dispatch((0, _error_actions.flashErrors)(errors));
 	        }
 	    };
 	};
@@ -58150,6 +58124,68 @@
 	var ErrorContainer = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_errors_component2.default);
 
 	exports.default = ErrorContainer;
+
+/***/ },
+/* 289 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var ErrorsComponent = function (_React$Component) {
+	    _inherits(ErrorsComponent, _React$Component);
+
+	    function ErrorsComponent(props) {
+	        _classCallCheck(this, ErrorsComponent);
+
+	        return _possibleConstructorReturn(this, (ErrorsComponent.__proto__ || Object.getPrototypeOf(ErrorsComponent)).call(this, props));
+	    }
+
+	    _createClass(ErrorsComponent, [{
+	        key: "render",
+	        value: function render() {
+
+	            var errors = void 0;
+	            if (this.props.errors.length > 0) {
+	                errors = this.props.errors[0].message;
+	            }
+
+	            return _react2.default.createElement(
+	                "div",
+	                { className: "main-wrapper" },
+	                _react2.default.createElement(
+	                    "div",
+	                    { className: "error-messages" },
+	                    errors
+	                ),
+	                this.props.children
+	            );
+	        }
+	    }]);
+
+	    return ErrorsComponent;
+	}(_react2.default.Component);
+
+	;
+
+	exports.default = ErrorsComponent;
 
 /***/ },
 /* 290 */
@@ -58225,10 +58261,15 @@
 
 	var _errors_reducer2 = _interopRequireDefault(_errors_reducer);
 
+	var _file_tree_reducer = __webpack_require__(294);
+
+	var _file_tree_reducer2 = _interopRequireDefault(_file_tree_reducer);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	exports.default = (0, _redux.combineReducers)({
-	    errors: _errors_reducer2.default
+	    errors: _errors_reducer2.default,
+	    fileTree: _file_tree_reducer2.default
 	});
 
 /***/ },
@@ -58258,6 +58299,139 @@
 	};
 
 	exports.default = ErrorsReducer;
+
+/***/ },
+/* 294 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _lodash = __webpack_require__(263);
+
+	var _tree_actions = __webpack_require__(273);
+
+	var defaultState = {
+	    root: {},
+	    currentNode: {}
+	};
+
+	var FileTreeReducer = function FileTreeReducer() {
+	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : defaultState;
+	    var action = arguments[1];
+
+	    switch (action.type) {
+	        case _tree_actions.SET_CURRENT_NODE:
+	            var newState = (0, _lodash.merge)({}, state, { currentNode: action.currentNode });
+	            return newState;
+	        default:
+	            return state;
+	    }
+	};
+
+	exports.default = FileTreeReducer;
+
+/***/ },
+/* 295 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _reactRedux = __webpack_require__(233);
+
+	var _tree_actions = __webpack_require__(273);
+
+	var _file_tree = __webpack_require__(287);
+
+	var _file_tree2 = _interopRequireDefault(_file_tree);
+
+	var _main_view = __webpack_require__(272);
+
+	var _main_view2 = _interopRequireDefault(_main_view);
+
+	var _right_main_view = __webpack_require__(274);
+
+	var _right_main_view2 = _interopRequireDefault(_right_main_view);
+
+	var _attach_file = __webpack_require__(285);
+
+	var _attach_file2 = _interopRequireDefault(_attach_file);
+
+	var _create_document_form = __webpack_require__(277);
+
+	var _create_document_form2 = _interopRequireDefault(_create_document_form);
+
+	var _edit_document = __webpack_require__(286);
+
+	var _edit_document2 = _interopRequireDefault(_edit_document);
+
+	var _file_view = __webpack_require__(275);
+
+	var _file_view2 = _interopRequireDefault(_file_view);
+
+	var _folder_view = __webpack_require__(276);
+
+	var _folder_view2 = _interopRequireDefault(_folder_view);
+
+	var _show_acl = __webpack_require__(279);
+
+	var _show_acl2 = _interopRequireDefault(_show_acl);
+
+	var _show_audit = __webpack_require__(280);
+
+	var _show_audit2 = _interopRequireDefault(_show_audit);
+
+	var _show_task = __webpack_require__(281);
+
+	var _show_task2 = _interopRequireDefault(_show_task);
+
+	var _show_workflow = __webpack_require__(282);
+
+	var _show_workflow2 = _interopRequireDefault(_show_workflow);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var mapStateToProps = function mapStateToProps(_ref) {
+	    var fileTree = _ref.fileTree;
+	    return {
+	        fileTree: fileTree
+	    };
+	};
+
+	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+	    return {
+	        setCurrentNode: function setCurrentNode(node) {
+	            return dispatch((0, _tree_actions.setCurrentNode)(node));
+	        }
+	    };
+	};
+
+	// const DocumentViewContainer = [
+	//     FileTree,
+	//     MainView,
+	//     RightMainView,
+	//     AttachFile,
+	//     CreateDocumentForm,
+	//     EditDocument,
+	//     FileView,
+	//     FolderView,
+	//     ShowACL,
+	//     ShowAudit,
+	//     ShowTask,
+	//     ShowWorkFlow
+	// ].map((component) => {
+	//    return connect(mapStateToProps, mapDispatchToProps)(component);
+	// });
+	var DocumentViewContainer = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_main_view2.default);
+
+	exports.default = DocumentViewContainer;
 
 /***/ }
 /******/ ]);

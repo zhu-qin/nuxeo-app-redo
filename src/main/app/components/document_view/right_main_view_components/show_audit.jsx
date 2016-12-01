@@ -1,5 +1,5 @@
 import React from 'react';
-import TreeActions from '../../actions/tree_actions.js';
+import TreeActions from '../../../actions/tree_actions.js';
 
 class ShowAudit extends React.Component {
     constructor(props){

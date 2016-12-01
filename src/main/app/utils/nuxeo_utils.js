@@ -1,7 +1,7 @@
 const Nuxeo = require('nuxeo/dist/nuxeo');
 import {merge} from 'lodash';
 import DocumentStore from '../data/document_store';
-import { receiveErrors, clearErrors } from '../actions/error_actions'
+import { receiveErrors, clearErrors, flashErrors } from '../actions/error_actions'
 
 let _nuxeo;
 let _store;
@@ -17,10 +17,11 @@ const DEFAULTS = {
         console.log(res)
     },
     fail: (res,xhr) => {
-        _store.dispatch(receiveErrors(res,xhr));
-        setTimeout(function() {
-            _store.dispatch(clearErrors())
-        }, 1500);
+        flashErrors(res)(_store.dispatch);
+        // _store.dispatch(receiveErrors(res,xhr));
+        // setTimeout(function() {
+        //     _store.dispatch(clearErrors())
+        // }, 1500);
     }
 };
 
@@ -35,6 +36,8 @@ const NuxeoUtils = {
       // },
     });
     _nuxeo = nuxeo;
+    _nuxeo.header('X-NXDocumentProperties', '*');
+    window.nuxeo = _nuxeo;
     let success = (res) => {
         DocumentStore.setUser(res);
         directToDashboard();
@@ -42,9 +45,6 @@ const NuxeoUtils = {
     NuxeoUtils.crudUtil({
         success: success
     });
-
-
-
    _nuxeo.enrichers({document: ['subtypes']});
     // _nuxeo.login()
     //   .then(function(res) {
@@ -119,10 +119,16 @@ const NuxeoUtils = {
       if (finalParams.operation) {
           path += `/${finalParams.operation}`;
       }
+
+
+
+
       switch (finalParams.method.toLowerCase()) {
+          // ,'X-NXproperties':'*'
           case "get":
           _nuxeo.repository()
               .schemas(finalParams.schemas)
+              .headers({'X-NXenrichers.document':'subtypes'})
               .fetch(path)
               .then(finalParams.success)
               .catch(finalParams.fail);
@@ -163,6 +169,15 @@ const NuxeoUtils = {
 
   addStore(store){
       _store = store;
+  },
+
+  getSubTypes() {
+      _nuxeo.request('/default-domain')
+          .header('X-NXenrichers.document', 'subtypes')
+          .fetch()
+          .then((res) => {
+              debugger
+          })
   }
 };
 
@@ -170,6 +185,5 @@ export default NuxeoUtils;
 
 Object.keys(NuxeoUtils).forEach((key) => {
    window[key] = NuxeoUtils[key];
-    
 });
 

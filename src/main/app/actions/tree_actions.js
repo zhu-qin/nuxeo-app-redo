@@ -1,6 +1,15 @@
 import NuxeoUtils from '../utils/nuxeo_utils';
 import DocumentStore from '../data/document_store';
 
+export const SET_CURRENT_NODE = "SET_CURRENT_NODE";
+
+export function setCurrentNode(node) {
+    return {
+        type: SET_CURRENT_NODE,
+        currentNode: node
+    }
+}
+
 const TreeActions = {
     fetchRoot(){
         NuxeoUtils.crudUtil({
@@ -75,6 +84,8 @@ const TreeActions = {
     },
 
     setWorkingNode(node){
+        console.log(node);
+        setCurrentNode(node);
         DocumentStore.setWorkingNode(node);
     },
 
@@ -143,5 +154,7 @@ TreeActions.getrendition = (node) => {
         success: success
     });
 };
+
+
 
 export default TreeActions;
